@@ -1,4 +1,5 @@
-﻿using DominationsBot.Extensions;
+﻿using System.Linq;
+using DominationsBot.Extensions;
 using DominationsBot.Tools;
 
 namespace DominationsBot.Services.GameProcess
@@ -17,13 +18,13 @@ namespace DominationsBot.Services.GameProcess
         public void DoWork()
         {
             var snapShot = _screenCapture.SnapShot();
-            var templateMatches = _finder.FindTemplate(snapShot, Screens.coin);
+            var templateMatches = _finder.FindTemplate(snapShot, Screens.Coin);
 
             foreach (var match in templateMatches)
             {
                 BlueStackHelper.Click(new Win32.Point(match.Rectangle.Multiply(_finder.Divisor).Middle()));
             }
-            if (templateMatches.Length != 0)
+            if (templateMatches.Count() != 0)
                 DoWork();
         }
     }

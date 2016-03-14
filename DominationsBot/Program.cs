@@ -1,11 +1,8 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using DominationsBot.DI;
-using DominationsBot.Extensions;
+﻿using DominationsBot.DI;
 using DominationsBot.Services.GameProcess;
 using DominationsBot.Tools;
 using OpenQA.Selenium.Appium.Service;
+using System;
 
 namespace DominationsBot
 {
@@ -35,13 +32,13 @@ namespace DominationsBot
         }
         static void Main(string[] args)
         {
-            
+
             var blueStackWindowHandle = BlueStackHelper.GetBlueStackWindowHandle();
-            
+
             IoC.Container.GetInstance<CollectGold>().DoWork();
-            var bitmap = new Bitmap("test.png");
-            var contains = bitmap.FindTemplate(Screens.coin);
-            bitmap.ViewContains(Screens.coin).Save("result.png",ImageFormat.Png);
+
+
+
             //DesiredCapabilities capabilities = new DesiredCapabilities();
             //capabilities.SetCapability(MobileCapabilityType.DeviceName, "emulator-5554");
             //capabilities.SetCapability(MobileCapabilityType.PlatformName, "Android");

@@ -1,4 +1,5 @@
-﻿using DominationsBot.Extensions;
+﻿using System.Linq;
+using DominationsBot.Extensions;
 using DominationsBot.Tools;
 
 namespace DominationsBot.Services.GameProcess
@@ -23,7 +24,7 @@ namespace DominationsBot.Services.GameProcess
             {
                 BlueStackHelper.Click(new Win32.Point(match.Rectangle.Multiply(_finder.Divisor).Middle()));
             }
-            if (templateMatches.Length != 0)
+            if (templateMatches.Count() != 0)
                 DoWork();
         }
     }
