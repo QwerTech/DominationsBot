@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,9 +54,15 @@
       <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EyeOpen.Imaging.Processing">
+      <HintPath>..\ExtLibs\EyeOpen.Imaging.Processing.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="SaeedSearch">
+      <HintPath>..\ExtLibs\SaeedSearch.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap, Version=4.1.1.372, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\structuremap.4.1.1.372\lib\net40\StructureMap.dll</HintPath>
@@ -109,6 +116,8 @@
     <Compile Include="Services\GameProcess\CollectGold.cs" />
     <Compile Include="Services\GameProcess\IWorker.cs" />
     <Compile Include="Services\ResizeTemplateFinder.cs" />
+    <Compile Include="Services\SaedSearch.cs" />
+    <Compile Include="Services\SearchImage.cs" />
     <Compile Include="Tools\BlueStackHelper.cs" />
     <Compile Include="Tools\KeyboardHelper.cs" />
     <Compile Include="Tools\MouseHelper.cs" />

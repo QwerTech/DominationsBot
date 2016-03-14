@@ -7,6 +7,6 @@ namespace DominationsBot.Services
     public interface ITemplateFinder
     {
         int Divisor { get; }
-        IEnumerable<TemplateMatch> FindTemplate(Bitmap template, Bitmap bmp);
+        IEnumerable<TemplateMatch> FindTemplate(Bitmap bmp, Bitmap template);
     }
 }
