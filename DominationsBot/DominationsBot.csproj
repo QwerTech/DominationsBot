@@ -115,7 +115,9 @@
     <Compile Include="Services\GameProcess\CollectFood.cs" />
     <Compile Include="Services\GameProcess\CollectGold.cs" />
     <Compile Include="Services\GameProcess\IWorker.cs" />
+    <Compile Include="Services\ResizeEpsilonTemplateFinder.cs" />
     <Compile Include="Services\ResizeTemplateFinder.cs" />
+    <Compile Include="Services\EqualSearch.cs" />
     <Compile Include="Services\SaedSearch.cs" />
     <Compile Include="Services\SearchImage.cs" />
     <Compile Include="Tools\BlueStackHelper.cs" />

@@ -11,7 +11,7 @@ namespace DominationsBot.Services
         public int Divisor => 1;
         public IEnumerable<TemplateMatch> FindTemplate(Bitmap bmp, Bitmap template)
         {
-            int tot = 10;
+            int tot = 0;
             var search = SearchImage.Search(ref bmp, ref template, ref tot);
             return new TemplateMatch[] { new TemplateMatch(new Rectangle(search, Size.Empty), 1) };
         }

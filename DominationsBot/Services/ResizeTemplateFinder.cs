@@ -20,7 +20,7 @@ namespace DominationsBot.Services
 
         public int Divisor => 4;
 
-        public IEnumerable<TemplateMatch> FindTemplate(Bitmap bmp, Bitmap template)
+        public virtual IEnumerable<TemplateMatch> FindTemplate(Bitmap bmp, Bitmap template)
         {
             const int epsilon = 10;
 
