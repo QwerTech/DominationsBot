@@ -61,6 +61,13 @@
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="puma.interop">
+      <HintPath>..\ExtLibs\puma.interop.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Puma.Net">
+      <HintPath>..\ExtLibs\Puma.Net.dll</HintPath>
+    </Reference>
     <Reference Include="SaeedSearch">
       <HintPath>..\ExtLibs\SaeedSearch.dll</HintPath>
     </Reference>
@@ -120,6 +127,8 @@
     <Compile Include="Services\EqualSearch.cs" />
     <Compile Include="Services\SaedSearch.cs" />
     <Compile Include="Services\SearchImage.cs" />
+    <Compile Include="Services\TextRecognition.cs" />
+    <Compile Include="Services\WorkingAreaFilter.cs" />
     <Compile Include="Tools\BlueStackHelper.cs" />
     <Compile Include="Tools\KeyboardHelper.cs" />
     <Compile Include="Tools\MouseHelper.cs" />

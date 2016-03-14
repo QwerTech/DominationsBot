@@ -47,6 +47,15 @@
       <HintPath>..\packages\AForge.Math.2.2.5\lib\AForge.Math.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="puma.interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=832fa8af871c1a6c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\ExtLibs\puma.interop.dll</HintPath>
+    </Reference>
+    <Reference Include="Puma.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5e8cf038eac46fae, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ExtLibs\Puma.Net.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap, Version=4.1.1.372, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\structuremap.4.1.1.372\lib\net40\StructureMap.dll</HintPath>
       <Private>True</Private>
@@ -71,6 +80,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ScreenRecognitionTest.cs" />
     <Compile Include="TestScreens.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -80,7 +90,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestScreen.png" />
+    <Content Include="Resources\1790024.png" />
+    <Content Include="Resources\4.12.png" />
+    <Content Include="Resources\819444.png" />
+    <Content Include="Resources\96.png" />
+    <Content Include="Resources\TestScreen.png" />
+    <Content Include="WorkingArea.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestScreens.resx">
