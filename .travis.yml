@@ -1,2 +1,4 @@
 language: csharp
 solution: DominationsBot.sln
+notifications:
+  email: false
