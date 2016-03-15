@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 
-namespace DominationsBot.Tools
+namespace DominationsBot.Services.System
 {
-    public static class KeyboardHelper
+    public class KeyboardController
     {
         const uint WM_KEYDOWN = 0x0100;
         const uint WM_KEYUP = 0x0101;
@@ -199,7 +199,7 @@ namespace DominationsBot.Tools
         }
 
         static bool AdvancedMode { get; set; }
-        static public void Send(IntPtr hWnd, string message)
+        public void Send(IntPtr hWnd, string message)
         {
             foreach (int letter in message)
             {
@@ -213,7 +213,7 @@ namespace DominationsBot.Tools
             }
         }
 
-        static public void SendVirtualKey(IntPtr hWnd, VirtualKeys vk)
+        public void SendVirtualKey(IntPtr hWnd, VirtualKeys vk)
         {
             IntPtr wParam = (IntPtr)(((short)vk) & 0xFF);
             IntPtr lParam = (IntPtr)1;
@@ -229,18 +229,5 @@ namespace DominationsBot.Tools
             Thread.Sleep(5);
 
         }
-
-        static public void SendVirtualKeyToBS(VirtualKeys vk)
-        {
-            SendVirtualKey(BlueStackHelper.GetBlueStackWindowHandle(), vk);
-        }
-
-        static public void SendToBS(string message)
-        {
-            Send(BlueStackHelper.GetBlueStackWindowHandle(), message);
-        }
-        
-        
-
     }
 }

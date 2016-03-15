@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace DominationsBot.Tools
+namespace DominationsBot.Services.System
 {
     public static class ProcessHelper
     {
@@ -108,10 +108,6 @@ namespace DominationsBot.Tools
 
             return string.Empty;
         }
-
-        static public string GetBlueStackExecutablePath()
-        {
-            return GetExecutablePath(BlueStackHelper.GetBlueStackWindowHandle());
-        }
+        
     }
 }

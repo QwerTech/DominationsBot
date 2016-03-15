@@ -2,20 +2,23 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using DominationsBot.Services;
+using DominationsBot.Services.ImageProcessing;
+using DominationsBot.Services.System;
 
 //using System.Windows.Forms;
 
-namespace DominationsBot.Tools
+namespace DominationsBot.Services
 {
 
     public class ScreenCapture : IDisposable
     {
         private readonly BitmapPreparer _bitmapPreparer;
+        private readonly BlueStackController _blueStackController;
 
-        public ScreenCapture(BitmapPreparer bitmapPreparer)
+        public ScreenCapture(BitmapPreparer bitmapPreparer, BlueStackController blueStackController)
         {
             _bitmapPreparer = bitmapPreparer;
+            _blueStackController = blueStackController;
         }
 
         public Bitmap BitMap { get; private set; }
@@ -62,7 +65,7 @@ namespace DominationsBot.Tools
         public Bitmap SnapShot(int left, int top, int width, int height, bool backgroundMode = true)
         {
             FreeCurrentImage();
-            IntPtr hWnd = BlueStackHelper.GetBlueStackWindowHandle();
+            IntPtr hWnd = _blueStackController.Handle;
             if (hWnd == IntPtr.Zero)
                 return null;
             IntPtr hCaptureDC = Win32.GetWindowDC(hWnd);
@@ -93,18 +96,18 @@ namespace DominationsBot.Tools
 
         private bool OffsetToBSClientScrrenCoord(ref Rectangle rect)
         {
-            if (!BlueStackHelper.IsBlueStackRunning) return false;
+            if (!_blueStackController.IsRunning) return false;
             Win32.Point origin = new Win32.Point(0, 0);
-            if (Win32.ClientToScreen(BlueStackHelper.GetBlueStackWindowHandle(), ref origin)) return false;
+            if (Win32.ClientToScreen(_blueStackController.Handle, ref origin)) return false;
             rect.Offset(origin.X, origin.Y);
             return true;
         }
 
         private Rectangle GetBSArea()
         {
-            if (!BlueStackHelper.IsBlueStackRunning) return Rectangle.Empty;
+            if (!_blueStackController.IsRunning) return Rectangle.Empty;
             Win32.RECT win32rect;
-            if (!Win32.GetClientRect(BlueStackHelper.GetBlueStackWindowHandle(), out win32rect))
+            if (!Win32.GetClientRect(_blueStackController.Handle, out win32rect))
                 return Rectangle.Empty;
             return Rectangle.FromLTRB(win32rect.Left, win32rect.Top, win32rect.Right, win32rect.Bottom);
         }

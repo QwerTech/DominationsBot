@@ -2,7 +2,7 @@
 using System.Drawing;
 using Tesseract;
 
-namespace DominationsBot.Services
+namespace DominationsBot.Services.ImageProcessing
 {
     public class TextRecognition
     {

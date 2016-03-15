@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows.Forms;
 using WindowsInput;
 
 //using System.Windows.Forms; // this is WPF, we don't need WinForms here
 
-namespace DominationsBot.Tools
+namespace DominationsBot.Services.System
 {
-    public class MouseHelper
+    public class MouseController
     {
         [DllImport("user32.dll")]
         public static extern bool ClientToScreen(IntPtr hWnd, ref Win32.Point lpPoint);
@@ -45,7 +43,7 @@ namespace DominationsBot.Tools
 #pragma warning restore 649
 
         // Mephobia HF reported that this function fails to send mouse clicks to hidden windows 
-        public static void ClickOnPoint(IntPtr wndHandle, Win32.Point clientPoint)
+        public void ClickOnPoint(IntPtr wndHandle, Win32.Point clientPoint)
         {
             var oldPos = Cursor.Position;
 
@@ -68,9 +66,10 @@ namespace DominationsBot.Tools
 
             /// return mouse 
             Cursor.Position = oldPos;
+
         }
 
-        public static void ClickOnPoint2(IntPtr wndHandle, Win32.Point clientPoint)
+        public void ClickOnPoint2(IntPtr wndHandle, Win32.Point clientPoint)
         {
             ClientToScreen(wndHandle, ref clientPoint);
             var mouseSimulator = new InputSimulator().Mouse;
@@ -78,40 +77,17 @@ namespace DominationsBot.Tools
             mouseSimulator.LeftButtonClick();
         }
 
-        static void PostMessageSafe(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
+        public void PostMessageSafe(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
             bool returnValue = Win32.PostMessage(hWnd, msg, wParam, lParam);
             if (!returnValue)
             {
                 // An error occured
-                throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+                throw new global::System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
             }
         }
 
-        // SendMessage and PostMessage should work on hidden forms, use them with the WM_MOUSEXXXX codes and provide the mouse location in the wp or lp parameter, I forget which.
-        public static bool ClickOnPoint2(IntPtr wndHandle, Point clientPoint, int times = 1, int delay = 0)
-        {
-            BlueStackHelper.ActivateBlueStack();
-            try
-            {
-                /// set cursor on coords, and press mouse
-                if (wndHandle != IntPtr.Zero)
-                {
-                    for (int x = 0; x < times; x++)
-                    {
-                        PostMessageSafe(wndHandle, Win32.WM_LBUTTONDOWN, (IntPtr)0x01, (IntPtr)((clientPoint.X) | ((clientPoint.Y) << 16)));
-                        PostMessageSafe(wndHandle, Win32.WM_LBUTTONUP, (IntPtr)0x01, (IntPtr)((clientPoint.X) | ((clientPoint.Y) << 16)));
-                        Thread.Sleep(delay);
-                    }
-                }
-            }
-            catch (System.ComponentModel.Win32Exception ex)
-            {
-                Debug.Assert(false, ex.Message);
-                return false;
-            }
-            return true;
-        }
+
 
     }
 }

@@ -80,6 +80,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="NumberReadTests.cs" />
     <Compile Include="ScreenRecognitionTest.cs" />
     <Compile Include="TestScreens.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -95,25 +95,28 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Screens.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\BitmapPreparer.cs" />
-    <Compile Include="Services\ITemplateFinder.cs" />
-    <Compile Include="Services\ExhaustiveTemplateMathingFinder.cs" />
+    <Compile Include="Services\GameProcess\GameController.cs" />
+    <Compile Include="Services\ImageProcessing\BitmapPreparer.cs" />
+    <Compile Include="Services\ImageProcessing\TemplateFinders\ITemplateFinder.cs" />
+    <Compile Include="Services\ImageProcessing\TemplateFinders\ExhaustiveTemplateMathingFinder.cs" />
     <Compile Include="Services\GameProcess\CollectFood.cs" />
     <Compile Include="Services\GameProcess\CollectGold.cs" />
     <Compile Include="Services\GameProcess\IWorker.cs" />
-    <Compile Include="Services\ResizeEpsilonTemplateFinder.cs" />
-    <Compile Include="Services\ResizeTemplateFinder.cs" />
-    <Compile Include="Services\EqualSearch.cs" />
-    <Compile Include="Services\SaedSearch.cs" />
-    <Compile Include="Services\SearchImage.cs" />
-    <Compile Include="Services\TextRecognition.cs" />
+    <Compile Include="Services\ImageProcessing\TemplateFinders\ResizeEpsilonTemplateFinder.cs" />
+    <Compile Include="Services\ImageProcessing\TemplateFinders\ResizeTemplateFinder.cs" />
+    <Compile Include="Services\ImageProcessing\TemplateFinders\EqualTemplateFinder.cs" />
+    <Compile Include="Services\ImageProcessing\SaeedTemplateFinder.cs" />
+    <Compile Include="Services\ImageProcessing\SearchImage.cs" />
+    <Compile Include="Services\ImageProcessing\TextReader.cs" />
+    <Compile Include="Services\ImageProcessing\TextRecognition.cs" />
     <Compile Include="Services\WorkingAreaFilter.cs" />
-    <Compile Include="Tools\BlueStackHelper.cs" />
-    <Compile Include="Tools\KeyboardHelper.cs" />
-    <Compile Include="Tools\MouseHelper.cs" />
-    <Compile Include="Tools\ProcessHelper.cs" />
-    <Compile Include="Tools\ScreenCapture.cs" />
-    <Compile Include="Tools\Win32.cs" />
+    <Compile Include="Services\BlueStackController.cs" />
+    <Compile Include="Services\System\KeyboardController.cs" />
+    <Compile Include="Services\System\MouseController.cs" />
+    <Compile Include="Services\System\ProcessHelper.cs" />
+    <Compile Include="Services\ScreenCapture.cs" />
+    <Compile Include="Services\SelfDiagnostics.cs" />
+    <Compile Include="Services\System\Win32.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -162,6 +165,45 @@
     <Content Include="Resources\Mine.PNG" />
     <Content Include="Resources\Rabbit.PNG" />
     <Content Include="Resources\StrenghtGladator.PNG" />
+    <Content Include="Resources\Symbols\Citizens\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\Citizens\2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\Citizens\4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\Citizens\slesh.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\FoodAndGold\0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\FoodAndGold\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\FoodAndGold\2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\FoodAndGold\4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\FoodAndGold\7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\FoodAndGold\8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\FoodAndGold\9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\Level\6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\Level\9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="x64\liblept172.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

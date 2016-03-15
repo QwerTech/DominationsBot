@@ -1,8 +1,9 @@
-﻿using AForge.Imaging;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
+using AForge.Imaging;
+using DominationsBot.Services.ImageProcessing.TemplateFinders;
 
-namespace DominationsBot.Services
+namespace DominationsBot.Services.ImageProcessing
 {
     public class SaeedTemplateFinder : ITemplateFinder
     {

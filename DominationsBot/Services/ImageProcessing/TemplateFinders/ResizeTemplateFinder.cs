@@ -1,11 +1,11 @@
-﻿using AForge.Imaging;
-using AForge.Imaging.Filters;
-using DominationsBot.Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using AForge.Imaging;
+using AForge.Imaging.Filters;
+using DominationsBot.Extensions;
 
-namespace DominationsBot.Services
+namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 {
     public class ResizeTemplateFinder : ITemplateFinder
     {
@@ -22,9 +22,8 @@ namespace DominationsBot.Services
 
         public virtual IEnumerable<TemplateMatch> FindTemplate(Bitmap bmp, Bitmap template)
         {
-            const int epsilon = 10;
-
-
+            bmp = _bitmapPreparer.Prepare(bmp);
+            template = _bitmapPreparer.Prepare(template);
             var newHeight = bmp.Height / Divisor;
             var newWidth = bmp.Width / Divisor;
             var tm = _templateMatching.ProcessImage(

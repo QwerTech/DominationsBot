@@ -6,6 +6,8 @@ using StructureMap;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using DominationsBot.Services.ImageProcessing;
+using DominationsBot.Services.ImageProcessing.TemplateFinders;
 
 namespace Tests
 {
@@ -45,7 +47,7 @@ namespace Tests
             {
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
-                var templateMatches = templateFinder.FindTemplate(TestScreens.TestScreen, Screens.Coin).ToList();
+                var templateMatches = templateFinder.FindTemplate(TestScreens.TestScreen, Screens.Coin).ToList();   
                 stopwatch.Stop();
                 Trace.TraceInformation(
                     $"\r\n{templateFinder.GetType().Name} нашел {templateMatches.Count} монетки за {stopwatch.ElapsedMilliseconds}ms. \r\n" +

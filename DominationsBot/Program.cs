@@ -1,6 +1,7 @@
-﻿using DominationsBot.DI;
+﻿using Castle.Core.Internal;
+using DominationsBot.DI;
+using DominationsBot.Services;
 using DominationsBot.Services.GameProcess;
-using DominationsBot.Tools;
 
 namespace DominationsBot
 {
@@ -8,12 +9,11 @@ namespace DominationsBot
     {
         static void Main(string[] args)
         {
-
-            var blueStackWindowHandle = BlueStackHelper.GetBlueStackWindowHandle();
-
-            IoC.Container.GetInstance<CollectGold>().DoWork();
-
-
+            IoC.Container.GetInstance<SelfDiagnostics>().Check();
+            IoC.Container.GetAllInstances<IWorker>().ForEach(w =>
+            {
+                w.DoWork();
+            });
         }
     }
 }

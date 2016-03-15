@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace DominationsBot.Tools
+namespace DominationsBot.Services.System
 {
     public class Win32
     {
@@ -28,7 +28,7 @@ namespace DominationsBot.Tools
                 this.Y = y;
             }
 
-            public Point(System.Drawing.Point point):this(point.X,point.Y)
+            public Point(global::System.Drawing.Point point):this(point.X,point.Y)
             {
                 
             }
@@ -126,7 +126,7 @@ namespace DominationsBot.Tools
         /// <param name="hdc">A handle to a device context.</param>
         /// <param name="nWidth">The bitmap width, in pixels.</param>
         /// <param name="nHeight">The bitmap height, in pixels.</param>
-        /// <returns>If the function succeeds, the return value is a handle to the compatible bitmap (DDB). If the function fails, the return value is <see cref="System.IntPtr.Zero"/>.</returns>
+        /// <returns>If the function succeeds, the return value is a handle to the compatible bitmap (DDB). If the function fails, the return value is <see cref="IntPtr.Zero"/>.</returns>
         [DllImport("gdi32.dll", EntryPoint = "CreateCompatibleBitmap")]
         public static extern IntPtr CreateCompatibleBitmap([In] IntPtr hdc, int nWidth, int nHeight);
 
@@ -170,7 +170,7 @@ namespace DominationsBot.Tools
         /// <param name="nYSrc">The topmost y-coordinate of the source rectangle (in pixels).</param>
         /// <param name="dwRop">A raster-operation code.</param>
         /// <returns>
-        ///    <c>true</c> if the operation succeedes, <c>false</c> otherwise. To get extended error information, call <see cref="System.Runtime.InteropServices.Marshal.GetLastWin32Error"/>.
+        ///    <c>true</c> if the operation succeedes, <c>false</c> otherwise. To get extended error information, call <see cref="Marshal.GetLastWin32Error"/>.
         /// </returns>
         [DllImport("gdi32.dll", EntryPoint = "BitBlt", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]

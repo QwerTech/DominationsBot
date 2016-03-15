@@ -1,5 +1,6 @@
 ﻿using DominationsBot.DI;
 using DominationsBot.Services;
+using DominationsBot.Services.ImageProcessing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StructureMap;
 

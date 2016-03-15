@@ -1,10 +1,10 @@
-﻿using AForge.Imaging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using AForge.Imaging;
 
-namespace DominationsBot.Services
+namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 {
     public class ResizeEpsilonTemplateFinder : ResizeTemplateFinder
     {

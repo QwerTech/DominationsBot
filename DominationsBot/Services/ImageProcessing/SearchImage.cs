@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace DominationsBot.Services
+namespace DominationsBot.Services.ImageProcessing
 {
     public static class SearchImage
     {
@@ -47,8 +47,10 @@ namespace DominationsBot.Services
 
         public static unsafe Rectangle SearchBitmap(Bitmap smallBmp, Bitmap bigBmp, int deviation)
         {
-            BitmapData smallBmpData = smallBmp.LockBits(new Rectangle(0, 0, smallBmp.Width, smallBmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-            BitmapData bigBmpData = bigBmp.LockBits(new Rectangle(0, 0, bigBmp.Width, bigBmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            BitmapData smallBmpData = smallBmp.LockBits(new Rectangle(0, 0, smallBmp.Width, smallBmp.Height),
+                ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            BitmapData bigBmpData = bigBmp.LockBits(new Rectangle(0, 0, bigBmp.Width, bigBmp.Height),
+                ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
             int smallStride = smallBmpData.Stride;
             int bigStride = bigBmpData.Stride;
             int widthInPixels = bigBmp.Width;
@@ -113,6 +115,7 @@ namespace DominationsBot.Services
             smallBmp.UnlockBits(smallBmpData);
             return rectangle;
         }
+
         public static List<Point> GetSubPositions(Bitmap main, Bitmap sub)
         {
             List<Point> possiblepos = new List<Point>();
@@ -126,20 +129,22 @@ namespace DominationsBot.Services
             int movewidth = mainwidth - subwidth;
             int moveheight = mainheight - subheight;
 
-            BitmapData bmMainData = main.LockBits(new Rectangle(0, 0, mainwidth, mainheight), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-            BitmapData bmSubData = sub.LockBits(new Rectangle(0, 0, subwidth, subheight), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            BitmapData bmMainData = main.LockBits(new Rectangle(0, 0, mainwidth, mainheight), ImageLockMode.ReadWrite,
+                PixelFormat.Format32bppArgb);
+            BitmapData bmSubData = sub.LockBits(new Rectangle(0, 0, subwidth, subheight), ImageLockMode.ReadWrite,
+                PixelFormat.Format32bppArgb);
 
             int bytesMain = Math.Abs(bmMainData.Stride) * mainheight;
             int strideMain = bmMainData.Stride;
-            System.IntPtr Scan0Main = bmMainData.Scan0;
+            global::System.IntPtr Scan0Main = bmMainData.Scan0;
             byte[] dataMain = new byte[bytesMain];
-            System.Runtime.InteropServices.Marshal.Copy(Scan0Main, dataMain, 0, bytesMain);
+            global::System.Runtime.InteropServices.Marshal.Copy(Scan0Main, dataMain, 0, bytesMain);
 
             int bytesSub = Math.Abs(bmSubData.Stride) * subheight;
             int strideSub = bmSubData.Stride;
-            System.IntPtr Scan0Sub = bmSubData.Scan0;
+            global::System.IntPtr Scan0Sub = bmSubData.Scan0;
             byte[] dataSub = new byte[bytesSub];
-            System.Runtime.InteropServices.Marshal.Copy(Scan0Sub, dataSub, 0, bytesSub);
+            global::System.Runtime.InteropServices.Marshal.Copy(Scan0Sub, dataSub, 0, bytesSub);
 
             for (int y = 0; y <= moveheight; ++y)
             {
@@ -156,7 +161,7 @@ namespace DominationsBot.Services
 
                         PixelData subcolor = GetColor(xsub, ysub, strideSub, dataSub);
 
-                        if (!curcolor.Equals(subcolor))
+                        if (!IsSubColor(subcolor, curcolor))
                         {
                             possiblepos.Remove(item);
                         }
@@ -168,13 +173,22 @@ namespace DominationsBot.Services
                 }
             }
 
-            System.Runtime.InteropServices.Marshal.Copy(dataSub, 0, Scan0Sub, bytesSub);
+            global::System.Runtime.InteropServices.Marshal.Copy(dataSub, 0, Scan0Sub, bytesSub);
             sub.UnlockBits(bmSubData);
 
-            System.Runtime.InteropServices.Marshal.Copy(dataMain, 0, Scan0Main, bytesMain);
+            global::System.Runtime.InteropServices.Marshal.Copy(dataMain, 0, Scan0Main, bytesMain);
             main.UnlockBits(bmMainData);
 
             return possiblepos;
+        }
+
+        public static bool IsSubColor(PixelData mainPixel, PixelData subPixe)
+        {
+            if (mainPixel.MinR < subPixe.R && mainPixel.MaxR > subPixe.R
+                && mainPixel.MinG < subPixe.G && mainPixel.MaxG > subPixe.G
+                && mainPixel.MinB < subPixe.B && mainPixel.MaxB > subPixe.B)
+                return true;
+            return false;
         }
 
         private static PixelData GetColor(Point point, int stride, byte[] data)
@@ -189,34 +203,45 @@ namespace DominationsBot.Services
             byte r = data[pos + 2];
             byte g = data[pos + 1];
             byte b = data[pos + 0];
-            return PixelData.FromARGB(a, r, g, b);
+            return new PixelData(a, r, g, b);
         }
 
-        struct PixelData
+        public struct PixelData
         {
-            byte A;
-            byte R;
-            byte G;
-            byte B;
+            public byte A;
+            public int MinR => GetMin(R);
+            public int MaxR => GetMax(R);
+            public byte R;
+            public int MinG => GetMin(G);
+            public int MaxG => GetMax(G);
+            public byte G;
+            public int MinB => GetMin(B);
+            public int MaxB => GetMax(B);
+            public byte B;
 
-            public static PixelData FromARGB(byte a, byte r, byte g, byte b)
+            public byte GetMin(byte input)
             {
-                PixelData mc = new PixelData();
-                mc.A = a;
-                mc.R = r;
-                mc.G = g;
-                mc.B = b;
-                return mc;
+                if (A == 0)
+                    return input;
+                var min = R - A;
+                return min < 0 ? (byte)0 : (byte)min;
             }
 
-            public override bool Equals(object obj)
+            public byte GetMax(byte input)
             {
-                if (!(obj is PixelData))
-                    return false;
-                PixelData color = (PixelData)obj;
-                if (color.R == this.R && color.G == this.G && color.B == this.B)
-                    return true;
-                return false;
+                if (A == 0)
+                    return input;
+                var max = R + A;
+                return max > byte.MaxValue ? byte.MaxValue : (byte)max;
+            }
+
+
+            public PixelData(byte a, byte r, byte g, byte b)
+            {
+                A = a;
+                R = r;
+                G = g;
+                B = b;
             }
         }
     }

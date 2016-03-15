@@ -1,6 +1,7 @@
-﻿using System.Linq;
-using DominationsBot.Extensions;
-using DominationsBot.Tools;
+﻿using DominationsBot.Extensions;
+using System.Linq;
+using DominationsBot.Services.ImageProcessing.TemplateFinders;
+using DominationsBot.Services.System;
 
 namespace DominationsBot.Services.GameProcess
 {
@@ -8,11 +9,13 @@ namespace DominationsBot.Services.GameProcess
     {
         private readonly ResizeTemplateFinder _finder;
         private readonly ScreenCapture _screenCapture;
+        private readonly BlueStackController _blueStackController;
 
-        public CollectFood(ResizeTemplateFinder finder, ScreenCapture screenCapture)
+        public CollectFood(ResizeTemplateFinder finder, ScreenCapture screenCapture, BlueStackController blueStackController)
         {
             _finder = finder;
             _screenCapture = screenCapture;
+            _blueStackController = blueStackController;
         }
 
         public void DoWork()
@@ -22,7 +25,7 @@ namespace DominationsBot.Services.GameProcess
 
             foreach (var match in templateMatches)
             {
-                BlueStackHelper.Click(new Win32.Point(match.Rectangle.Multiply(_finder.Divisor).Middle()));
+                _blueStackController.Click(new Win32.Point(match.Rectangle.Multiply(_finder.Divisor).Middle()));
             }
             if (templateMatches.Count() != 0)
                 DoWork();

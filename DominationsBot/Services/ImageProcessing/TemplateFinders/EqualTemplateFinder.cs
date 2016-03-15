@@ -1,11 +1,11 @@
-﻿using AForge.Imaging;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using AForge.Imaging;
 
-namespace DominationsBot.Services
+namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 {
-    public class EqualSearch : ITemplateFinder
+    public class EqualTemplateFinder : ITemplateFinder
     {
 
         public IEnumerable<TemplateMatch> FindTemplate(Bitmap bmp, Bitmap template)

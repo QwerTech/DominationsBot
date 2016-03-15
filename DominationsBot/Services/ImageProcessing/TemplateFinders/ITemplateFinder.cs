@@ -1,8 +1,8 @@
-﻿using AForge.Imaging;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
+using AForge.Imaging;
 
-namespace DominationsBot.Services
+namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 {
     public interface ITemplateFinder
     {
