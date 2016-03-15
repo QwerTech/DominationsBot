@@ -8,16 +8,40 @@ namespace Tests
     [TestClass]
     public class ScreenRecognitionTests
     {
-        private readonly IContainer _container = new Container(new RootRegistry());
-        [TestMethod]
-        public void TestTextsRecognition()
-        {
-            var textRecognition = _container.GetInstance<TextRecognition>();
-            var text1790024 = textRecognition.ImageToText(TestScreens._1790024);
-            var text4_12 = textRecognition.ImageToText(TestScreens._4_12);
-            var text819444 = textRecognition.ImageToText(TestScreens._819444);
-            var text96 = textRecognition.ImageToText(TestScreens._96);
+        private readonly TextRecognition _textRecognition;
 
+        public ScreenRecognitionTests()
+        {
+            IContainer container = new Container(new RootRegistry());
+            _textRecognition = container.GetInstance<TextRecognition>();
+        }
+
+        [TestMethod]
+        public void GoldAndMoneyRecognition()
+        {
+            var int1790024 = _textRecognition.GetText<int>(TestScreens._1790024);
+            var int819444 = _textRecognition.GetText<int>(TestScreens._819444);
+
+            Assert.AreEqual(1790024, int1790024);
+            Assert.AreEqual(819444, int819444);
+        }
+
+        [TestMethod]
+        public void CitizensRecognition()
+        {
+            var textRecognition = _textRecognition;
+
+            var text4_12 = textRecognition.GetText(TestScreens._4_12);
+
+            Assert.AreEqual(text4_12, "4/12");
+        }
+
+        [TestMethod, Ignore]
+        public void LevelRecognition()
+        {
+            var int96 = _textRecognition.GetText<int>(TestScreens._96);
+
+            Assert.AreEqual(96, int96);
         }
     }
 }

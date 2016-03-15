@@ -10,11 +10,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4F3AFA31-88B0-4536-886D-F5BFD3BA3124}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExtLibs", "ExtLibs", "{AD1225FC-614E-4EB6-8D40-4E0EDB857430}"
-	ProjectSection(SolutionItems) = preProject
-		ExtLibs\EyeOpen.Imaging.Processing.dll = ExtLibs\EyeOpen.Imaging.Processing.dll
-		ExtLibs\SaeedSearch.dll = ExtLibs\SaeedSearch.dll
-		ExtLibs\SaeedSearch.pdb = ExtLibs\SaeedSearch.pdb
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packages", "packages", "{F25C9976-3E60-43F1-B6A2-63358C1ED7DC}"
 EndProject

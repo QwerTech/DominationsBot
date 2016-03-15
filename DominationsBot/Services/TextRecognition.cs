@@ -1,37 +1,33 @@
-﻿using Puma.Net;
-using System;
+﻿using System;
 using System.Drawing;
+using Tesseract;
 
 namespace DominationsBot.Services
 {
     public class TextRecognition
     {
-        public string ImageToText(Bitmap bitmap)
+        private readonly TesseractEngine _engine;
+
+        public TextRecognition(TesseractEngine engine)
         {
-            string result = "";
+            _engine = engine;
+        }
 
-            //Распознавание
-            PumaPage image = new PumaPage(bitmap);
-            using (image)
+        public string GetText(Bitmap bitmap)
+        {
+            string result;
+            using (var page = _engine.Process(bitmap, PageSegMode.SingleWord))
             {
-                image.FileFormat = PumaFileFormat.TxtAscii;
-                image.AutoRotateImage = true;
-                image.EnableSpeller = false;
-                image.RecognizeTables = true;
-                image.FontSettings.DetectItalic = true;
-                image.Language = PumaLanguage.Russian;
-
-                try
-                {
-                    result = image.RecognizeToString();
-                }
-                catch (Exception)
-                {
-                    image.Dispose();
-                }
+                result = page.GetText().Trim();
             }
-
             return result;
+        }
+
+        public T GetText<T>(Bitmap bitmap) where T : struct
+        {
+            var imageToText = GetText(bitmap);
+            var result = Convert.ChangeType(imageToText, typeof(T));
+            return (T)result;
         }
     }
 }
