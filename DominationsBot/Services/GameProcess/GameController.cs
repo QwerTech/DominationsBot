@@ -14,7 +14,7 @@ namespace DominationsBot.Services.GameProcess
 
         public void Unzoom()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 30; i++)
             {
                 _blueStackController.SendVirtualKey(KeyboardController.VirtualKeys.VK_DOWN);
                 Thread.Sleep(500);

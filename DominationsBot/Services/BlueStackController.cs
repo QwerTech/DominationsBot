@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -13,40 +14,89 @@ namespace DominationsBot.Services
         private readonly KeyboardController _keyboardController;
         private readonly MouseController _mouseController;
 
+        private IntPtr bshandle = IntPtr.Zero;
+
         public BlueStackController(KeyboardController keyboardController, MouseController mouseController)
         {
             _keyboardController = keyboardController;
             _mouseController = mouseController;
         }
 
-        private IntPtr bshandle = IntPtr.Zero;
-
         public bool IsBlueStacksFound => bshandle != IntPtr.Zero;
+
+        public IntPtr Handle => GetBlueStackWindowHandle();
+
+        /// <summary>
+        ///     Gets a value indicating whether BlueStacks is running.
+        /// </summary>
+        /// <value><c>true</c> if BlueStacks is running; otherwise, <c>false</c>.</value>
+        public bool IsRunning
+        {
+            get
+            {
+                bshandle = IntPtr.Zero;
+                return GetBlueStackWindowHandle() != IntPtr.Zero;
+            }
+        }
+
+        /// <summary>
+        ///     Gets a value indicating whether BlueStacks is running with required dimensions.
+        /// </summary>
+        /// <value><c>true</c> if this BlueStacks is running with required dimensions; otherwise, <c>false</c>.</value>
+        public bool IsRunningWithRequiredDimensions
+        {
+            get
+            {
+                var rectangle = GetArea();
+                return (rectangle.Width == 1280) && (rectangle.Height == 720);
+            }
+        }
+
+        public Rectangle GetArea()
+        {
+            if (!IsRunning) throw new ApplicationException("blueStack не запущен.");
+            Win32.RECT win32rect;
+            if (!Win32.GetClientRect(Handle, out win32rect))
+                return Rectangle.Empty;
+
+            var area = Rectangle.FromLTRB(win32rect.Left, win32rect.Top, win32rect.Right, win32rect.Bottom);
+            if(area==Rectangle.Empty)
+                throw new ApplicationException("Не удалось получить размеры окна Bluestack. Скорее всего окно свернуто.");
+            return area;
+        }
+
+        public Rectangle GetLocation()
+        {
+            var rectangle = GetArea();
+            Win32.Point origin = new Win32.Point(0, 0);
+            if (!Win32.ClientToScreen(Handle, ref origin)) throw new ApplicationException("Не удалось получить расположение окна bluestack");
+            rectangle.Offset(origin.X, origin.Y);
+            return rectangle;
+        }
 
         private IntPtr GetBlueStackWindowHandle(bool force = false)
         {
             if (bshandle == IntPtr.Zero || force)
-                bshandle = Win32.FindWindow("WindowsForms10.Window.8.app.0.33c0d9d", "BlueStacks App Player"); // First try
+                bshandle = Win32.FindWindow("WindowsForms10.Window.8.app.0.33c0d9d", "BlueStacks App Player");
+                    // First try
             if (bshandle == IntPtr.Zero)
                 bshandle = Win32.FindWindow(null, "BlueStacks App Player"); // Maybe the class name has changes
             if (bshandle == IntPtr.Zero)
             {
-                Process[] proc = Process.GetProcessesByName("BlueStacks App Player"); // If failed, then try with .NET functions
+                var proc = Process.GetProcessesByName("BlueStacks App Player");
+                    // If failed, then try with .NET functions
                 if (!proc.Any())
                     return IntPtr.Zero;
                 bshandle = proc[0].MainWindowHandle;
             }
             if (bshandle == IntPtr.Zero)
                 throw new ApplicationException("Не удалось найти BlueStack окно.");
+            
             return bshandle;
         }
 
-        public IntPtr Handle => GetBlueStackWindowHandle();
-
         public void SetDimensionsIntoRegistry()
         {
-            bool value = false;
-
             var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\BlueStacks\Guests\Android\FrameBuffer\0", true);
             if (key == null)
                 throw new ApplicationException("Не удалось получить доступ к реестру.");
@@ -70,18 +120,18 @@ namespace DominationsBot.Services
 
         public void Click(Win32.Point point)
         {
-            _mouseController.ClickOnPoint(bshandle, point);
+            _mouseController.ClickOnPoint(Handle, point);
             Thread.Sleep(250);
         }
 
         public void SendVirtualKey(KeyboardController.VirtualKeys vk)
         {
-            _keyboardController.SendVirtualKey(bshandle, vk);
+            _keyboardController.SendVirtualKey(Handle, vk);
         }
 
         public void Send(string message)
         {
-            _keyboardController.Send(bshandle, message);
+            _keyboardController.Send(Handle, message);
         }
 
 
@@ -94,15 +144,17 @@ namespace DominationsBot.Services
                 /// set cursor on coords, and press mouse
                 if (wndHandle != IntPtr.Zero)
                 {
-                    for (int x = 0; x < times; x++)
+                    for (var x = 0; x < times; x++)
                     {
-                        _mouseController.PostMessageSafe(wndHandle, Win32.WM_LBUTTONDOWN, (IntPtr)0x01, (IntPtr)((clientPoint.X) | ((clientPoint.Y) << 16)));
-                        _mouseController.PostMessageSafe(wndHandle, Win32.WM_LBUTTONUP, (IntPtr)0x01, (IntPtr)((clientPoint.X) | ((clientPoint.Y) << 16)));
+                        _mouseController.PostMessageSafe(wndHandle, Win32.WM_LBUTTONDOWN, (IntPtr) 0x01,
+                            (IntPtr) (clientPoint.X | (clientPoint.Y << 16)));
+                        _mouseController.PostMessageSafe(wndHandle, Win32.WM_LBUTTONUP, (IntPtr) 0x01,
+                            (IntPtr) (clientPoint.X | (clientPoint.Y << 16)));
                         Thread.Sleep(delay);
                     }
                 }
             }
-            catch (global::System.ComponentModel.Win32Exception ex)
+            catch (Win32Exception ex)
             {
                 Debug.Assert(false, ex.Message);
                 return false;
@@ -110,62 +162,27 @@ namespace DominationsBot.Services
             return true;
         }
 
-        #region Properties
-
         /// <summary>
-        /// Gets a value indicating whether BlueStacks is running.
-        /// </summary>
-        /// <value><c>true</c> if BlueStacks is running; otherwise, <c>false</c>.</value>
-        public bool IsRunning
-        {
-            get
-            {
-                bshandle = IntPtr.Zero;
-                return GetBlueStackWindowHandle() != IntPtr.Zero;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether BlueStacks is running with required dimensions.
-        /// </summary>
-        /// <value><c>true</c> if this BlueStacks is running with required dimensions; otherwise, <c>false</c>.</value>
-        public bool IsRunningWithRequiredDimensions
-        {
-            get
-            {
-                var rct = new Win32.RECT();
-                Win32.GetClientRect(bshandle, out rct);
-
-                var width = rct.Right - rct.Left; // in Win32 Rect, right and bottom are considered as excluded from the rect. 
-                var height = rct.Bottom - rct.Top;
-
-                return (width == 1280) && (height == 720);
-            }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Activates and displays the window. If the window is 
-        /// minimized or maximized, the system restores it to its original size 
-        /// and position. An application should use this when restoring 
-        /// a minimized window.
+        ///     Activates and displays the window. If the window is
+        ///     minimized or maximized, the system restores it to its original size
+        ///     and position. An application should use this when restoring
+        ///     a minimized window.
         /// </summary>
         /// <returns></returns>
         public bool RestoreBlueStack()
         {
             if (!IsRunning) return false;
-            return Win32.ShowWindow(bshandle, Win32.WindowShowStyle.Restore);
+            return Win32.ShowWindow(Handle, Win32.WindowShowStyle.Restore);
         }
 
         /// <summary>
-        /// Activates the window and displays it in its current size and position.
+        ///     Activates the window and displays it in its current size and position.
         /// </summary>
         /// <returns></returns>
         public bool ActivateBlueStack()
         {
             if (!IsRunning) return false;
-            return Win32.ShowWindow(bshandle, Win32.WindowShowStyle.Show);
+            return Win32.ShowWindow(Handle, Win32.WindowShowStyle.Show);
         }
     }
 }
