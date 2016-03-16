@@ -95,6 +95,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Screens.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\GameProcess\AntiSleepGame.cs" />
+    <Compile Include="Services\GameProcess\TrainTroops.cs" />
+    <Compile Include="Services\GameProcess\WindowStaticPositions.cs" />
     <Compile Include="Services\GameProcess\GameController.cs" />
     <Compile Include="Services\ImageProcessing\BitmapPreparer.cs" />
     <Compile Include="Services\ImageProcessing\TemplateFinders\ITemplateFinder.cs" />
@@ -156,6 +159,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\BattleButton.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Bear.PNG" />
     <Content Include="Resources\coin.PNG" />
     <Content Include="Resources\Deer.PNG" />
@@ -164,7 +170,16 @@
     <Content Include="Resources\FruitTree.PNG" />
     <Content Include="Resources\Mine.PNG" />
     <Content Include="Resources\Rabbit.PNG" />
+    <Content Include="Resources\SleepDialog.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\StoreButton.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\StrenghtGladator.PNG" />
+    <Content Include="Resources\Symbols\Barracks\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Symbols\Citizens\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -103,9 +103,69 @@ namespace Tests {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap TestScreen {
+        internal static System.Drawing.Bitmap NormalScreen {
             get {
-                object obj = ResourceManager.GetObject("TestScreen", resourceCulture);
+                object obj = ResourceManager.GetObject("NormalScreen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SimpleFindBig {
+            get {
+                object obj = ResourceManager.GetObject("SimpleFindBig", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SimpleFindSmall1 {
+            get {
+                object obj = ResourceManager.GetObject("SimpleFindSmall1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SimpleFindSmall2 {
+            get {
+                object obj = ResourceManager.GetObject("SimpleFindSmall2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SimpleFindSmall3 {
+            get {
+                object obj = ResourceManager.GetObject("SimpleFindSmall3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SleepScreen {
+            get {
+                object obj = ResourceManager.GetObject("SleepScreen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SleepScreen2 {
+            get {
+                object obj = ResourceManager.GetObject("SleepScreen2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

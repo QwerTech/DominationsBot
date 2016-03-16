@@ -1,7 +1,7 @@
 ﻿using DominationsBot.Extensions;
-using System.Linq;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
 using DominationsBot.Services.System;
+using System.Linq;
 
 namespace DominationsBot.Services.GameProcess
 {
@@ -25,7 +25,7 @@ namespace DominationsBot.Services.GameProcess
 
             foreach (var match in templateMatches)
             {
-                _blueStackController.Click(new Win32.Point(match.Rectangle.Multiply(_finder.Divisor).Middle()));
+                _blueStackController.Click(match.Rectangle.Multiply(_finder.Divisor).Middle());
             }
             if (templateMatches.Count() != 0)
                 DoWork();

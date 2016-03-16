@@ -1,8 +1,7 @@
 ﻿using DominationsBot.Extensions;
+using DominationsBot.Services.ImageProcessing.TemplateFinders;
 using System.Linq;
 using System.Threading;
-using DominationsBot.Services.ImageProcessing.TemplateFinders;
-using DominationsBot.Services.System;
 
 namespace DominationsBot.Services.GameProcess
 {
@@ -11,12 +10,16 @@ namespace DominationsBot.Services.GameProcess
         private readonly ResizeTemplateFinder _finder;
         private readonly ScreenCapture _screenCapture;
         private readonly BlueStackController _blueStackController;
+        private readonly WorkingAreaFilter _workingAreaFilter;
 
-        public CollectGold(ResizeTemplateFinder finder, ScreenCapture screenCapture, BlueStackController blueStackController)
+        public CollectGold(ResizeTemplateFinder finder, ScreenCapture screenCapture,
+            BlueStackController blueStackController,
+            WorkingAreaFilter workingAreaFilter)
         {
             _finder = finder;
             _screenCapture = screenCapture;
             _blueStackController = blueStackController;
+            _workingAreaFilter = workingAreaFilter;
         }
 
         public void DoWork()
@@ -24,14 +27,12 @@ namespace DominationsBot.Services.GameProcess
             var snapShot = _screenCapture.SnapShot();
             var templateMatches = _finder.FindTemplate(snapShot, Screens.Coin);
 
-            foreach (var match in templateMatches)
+            foreach (var match in templateMatches.Where(tm => _workingAreaFilter.IsInWorkingArea(tm.Rectangle.Middle()))
+                )
             {
-                _blueStackController.Click(new Win32.Point(match.Rectangle.Multiply(_finder.Divisor).Middle()));
-
+                _blueStackController.Click(match.Rectangle.Middle());
             }
             Thread.Sleep(1000);
-            if (templateMatches.Count() != 0)
-                DoWork();
         }
     }
 }

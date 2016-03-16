@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using AForge.Imaging;
+﻿using AForge.Imaging;
 using AForge.Imaging.Filters;
 using DominationsBot.Extensions;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 
 namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 {
@@ -33,6 +33,16 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
                 );
             return tm.Select(t => new TemplateMatchExt(t, Divisor));
 
+        }
+
+        public bool Exists(Bitmap bmp, Bitmap template)
+        {
+            return FindTemplate(bmp, template).Any();
+        }
+
+        public bool Single(Bitmap bmp, Bitmap template)
+        {
+            return FindTemplate(bmp, template).Count() == 1;
         }
 
         public class TemplateMatchExt : TemplateMatch

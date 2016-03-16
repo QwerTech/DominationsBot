@@ -13,10 +13,10 @@ namespace DominationsBot.Services
 
         public void Check()
         {
-            if (!_blueStackController.IsBlueStacksFound)
-                throw new ApplicationException("Не удалось найти окно с BlueStack");
             if (!_blueStackController.IsRunning)
                 throw new ApplicationException("BlueStack не запущен");
+            if (!_blueStackController.IsVisible)
+                throw new ApplicationException("BlueStack не активен.");
             if (!_blueStackController.IsRunningWithRequiredDimensions)
             {
                 _blueStackController.SetDimensionsIntoRegistry();

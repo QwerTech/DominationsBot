@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace DominationsBot.Services.System
 {
     public class KeyboardController
     {
-        const uint WM_KEYDOWN = 0x0100;
-        const uint WM_KEYUP = 0x0101;
-        const uint WM_CHAR = 0x0102;
+        private const uint WM_KEYDOWN = 0x0100;
+        private const uint WM_KEYUP = 0x0101;
+        private const uint WM_CHAR = 0x0102;
 
         public enum VirtualKeys : short
         {
@@ -32,7 +34,7 @@ namespace DominationsBot.Services.System
             VK_CAPITAL = 0x14,
             //
             VK_KANA = 0x15,
-            VK_HANGEUL = 0x15,  /* old name - should be here for compatibility */
+            VK_HANGEUL = 0x15, /* old name - should be here for compatibility */
             VK_HANGUL = 0x15,
             VK_JUNJA = 0x17,
             VK_FINAL = 0x18,
@@ -113,13 +115,13 @@ namespace DominationsBot.Services.System
             VK_NUMLOCK = 0x90,
             VK_SCROLL = 0x91,
             //
-            VK_OEM_NEC_EQUAL = 0x92,   // '=' key on numpad
+            VK_OEM_NEC_EQUAL = 0x92, // '=' key on numpad
             //
-            VK_OEM_FJ_JISHO = 0x92,   // 'Dictionary' key
-            VK_OEM_FJ_MASSHOU = 0x93,   // 'Unregister word' key
-            VK_OEM_FJ_TOUROKU = 0x94,   // 'Register word' key
-            VK_OEM_FJ_LOYA = 0x95,   // 'Left OYAYUBI' key
-            VK_OEM_FJ_ROYA = 0x96,   // 'Right OYAYUBI' key
+            VK_OEM_FJ_JISHO = 0x92, // 'Dictionary' key
+            VK_OEM_FJ_MASSHOU = 0x93, // 'Unregister word' key
+            VK_OEM_FJ_TOUROKU = 0x94, // 'Register word' key
+            VK_OEM_FJ_LOYA = 0x95, // 'Left OYAYUBI' key
+            VK_OEM_FJ_ROYA = 0x96, // 'Right OYAYUBI' key
             //
             VK_LSHIFT = 0xA0,
             VK_RSHIFT = 0xA1,
@@ -148,24 +150,24 @@ namespace DominationsBot.Services.System
             VK_LAUNCH_APP1 = 0xB6,
             VK_LAUNCH_APP2 = 0xB7,
             //
-            VK_OEM_1 = 0xBA,   // ';:' for US
-            VK_OEM_PLUS = 0xBB,   // '+' any country
-            VK_OEM_COMMA = 0xBC,   // ',' any country
-            VK_OEM_MINUS = 0xBD,   // '-' any country
-            VK_OEM_PERIOD = 0xBE,   // '.' any country
-            VK_OEM_2 = 0xBF,   // '/?' for US
-            VK_OEM_3 = 0xC0,   // '`~' for US
+            VK_OEM_1 = 0xBA, // ';:' for US
+            VK_OEM_PLUS = 0xBB, // '+' any country
+            VK_OEM_COMMA = 0xBC, // ',' any country
+            VK_OEM_MINUS = 0xBD, // '-' any country
+            VK_OEM_PERIOD = 0xBE, // '.' any country
+            VK_OEM_2 = 0xBF, // '/?' for US
+            VK_OEM_3 = 0xC0, // '`~' for US
             //
-            VK_OEM_4 = 0xDB,  //  '[{' for US
-            VK_OEM_5 = 0xDC,  //  '\|' for US
-            VK_OEM_6 = 0xDD,  //  ']}' for US
-            VK_OEM_7 = 0xDE,  //  ''"' for US
+            VK_OEM_4 = 0xDB, //  '[{' for US
+            VK_OEM_5 = 0xDC, //  '\|' for US
+            VK_OEM_6 = 0xDD, //  ']}' for US
+            VK_OEM_7 = 0xDE, //  ''"' for US
             VK_OEM_8 = 0xDF,
             //
-            VK_OEM_AX = 0xE1,  //  'AX' key on Japanese AX kbd
-            VK_OEM_102 = 0xE2,  //  "<>" or "\|" on RT 102-key kbd.
-            VK_ICO_HELP = 0xE3,  //  Help key on ICO
-            VK_ICO_00 = 0xE4,  //  00 key on ICO
+            VK_OEM_AX = 0xE1, //  'AX' key on Japanese AX kbd
+            VK_OEM_102 = 0xE2, //  "<>" or "\|" on RT 102-key kbd.
+            VK_ICO_HELP = 0xE3, //  Help key on ICO
+            VK_ICO_00 = 0xE4, //  00 key on ICO
             //
             VK_PROCESSKEY = 0xE5,
             //
@@ -197,8 +199,13 @@ namespace DominationsBot.Services.System
             VK_PA1 = 0xFD,
             VK_OEM_CLEAR = 0xFE
         }
+        private IDictionary<VirtualKeys, string> _convertFromVirtualKeysToSendKeyCodes = new Dictionary<VirtualKeys, string>()
+        {
+            {VirtualKeys.VK_DOWN,  "{DOWN}"},
+            {VirtualKeys.VK_UP,  "{UP}"}
+        };
+        private static bool AdvancedMode { get; set; }
 
-        static bool AdvancedMode { get; set; }
         public void Send(IntPtr hWnd, string message)
         {
             foreach (int letter in message)
@@ -212,7 +219,10 @@ namespace DominationsBot.Services.System
                     Win32.PostMessage(hWnd, WM_CHAR, (IntPtr)letter, IntPtr.Zero);
             }
         }
-
+        public void SendVirtualKeyDotNet(VirtualKeys vk)
+        {
+            SendKeys.SendWait(_convertFromVirtualKeysToSendKeyCodes[vk]);
+        }
         public void SendVirtualKey(IntPtr hWnd, VirtualKeys vk)
         {
             IntPtr wParam = (IntPtr)(((short)vk) & 0xFF);
@@ -220,14 +230,15 @@ namespace DominationsBot.Services.System
             lParam += (int)(Win32.MapVirtualKey((uint)wParam, Win32.MAPVK_VK_TO_VSC) << 16);
             bool shift = ((int)vk & 0x0100) == 0x0100 ? true : false;
             if (shift) Win32.PostMessage(hWnd, WM_KEYDOWN, (IntPtr)VirtualKeys.VK_LSHIFT, (IntPtr)0);
-            Win32.PostMessage(hWnd, WM_KEYDOWN, wParam, lParam);
+            if (!Win32.PostMessage(hWnd, WM_KEYDOWN, wParam, lParam))
+                throw new ApplicationException("Не удалось отправить сообщение");
             Thread.Sleep(5);
             lParam += 1 << 30;
             lParam += 1 << 31;
-            Win32.PostMessage(hWnd, WM_KEYUP, wParam, lParam);
+            if (!Win32.PostMessage(hWnd, WM_KEYUP, wParam, lParam))
+                throw new ApplicationException("Не удалось отправить сообщение");
             if (shift) Win32.PostMessage(hWnd, WM_KEYUP, (IntPtr)VirtualKeys.VK_LSHIFT, (IntPtr)0);
             Thread.Sleep(5);
-
         }
     }
 }

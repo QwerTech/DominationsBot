@@ -1,5 +1,4 @@
 ﻿using AForge.Imaging;
-using DominationsBot.Services;
 using DominationsBot.Services.GameProcess;
 using DominationsBot.Services.ImageProcessing;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
@@ -19,6 +18,7 @@ namespace DominationsBot.DI
                 scan.WithDefaultConventions();
                 scan.AddAllTypesOf<ITemplateFinder>();
                 scan.ExcludeType<ExhaustiveTemplateMathingFinder>();
+                
             });
             var templateFinders = For<ITemplateFinder>();
             templateFinders.Use<ResizeTemplateFinder>();
@@ -37,6 +37,7 @@ namespace DominationsBot.DI
 
             var workers = For<IWorker>();
             workers.Add<CollectGold>();
+            workers.Add<TrainTroops>().Ctor<ICurrentResourcesType>().Is(new ResourcesType(NumberResourcesType.Barracks));
             workers.Add<CollectFood>();
         }
     }

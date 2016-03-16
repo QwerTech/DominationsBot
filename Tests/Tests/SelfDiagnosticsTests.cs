@@ -10,10 +10,11 @@ namespace Tests
     {
         readonly IContainer _container = new Container(new RootRegistry());
         [TestMethod]
-        public void TestScreenDimensions()
+        public void TestCheckDimensions()
         {
-            _container.GetInstance<SelfDiagnostics>().Check();
-
+            var selfDiagnostics = _container.GetInstance<SelfDiagnostics>();
+            _container.GetInstance<BlueStackController>().ActivateBlueStack();
+            selfDiagnostics.Check();
         }
     }
 }

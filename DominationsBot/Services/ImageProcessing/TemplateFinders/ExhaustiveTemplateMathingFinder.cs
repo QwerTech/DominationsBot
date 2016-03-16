@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using AForge.Imaging;
 
 namespace DominationsBot.Services.ImageProcessing.TemplateFinders
@@ -15,7 +16,15 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
             _bitmapPreparer = bitmapPreparer;
             _exhaustiveTemplateMatching = exhaustiveTemplateMatching;
         }
+        public bool Exists(Bitmap bmp, Bitmap template)
+        {
+            return FindTemplate(bmp, template).Any();
+        }
 
+        public bool Single(Bitmap bmp, Bitmap template)
+        {
+            return FindTemplate(bmp, template).Count() == 1;
+        }
         public int Divisor => 1;
 
         /// <summary>

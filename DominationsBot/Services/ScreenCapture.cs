@@ -1,16 +1,14 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
-using DominationsBot.Services.ImageProcessing;
+﻿using DominationsBot.Services.ImageProcessing;
 using DominationsBot.Services.System;
+using System;
+using System.Drawing;
 
 //using System.Windows.Forms;
 
 namespace DominationsBot.Services
 {
 
-    public class ScreenCapture 
+    public class ScreenCapture
     {
         private readonly BitmapPreparer _bitmapPreparer;
         private readonly BlueStackController _blueStackController;
@@ -45,7 +43,8 @@ namespace DominationsBot.Services
         /// <returns></returns>
         private Bitmap SnapShot(int left, int top, int width, int height)
         {
-            Bitmap bitMap=null;
+            _blueStackController.ActivateBlueStack();
+            Bitmap bitMap = null;
             IntPtr hWnd = _blueStackController.Handle;
             IntPtr hCaptureDC = Win32.GetWindowDC(hWnd);
             IntPtr hMemDC = Win32.CreateCompatibleDC(hCaptureDC);
@@ -57,14 +56,14 @@ namespace DominationsBot.Services
             Win32.SelectObject(hMemDC, hObjOld);
             Win32.ReleaseDC(hWnd, hCaptureDC);
             Win32.DeleteObject(hBitmap);
-            if(bitMap==null)
+            if (bitMap == null)
                 throw new ApplicationException("Не удалось сделать скриншот");
             return bitMap;
         }
 
-        
 
-        
+
+
 
         ///// <summary>
         ///// Simple capture implementation using C# high level functions. 

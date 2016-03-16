@@ -63,6 +63,16 @@ namespace DominationsBot {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap BattleButton {
+            get {
+                object obj = ResourceManager.GetObject("BattleButton", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap Bear {
             get {
                 object obj = ResourceManager.GetObject("Bear", resourceCulture);
@@ -136,6 +146,26 @@ namespace DominationsBot {
         public static System.Drawing.Bitmap Rabbit {
             get {
                 object obj = ResourceManager.GetObject("Rabbit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap SleepDialog {
+            get {
+                object obj = ResourceManager.GetObject("SleepDialog", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap StoreButton {
+            get {
+                object obj = ResourceManager.GetObject("StoreButton", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

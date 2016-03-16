@@ -1,12 +1,12 @@
 ﻿using AForge.Imaging;
 using Castle.Core.Internal;
 using DominationsBot.DI;
+using DominationsBot.Services.ImageProcessing.TemplateFinders;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using DominationsBot.Services.ImageProcessing.TemplateFinders;
 
 namespace DominationsBot.Services.ImageProcessing
 {
@@ -142,7 +142,8 @@ namespace DominationsBot.Services.ImageProcessing
         Food,
         Gold,
         Level,
-        Citizens
+        Citizens,
+        Barracks
     }
 
     public interface ICurrentResourcesType
@@ -170,6 +171,7 @@ namespace DominationsBot.Services.ImageProcessing
             <NumberResourcesType, string>()
         {
             {NumberResourcesType.Food, "FoodAndGold"},
+            {NumberResourcesType.Barracks, "Barracks"},
             {NumberResourcesType.Gold, "FoodAndGold"},
             {NumberResourcesType.Citizens, "Citizens"},
             {NumberResourcesType.Level, "Level"}
@@ -177,11 +179,11 @@ namespace DominationsBot.Services.ImageProcessing
 
         private readonly string _resourceFolder;
 
-        public ResourceLocator(ICurrentResourcesType resourcesType, ISettings settings, ResourceNameConverter converter)
+        public ResourceLocator(NumberResourcesType resourcesType, ISettings settings, ResourceNameConverter converter)
         {
             _settings = settings;
             _converter = converter;
-            _resourceFolder = _resourceFolders[resourcesType.NumberResourcesType];
+            _resourceFolder = _resourceFolders[resourcesType];
         }
 
         public IDictionary<string, Bitmap> GetAllResouces()

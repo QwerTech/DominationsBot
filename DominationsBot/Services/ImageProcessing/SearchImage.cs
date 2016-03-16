@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 
@@ -8,44 +7,7 @@ namespace DominationsBot.Services.ImageProcessing
 {
     public static class SearchImage
     {
-        public static Point Point;
-
-        public static Point Search(ref Bitmap source, ref Bitmap small, ref int tol)
-        {
-            Bitmap bitmap1 = new Bitmap((Image)source);
-            Bitmap bitmap2 = new Bitmap((Image)small);
-            if (bitmap1.Width > bitmap2.Width || bitmap1.Height > bitmap2.Height)
-            {
-                Bitmap bitmap = bitmap2;
-                bitmap2 = bitmap1;
-                bitmap1 = bitmap;
-            }
-            Rectangle rectangle1 = Rectangle.Empty;
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-            Rectangle rectangle2 = AutoSearchBitmap(bitmap1, bitmap2, tol);
-            stopwatch.Stop();
-            if (rectangle2.Width != 0)
-            {
-                Point.X = rectangle2.X;
-                Point.Y = rectangle2.Y;
-                return Point;
-            }
-            Point.X = 0;
-            Point.Y = 0;
-            return Point;
-        }
-
-        public static Rectangle AutoSearchBitmap(Bitmap bitmap1, Bitmap bitmap2, int tol2)
-        {
-            Rectangle rectangle1 = Rectangle.Empty;
-            Rectangle rectangle2 = SearchBitmap(bitmap1, bitmap2, tol2);
-            if (rectangle2.Width == 0)
-                ;
-            return rectangle2;
-        }
-
-        public static unsafe Rectangle SearchBitmap(Bitmap smallBmp, Bitmap bigBmp, int deviation)
+        public static unsafe Rectangle SearchBitmap(Bitmap bigBmp, Bitmap smallBmp, double deviation)
         {
             BitmapData smallBmpData = smallBmp.LockBits(new Rectangle(0, 0, smallBmp.Width, smallBmp.Height),
                 ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
@@ -55,58 +17,55 @@ namespace DominationsBot.Services.ImageProcessing
             int bigStride = bigBmpData.Stride;
             int widthInPixels = bigBmp.Width;
             int lookingHeight = bigBmp.Height - smallBmp.Height + 1;
-            var bytesPerPixel = Image.GetPixelFormatSize(bigBmp.PixelFormat);
-            int threeSmalWidth = smallBmp.Width * 3;
-            int height = smallBmp.Height;
+            var bytesPerPixel = Image.GetPixelFormatSize(bigBmp.PixelFormat) / 8;
+            int bytesInLineOfSmallBmp = smallBmp.Width * bytesPerPixel;
+            int smallBmpHeightInPixels = smallBmp.Height;
             Rectangle rectangle = Rectangle.Empty;
-            int byteDeviation = Convert.ToInt32((double)byte.MaxValue * (double)deviation);
+            int byteDeviation = Convert.ToInt32((double)byte.MaxValue * deviation);
             byte* smallBmpPointer = (byte*)smallBmpData.Scan0.ToPointer();
             byte* bigBmpPointer = (byte*)bigBmpData.Scan0.ToPointer();
-            int num5 = bigStride - bigBmp.Width * 3;
-            bool flag = true;
-            for (int index1 = 0; index1 < lookingHeight; ++index1)
+            int num5 = bigStride - bigBmp.Width * bytesPerPixel;
+            bool templateFound = true;
+            for (int lineNumber = 0; lineNumber < lookingHeight; ++lineNumber)
             {
-                for (int widthIndex = 0; widthIndex < widthInPixels; ++widthIndex)
+                for (int linePixelNumber = 0; linePixelNumber < widthInPixels; ++linePixelNumber)
                 {
                     byte* numPtr3 = bigBmpPointer;
                     byte* numPtr4 = smallBmpPointer;
-                    for (int heightIndex = 0; heightIndex < height; ++heightIndex)
+                    for (int heightIndex = 0; heightIndex < smallBmpHeightInPixels; ++heightIndex)
                     {
-                        flag = true;
-                        for (int threeSmalWidthIndex = 0; threeSmalWidthIndex < threeSmalWidth; ++threeSmalWidthIndex)
+                        templateFound = true;
+                        for (int byteInSmallBmlLine = 0; byteInSmallBmlLine < bytesInLineOfSmallBmp; ++byteInSmallBmlLine)
                         {
                             if ((int)*bigBmpPointer + byteDeviation < (int)*smallBmpPointer ||
                                 (int)*bigBmpPointer - byteDeviation > (int)*smallBmpPointer)
                             {
-                                flag = false;
+                                templateFound = false;
                                 break;
                             }
                             ++bigBmpPointer;
                             ++smallBmpPointer;
                         }
-                        if (flag)
+                        if (templateFound)
                         {
-                            byte* numPtr5 = numPtr4;
-                            byte* numPtr6 = numPtr3;
-                            smallBmpPointer = numPtr5 + (smallStride * (1 + heightIndex));
-                            bigBmpPointer = numPtr6 + (bigStride * (1 + heightIndex));
+                            smallBmpPointer = numPtr4 + (smallStride * (1 + heightIndex));
+                            bigBmpPointer = numPtr3 + (bigStride * (1 + heightIndex));
                         }
                         else
                             break;
                     }
-                    if (flag)
+                    if (templateFound)
                     {
-                        rectangle.X = widthIndex;
-                        rectangle.Y = index1;
+                        rectangle.X = linePixelNumber;
+                        rectangle.Y = lineNumber;
                         rectangle.Width = smallBmp.Width;
                         rectangle.Height = smallBmp.Height;
                         break;
                     }
-                    byte* numPtr7 = numPtr3;
                     smallBmpPointer = numPtr4;
-                    bigBmpPointer = numPtr7 + 3;
+                    bigBmpPointer = numPtr3 + bytesPerPixel;
                 }
-                if (!flag)
+                if (!templateFound)
                     bigBmpPointer += num5;
                 else
                     break;
@@ -221,17 +180,17 @@ namespace DominationsBot.Services.ImageProcessing
 
             public byte GetMin(byte input)
             {
-                if (A == 0)
+                if (A == byte.MaxValue)
                     return input;
-                var min = R - A;
+                var min = R - (byte.MaxValue - A);
                 return min < 0 ? (byte)0 : (byte)min;
             }
 
             public byte GetMax(byte input)
             {
-                if (A == 0)
+                if (A == byte.MaxValue)
                     return input;
-                var max = R + A;
+                var max = R + (byte.MaxValue - A);
                 return max > byte.MaxValue ? byte.MaxValue : (byte)max;
             }
 

@@ -28,9 +28,9 @@ namespace DominationsBot.Services.System
                 this.Y = y;
             }
 
-            public Point(global::System.Drawing.Point point):this(point.X,point.Y)
+            public Point(global::System.Drawing.Point point) : this(point.X, point.Y)
             {
-                
+
             }
         }
 
@@ -84,7 +84,7 @@ namespace DominationsBot.Services.System
         ///        the function creates a memory DC compatible with the application's current screen.</param>
         /// <returns>
         ///        If the function succeeds, the return value is the handle to a memory DC.
-        ///        If the function fails, the return value is <see cref="System.IntPtr.Zero"/>.
+        ///        If the function fails, the return value is <see cref="IntPtr.Zero"/>.
         /// </returns>
         [DllImport("gdi32.dll")]
         public extern static IntPtr CreateCompatibleDC(IntPtr hDC);
@@ -134,6 +134,20 @@ namespace DominationsBot.Services.System
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool PrintWindow(IntPtr hwnd, IntPtr hDC, uint nFlags);
+        /// <summary>
+        /// Меняет активное окно Windows
+        /// </summary>
+        /// <param name="hWnd">Дескриптор окна, которое должно стать активным</param>
+        /// <returns></returns>
+        [DllImport("USER32.DLL")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+        /// <summary>
+        /// Получает дескриптор активного окна
+        /// </summary>
+        /// <returns></returns>
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetForegroundWindow();
+
 
         public enum TernaryRasterOperations : uint
         {
@@ -281,6 +295,75 @@ namespace DominationsBot.Services.System
         /// </returns>
         [DllImport("user32.dll")]
         public static extern bool ShowWindow(IntPtr hWnd, WindowShowStyle nCmdShow);
+        [return: MarshalAs(UnmanagedType.Bool)]
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool GetWindowInfo(IntPtr hwnd, ref WINDOWINFO pwi);
+        [StructLayout(LayoutKind.Sequential)]
+        public struct WINDOWINFO
+        {
+            //cbSize
+            //Type: DWORD
+            //The size of the structure, in bytes.The caller must set this member to sizeof(WINDOWINFO).
+            //rcWindow
+            //Type: RECT
+            //The coordinates of the window.
+            //rcClient
+            //Type: RECT
+            //The coordinates of the client area.
+            //dwStyle
+            //Type: DWORD
+            //The window styles. For a table of window styles, see Window Styles.
+            //dwExStyle
+            //Type: DWORD
+            //The extended window styles.For a table of extended window styles, see Extended Window Styles.
+            //dwWindowStatus
+            //Type: DWORD
+            //The window status. If this member is WS_ACTIVECAPTION (0x0001), the window is active.Otherwise, this member is zero.
+            //cxWindowBorders
+            //Type: UINT
+            //The width of the window border, in pixels.
+            //cyWindowBorders
+            //Type: UINT
+            //The height of the window border, in pixels.
+            //atomWindowType
+            //Type: ATOM
+            //The window class atom (see RegisterClass).
+            //wCreatorVersion
+            //Type: WORD
+            //The Windows version of the application that created the window.
+            public uint cbSize;
+            public RECT rcWindow;
+            public RECT rcClient;
+            public uint dwStyle;
+            public uint dwExStyle;
+            public uint dwWindowStatus;
+            public uint cxWindowBorders;
+            public uint cyWindowBorders;
+            public ushort atomWindowType;
+            public ushort wCreatorVersion;
+
+            public WINDOWINFO(Boolean? filler) : this()   // Allows automatic initialization of "cbSize" with "new WINDOWINFO(null/true/false)".
+            {
+                cbSize = (UInt32)(Marshal.SizeOf(typeof(WINDOWINFO)));
+            }
+
+        }
+        /// <summary>
+        /// Maximized
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <returns></returns>
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        public static extern bool IsZoomed(IntPtr hWnd);
+        /// <summary>
+        /// Minimized
+        /// </summary>
+        /// <param name="hwnd"></param>
+        /// <returns></returns>
+        [DllImport("user32.dll")]
+        public static extern bool IsIconic(IntPtr hWnd);
+        [DllImport("user32.dll")]
+        public static extern bool IsWindowVisible(IntPtr hWnd);
 
         /// <summary>Enumeration of the different ways of showing a window using 
         /// ShowWindow</summary>

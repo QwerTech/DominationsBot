@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using AForge.Imaging;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using AForge.Imaging;
 
 namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 {
@@ -14,6 +14,16 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
                 SearchImage.GetSubPositions(bmp, template)
                     .Select(p => new TemplateMatch(new Rectangle(p, template.Size), 1));
             return search;
+        }
+
+        public bool Exists(Bitmap bmp, Bitmap template)
+        {
+            return FindTemplate(bmp, template).Any();
+        }
+
+        public bool Single(Bitmap bmp, Bitmap template)
+        {
+            return FindTemplate(bmp, template).Count() == 1;
         }
     }
 }
