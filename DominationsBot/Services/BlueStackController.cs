@@ -1,10 +1,10 @@
-﻿using System;
+﻿using DominationsBot.Services.System;
+using Microsoft.Win32;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
-using DominationsBot.Services.System;
-using Microsoft.Win32;
 
 namespace DominationsBot.Services
 {
@@ -19,26 +19,28 @@ namespace DominationsBot.Services
             _mouseController = mouseController;
         }
 
-        private IntPtr bshandle = IntPtr.Zero;
+        private IntPtr _bshandle = IntPtr.Zero;
 
-        public bool IsBlueStacksFound => bshandle != IntPtr.Zero;
+        public bool IsBlueStacksFound => Handle != IntPtr.Zero;
 
-        private IntPtr GetBlueStackWindowHandle(bool force = false)
+        private IntPtr GetBlueStackWindowHandle()
         {
-            if (bshandle == IntPtr.Zero || force)
-                bshandle = Win32.FindWindow("WindowsForms10.Window.8.app.0.33c0d9d", "BlueStacks App Player"); // First try
-            if (bshandle == IntPtr.Zero)
-                bshandle = Win32.FindWindow(null, "BlueStacks App Player"); // Maybe the class name has changes
-            if (bshandle == IntPtr.Zero)
+            if (_bshandle != IntPtr.Zero)
+                return _bshandle;
+            if (_bshandle == IntPtr.Zero)
+                _bshandle = Win32.FindWindow("WindowsForms10.Window.8.app.0.33c0d9d", "BlueStacks App Player"); // First try
+            if (_bshandle == IntPtr.Zero)
+                _bshandle = Win32.FindWindow(null, "BlueStacks App Player"); // Maybe the class name has changes
+            if (_bshandle == IntPtr.Zero)
             {
                 Process[] proc = Process.GetProcessesByName("BlueStacks App Player"); // If failed, then try with .NET functions
                 if (!proc.Any())
                     return IntPtr.Zero;
-                bshandle = proc[0].MainWindowHandle;
+                _bshandle = proc[0].MainWindowHandle;
             }
-            if (bshandle == IntPtr.Zero)
+            if (_bshandle == IntPtr.Zero)
                 throw new ApplicationException("Не удалось найти BlueStack окно.");
-            return bshandle;
+            return _bshandle;
         }
 
         public IntPtr Handle => GetBlueStackWindowHandle();
@@ -70,18 +72,18 @@ namespace DominationsBot.Services
 
         public void Click(Win32.Point point)
         {
-            _mouseController.ClickOnPoint(bshandle, point);
+            _mouseController.ClickOnPoint(_bshandle, point);
             Thread.Sleep(250);
         }
 
         public void SendVirtualKey(KeyboardController.VirtualKeys vk)
         {
-            _keyboardController.SendVirtualKey(bshandle, vk);
+            _keyboardController.SendVirtualKey(_bshandle, vk);
         }
 
         public void Send(string message)
         {
-            _keyboardController.Send(bshandle, message);
+            _keyboardController.Send(_bshandle, message);
         }
 
 
@@ -120,7 +122,7 @@ namespace DominationsBot.Services
         {
             get
             {
-                bshandle = IntPtr.Zero;
+                _bshandle = IntPtr.Zero;
                 return GetBlueStackWindowHandle() != IntPtr.Zero;
             }
         }
@@ -134,7 +136,7 @@ namespace DominationsBot.Services
             get
             {
                 var rct = new Win32.RECT();
-                Win32.GetClientRect(bshandle, out rct);
+                Win32.GetClientRect(_bshandle, out rct);
 
                 var width = rct.Right - rct.Left; // in Win32 Rect, right and bottom are considered as excluded from the rect. 
                 var height = rct.Bottom - rct.Top;
@@ -155,7 +157,7 @@ namespace DominationsBot.Services
         public bool RestoreBlueStack()
         {
             if (!IsRunning) return false;
-            return Win32.ShowWindow(bshandle, Win32.WindowShowStyle.Restore);
+            return Win32.ShowWindow(_bshandle, Win32.WindowShowStyle.Restore);
         }
 
         /// <summary>
@@ -165,7 +167,7 @@ namespace DominationsBot.Services
         public bool ActivateBlueStack()
         {
             if (!IsRunning) return false;
-            return Win32.ShowWindow(bshandle, Win32.WindowShowStyle.Show);
+            return Win32.ShowWindow(_bshandle, Win32.WindowShowStyle.Show);
         }
     }
 }
