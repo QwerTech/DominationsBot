@@ -8,10 +8,8 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 {
     public class ResizeEpsilonTemplateFinder : ResizeTemplateFinder
     {
-        private readonly ITemplateMatching _templateMatching;
-        private readonly BitmapPreparer _bitmapPreparer;
-
-        private const int epsilon = 10;
+        
+        private const int Epsilon = 10;
 
         public override IEnumerable<TemplateMatch> FindTemplate(Bitmap bmp, Bitmap template)
         {
@@ -21,9 +19,9 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
             {
                 Rectangle tempRect = t.Rectangle;
 
-                var result = Math.Abs(template.Width  - tempRect.Width) < epsilon
+                var result = Math.Abs(template.Width  - tempRect.Width) < Epsilon
                              &&
-                             Math.Abs(template.Height - tempRect.Height) < epsilon;
+                             Math.Abs(template.Height - tempRect.Height) < Epsilon;
                 return result;
             });
         }
