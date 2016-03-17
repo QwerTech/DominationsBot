@@ -82,16 +82,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Tests\FinderTests.cs" />
-    <Compile Include="Tests\NumberReadTests.cs" />
-    <Compile Include="Tests\ScreenCaptureTests.cs" />
-    <Compile Include="Tests\ScreenRecognitionTest.cs" />
     <Compile Include="TestScreens.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TestScreens.resx</DependentUpon>
     </Compile>
     <Compile Include="Tests\FinderTests.cs" />
+    <Compile Include="Tests\NumberReadTests.cs" />
+    <Compile Include="Tests\ScreenCaptureTests.cs" />
+    <Compile Include="Tests\ScreenRecognitionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\SelfDiagnosticsTests.cs" />
     <Compile Include="Tests\GameProcessTests.cs" />
@@ -102,6 +101,7 @@
     <Content Include="Resources\819444.png" />
     <Content Include="Resources\96.png" />
     <Content Include="Resources\NormalScreen.png" />
+    <Content Include="Resources\NormalScreen2.png" />
     <Content Include="Resources\SimpleFind\SimpleFindBig.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -118,7 +118,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\SleepScreen2.png" />
-    <Content Include="WorkingArea.png" />
     <Content Include="x64\liblept172.dll" />
     <Content Include="x64\libtesseract304.dll" />
     <Content Include="x86\liblept172.dll" />
@@ -127,8 +126,8 @@
   <ItemGroup>
     <EmbeddedResource Include="TestScreens.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>TestScreens.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>TestScreens.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

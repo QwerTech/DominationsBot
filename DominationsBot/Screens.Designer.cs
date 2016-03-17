@@ -133,9 +133,9 @@ namespace DominationsBot {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap Mine {
+        public static System.Drawing.Bitmap GoldMine {
             get {
-                object obj = ResourceManager.GetObject("Mine", resourceCulture);
+                object obj = ResourceManager.GetObject("GoldMine", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

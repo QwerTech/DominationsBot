@@ -30,9 +30,11 @@ namespace DominationsBot.Services.GameProcess
                 _blueStackController.Click(WindowStaticPositions.SleepReloadGame);
                 Thread.Sleep(10000);
             }
+            snapShot = _screenCapture.SnapShot();
             var i = 15;
-            while (!_buttosFinder.Single(snapShot, Screens.StoreButton) ||
-                   !_buttosFinder.Single(snapShot, Screens.StoreButton) || i > 0)
+            while ((!_buttosFinder.Single(snapShot, Screens.StoreButton) ||
+                    !_buttosFinder.Single(snapShot, Screens.BattleButton))
+                   && i > 0)
             {
                 Thread.Sleep(1000);
                 snapShot = _screenCapture.SnapShot();

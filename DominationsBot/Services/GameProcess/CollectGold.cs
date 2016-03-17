@@ -31,6 +31,7 @@ namespace DominationsBot.Services.GameProcess
                 )
             {
                 _blueStackController.Click(match.Rectangle.Middle());
+                Thread.Sleep(250);
             }
             Thread.Sleep(1000);
         }

@@ -18,7 +18,7 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
             _bitmapPreparer = bitmapPreparer;
         }
 
-        public int Divisor => 4;
+        private int Divisor => 4;
 
         public virtual IEnumerable<TemplateMatch> FindTemplate(Bitmap bmp, Bitmap template)
         {

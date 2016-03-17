@@ -96,6 +96,7 @@
       <DependentUpon>Screens.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\GameProcess\AntiSleepGame.cs" />
+    <Compile Include="Services\GameProcess\CollectGoldMines.cs" />
     <Compile Include="Services\GameProcess\TrainTroops.cs" />
     <Compile Include="Services\GameProcess\WindowStaticPositions.cs" />
     <Compile Include="Services\GameProcess\GameController.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Services\ImageProcessing\SearchImage.cs" />
     <Compile Include="Services\ImageProcessing\TextReader.cs" />
     <Compile Include="Services\ImageProcessing\TextRecognition.cs" />
+    <Compile Include="Services\TaskRunner.cs" />
     <Compile Include="Services\WorkingAreaFilter.cs" />
     <Compile Include="Services\BlueStackController.cs" />
     <Compile Include="Services\System\KeyboardController.cs" />
@@ -168,7 +170,7 @@
     <Content Include="Resources\Food.PNG" />
     <Content Include="Resources\Fox.PNG" />
     <Content Include="Resources\FruitTree.PNG" />
-    <Content Include="Resources\Mine.PNG" />
+    <Content Include="Resources\GoldMine.PNG" />
     <Content Include="Resources\Rabbit.PNG" />
     <Content Include="Resources\SleepDialog.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

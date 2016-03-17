@@ -2,6 +2,7 @@
 using DominationsBot.Services.System;
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 //using System.Windows.Forms;
 
@@ -58,7 +59,7 @@ namespace DominationsBot.Services
             Win32.DeleteObject(hBitmap);
             if (bitMap == null)
                 throw new ApplicationException("Не удалось сделать скриншот");
-            return bitMap;
+            return bitMap.Clone(new Rectangle(Point.Empty, bitMap.Size), PixelFormat.Format24bppRgb);
         }
 
 

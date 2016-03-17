@@ -46,14 +46,14 @@ namespace DominationsBot.Services.GameProcess
             _blueStackController.Click(templateMatches.FirstOrDefault().Rectangle.Middle());
 
             Thread.Sleep(250);
-            _blueStackController.Click(WindowStaticPositions.BarracksTrainButton);
+            _blueStackController.Click(WindowStaticPositions.Barracks.TrainButton);
             Thread.Sleep(250);
             for (int i = 0; i < 10; i++)
             {
-                _blueStackController.Click(WindowStaticPositions.TrainSpearmanButton);
+                _blueStackController.Click(WindowStaticPositions.Barracks.TrainSpearmanButton);
                 Thread.Sleep(250);
             }
-            _blueStackController.Click(WindowStaticPositions.CloseButton);
+            _blueStackController.Click(WindowStaticPositions.Barracks.CloseButton);
             Thread.Sleep(250);
             Thread.Sleep(1000);
         }

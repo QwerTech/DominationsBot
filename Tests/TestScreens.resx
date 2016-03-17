@@ -121,6 +121,9 @@
   <data name="NormalScreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\normalscreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="NormalScreen2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\normalscreen2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="SimpleFindBig" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\simplefind\simplefindbig.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

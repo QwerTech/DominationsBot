@@ -1,10 +1,12 @@
 ﻿using DominationsBot;
 using DominationsBot.DI;
+using DominationsBot.Extensions;
 using DominationsBot.Services.ImageProcessing;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StructureMap;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -15,6 +17,11 @@ namespace Tests
     {
         private readonly IContainer _container = new Container(new RootRegistry());
 
+
+        public static void Init(TestContext testContext)
+        {
+
+        }
 
         //[TestMethod]
         //public void TestAllTemplateFinderOnCoins()
@@ -74,6 +81,7 @@ namespace Tests
                     $"Поисковик {templateFinder.GetType().Name} нашел за {stopwatch.ElapsedMilliseconds}ms");
             }
         }
+
         [TestMethod]
         public void TestSaeedTemplateFinderOnSleepScreen()
         {
@@ -87,17 +95,34 @@ namespace Tests
             Assert.AreEqual(1, finder.FindTemplate(TestScreens.SleepScreen2, Screens.SleepDialog).Count());
             Trace.TraceInformation($"Нашел за {stopwatch.ElapsedMilliseconds}ms");
         }
-
-
         [TestMethod]
+        public void TestSaeedTemplateFinderOnBattleAndStoreButtons()
+        {
+            var finder = _container.GetInstance<Func<double, SaeedTemplateFinder>>()(0.3);
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            Assert.AreEqual(1, finder.FindTemplate(TestScreens.NormalScreen, Screens.StoreButton).Count());
+            stopwatch.Stop();
+            Assert.AreEqual(1, finder.FindTemplate(TestScreens.NormalScreen, Screens.BattleButton).Count());
+
+            Assert.AreEqual(1, finder.FindTemplate(TestScreens.NormalScreen2, Screens.StoreButton).Count());
+            Assert.AreEqual(1, finder.FindTemplate(TestScreens.NormalScreen2, Screens.BattleButton).Count());
+            Trace.TraceInformation($"Нашел за {stopwatch.ElapsedMilliseconds}ms");
+        }
+
+
+        [TestMethod, Ignore]
         public void TestAllTemplateFinderOnBattleAndStoreButtons()
         {
-            var finders =
-                _container.GetAllInstances<ITemplateFinder>().Where(t => t.GetType() != typeof(ResizeTemplateFinder)
-                                                                         &&
-                                                                         t.GetType() !=
-                                                                         typeof(ResizeEpsilonTemplateFinder)
-                                                                         && t.GetType() != typeof(EqualTemplateFinder));
+
+            List<ITemplateFinder> finders =
+                _container.GetAllInstances<ITemplateFinder>()
+                    .Where(t => t.GetType() != typeof(ResizeTemplateFinder)
+                                //&& t.GetType() != typeof(ResizeEpsilonTemplateFinder)
+                                && t.GetType() != typeof(EqualTemplateFinder)).ToList();
+            finders.Add(new SaeedTemplateFinder(0.3));
             Assert.IsTrue(finders.Any());
             foreach (var templateFinder in finders)
             {
@@ -106,15 +131,19 @@ namespace Tests
                 var templateMatches =
                     templateFinder.FindTemplate(TestScreens.NormalScreen, Screens.BattleButton).ToList();
                 stopwatch.Stop();
-                Assert.AreEqual(1, templateMatches.Count,
-                    $"{nameof(Screens.BattleButton)} Поисковик {templateFinder.GetType().Name}");
+                var finderName = templateFinder.GetType().Name;
+                TestScreens.NormalScreen.ViewContains(templateMatches)
+                    .Save($"{finderName}.{nameof(Screens.BattleButton)}.png");
+                //Assert.AreEqual(1, templateMatches.Count,$"{nameof(Screens.BattleButton)} Поисковик {finderName}");
                 Trace.TraceInformation(
-                    $"{nameof(Screens.BattleButton)} Поисковик {templateFinder.GetType().Name} нашел за {stopwatch.ElapsedMilliseconds}ms");
+                    $"{nameof(Screens.BattleButton)} Поисковик {finderName} нашел за {stopwatch.ElapsedMilliseconds}ms");
 
                 templateMatches = templateFinder.FindTemplate(TestScreens.NormalScreen, Screens.StoreButton).ToList();
-                Assert.AreEqual(1, templateMatches.Count,
-                    $"{nameof(Screens.StoreButton)} Поисковик {templateFinder.GetType().Name} ");
-                Trace.TraceInformation($"{nameof(Screens.StoreButton)} Поисковик {templateFinder.GetType().Name}");
+                TestScreens.NormalScreen.ViewContains(templateMatches)
+                    .Save($"{finderName}.{nameof(Screens.StoreButton)}.png");
+                //Assert.AreEqual(1, templateMatches.Count,$"{nameof(Screens.StoreButton)} Поисковик {finderName} ");
+
+                Trace.TraceInformation($"{nameof(Screens.StoreButton)} Поисковик {finderName}");
             }
         }
     }
