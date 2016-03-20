@@ -9,7 +9,7 @@ namespace Tests
     [TestClass]
     public class ScreenRecognitionTests
     {
-        private readonly TextRecognition _textRecognition;
+        private readonly ITextRecognition _textRecognition;
 
         public ScreenRecognitionTests()
         {
