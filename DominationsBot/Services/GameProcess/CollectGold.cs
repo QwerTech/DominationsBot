@@ -1,4 +1,5 @@
-﻿using DominationsBot.Extensions;
+﻿using System.Diagnostics;
+using DominationsBot.Extensions;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
 using System.Linq;
 using System.Threading;
@@ -9,31 +10,32 @@ namespace DominationsBot.Services.GameProcess
     {
         private readonly ResizeTemplateFinder _finder;
         private readonly ScreenCapture _screenCapture;
-        private readonly BlueStackController _blueStackController;
+        private readonly EmulatorWindowController _emulatorWindowController;
         private readonly WorkingAreaFilter _workingAreaFilter;
 
         public CollectGold(ResizeTemplateFinder finder, ScreenCapture screenCapture,
-            BlueStackController blueStackController,
+            EmulatorWindowController emulatorWindowController,
             WorkingAreaFilter workingAreaFilter)
         {
             _finder = finder;
             _screenCapture = screenCapture;
-            _blueStackController = blueStackController;
+            _emulatorWindowController = emulatorWindowController;
             _workingAreaFilter = workingAreaFilter;
         }
 
         public void DoWork()
         {
+            Trace.TraceInformation("Собираем золото");
             var snapShot = _screenCapture.SnapShot();
             var templateMatches = _finder.FindTemplate(snapShot, Screens.Coin);
 
             foreach (var match in templateMatches.Where(tm => _workingAreaFilter.IsInWorkingArea(tm.Rectangle.Middle()))
                 )
             {
-                _blueStackController.Click(match.Rectangle.Middle());
+                _emulatorWindowController.Click(match.Rectangle.Middle());
                 Thread.Sleep(250);
             }
-            Thread.Sleep(1000);
+            Trace.TraceInformation("Собрали золото");
         }
     }
 }

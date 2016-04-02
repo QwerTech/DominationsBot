@@ -9,16 +9,16 @@ namespace DominationsBot.Services.GameProcess
     {
         private readonly ITemplateFinder _sleepScreenFinder;
         private readonly ScreenCapture _screenCapture;
-        private readonly BlueStackController _blueStackController;
+        private readonly EmulatorWindowController _emulatorWindowController;
         private readonly SaeedTemplateFinder _buttosFinder;
 
         public AntiSleepGame(Func<double, SaeedTemplateFinder> saeedTemplateFinderProvider, ScreenCapture screenCapture,
-            BlueStackController blueStackController)
+            EmulatorWindowController emulatorWindowController)
         {
             _sleepScreenFinder = saeedTemplateFinderProvider(0);
             _buttosFinder = saeedTemplateFinderProvider(0.3);
             _screenCapture = screenCapture;
-            _blueStackController = blueStackController;
+            _emulatorWindowController = emulatorWindowController;
         }
 
         public void DoWork()
@@ -27,7 +27,7 @@ namespace DominationsBot.Services.GameProcess
 
             if (_sleepScreenFinder.Exists(snapShot, Screens.SleepDialog))
             {
-                _blueStackController.Click(WindowStaticPositions.SleepReloadGame);
+                _emulatorWindowController.Click(WindowStaticPositions.SleepReloadGame);
                 Thread.Sleep(10000);
             }
             snapShot = _screenCapture.SnapShot();

@@ -13,7 +13,11 @@ namespace Tests
         public void TestUnzoom()
         {
             var gameController = Container.GetInstance<GameController>();
-            gameController.Unzoom();
+            //for (int i = 0; i < 10; i++)
+            {
+                gameController.Unzoom();
+            }
+            
 
         }
         [TestMethod]

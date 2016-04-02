@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
+using WindowsInput;
+using WindowsInput.Native;
 
 namespace DominationsBot.Services.System
 {
@@ -204,6 +206,14 @@ namespace DominationsBot.Services.System
             {VirtualKeys.VK_DOWN,  "{DOWN}"},
             {VirtualKeys.VK_UP,  "{UP}"}
         };
+
+        private IInputSimulator _inputSimulator;
+
+        public KeyboardController(IInputSimulator inputSimulator)
+        {
+            _inputSimulator = inputSimulator;
+        }
+
         private static bool AdvancedMode { get; set; }
 
         public void Send(IntPtr hWnd, string message)
@@ -218,6 +228,15 @@ namespace DominationsBot.Services.System
                 else
                     Win32.PostMessage(hWnd, WM_CHAR, (IntPtr)letter, IntPtr.Zero);
             }
+        }
+
+        public void DownCtrl()
+        {
+            _inputSimulator.Keyboard.KeyDown(VirtualKeyCode.CONTROL);
+        }
+        public void UpCtrl()
+        {
+            _inputSimulator.Keyboard.KeyUp(VirtualKeyCode.CONTROL);
         }
         public void SendVirtualKeyDotNet(VirtualKeys vk)
         {

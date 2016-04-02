@@ -1,4 +1,5 @@
-﻿using AForge.Imaging;
+﻿using WindowsInput;
+using AForge.Imaging;
 using DominationsBot.Services.GameProcess;
 using DominationsBot.Services.ImageProcessing;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
@@ -32,6 +33,7 @@ namespace DominationsBot.DI
 
             For<ITemplateMatching>()
                 .Use<ExhaustiveTemplateMatching>().Ctor<float>().Is(0.8f);
+            For<IInputSimulator>().Use<InputSimulator>().SelectConstructor(() => new InputSimulator());
 
             ForConcreteType<TextReader>().Configure.Ctor<ITemplateFinder>().Is<ExhaustiveTemplateMathingFinder>();
 

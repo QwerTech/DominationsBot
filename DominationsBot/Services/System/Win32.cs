@@ -100,7 +100,29 @@ namespace DominationsBot.Services.System
 
         [DllImport("user32.dll")]
         public static extern IntPtr GetWindowDC(IntPtr hWnd);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern int GetWindowTextLength(IntPtr hWnd);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
 
+        [DllImport("USER32.DLL")]
+        public static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+
+        public static string GetClassName(IntPtr hWnd)
+        {
+            StringBuilder stringBuilder = new StringBuilder(100);
+            var windowText = GetClassName(hWnd, stringBuilder, stringBuilder.Capacity);
+            return stringBuilder.ToString();
+        }
+
+        public static string GetWindowText(IntPtr hWnd)
+        {
+            int capacity = GetWindowTextLength(hWnd) * 2;
+            StringBuilder stringBuilder = new StringBuilder(capacity);
+            var windowText = GetWindowText(hWnd, stringBuilder, stringBuilder.Capacity);
+            return stringBuilder.ToString();
+        }
+        
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT
         {
@@ -429,7 +451,6 @@ namespace DominationsBot.Services.System
         [return: MarshalAs(UnmanagedType.Bool)]
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
-
 
         [DllImport("kernel32.dll")]
         public static extern bool QueryFullProcessImageName(IntPtr hProcess, uint dwFlags, StringBuilder lpExeName, ref uint lpdwSize);

@@ -9,5 +9,10 @@ namespace DominationsBot.Extensions
             return new Point(point.X*multiplier,point.Y*multiplier);
             
         }
+        public static Size ToSize(this Point point)
+        {
+            return new Size(point.X , point.Y );
+
+        }
     }
 }

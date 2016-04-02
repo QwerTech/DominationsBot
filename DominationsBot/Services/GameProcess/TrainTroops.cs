@@ -13,18 +13,18 @@ namespace DominationsBot.Services.GameProcess
     {
         private readonly ResizeTemplateFinder _finder;
         private readonly ScreenCapture _screenCapture;
-        private readonly BlueStackController _blueStackController;
+        private readonly EmulatorWindowController _emulatorWindowController;
         private readonly ResourceLocator _resourceLocatorProvider;
         private readonly WorkingAreaFilter _workingAreaFilter;
 
         public TrainTroops(ResizeTemplateFinder finder, ScreenCapture screenCapture,
-            BlueStackController blueStackController,
+            EmulatorWindowController emulatorWindowController,
             Func<NumberResourcesType, ResourceLocator> resourceLocatorProvider,
             WorkingAreaFilter workingAreaFilter)
         {
             _finder = finder;
             _screenCapture = screenCapture;
-            _blueStackController = blueStackController;
+            _emulatorWindowController = emulatorWindowController;
             _resourceLocatorProvider = resourceLocatorProvider(NumberResourcesType.Barracks);
             _workingAreaFilter = workingAreaFilter;
         }
@@ -43,17 +43,17 @@ namespace DominationsBot.Services.GameProcess
                     break;
             }
 
-            _blueStackController.Click(templateMatches.FirstOrDefault().Rectangle.Middle());
+            _emulatorWindowController.Click(templateMatches.FirstOrDefault().Rectangle.Middle());
 
             Thread.Sleep(250);
-            _blueStackController.Click(WindowStaticPositions.Barracks.TrainButton);
+            _emulatorWindowController.Click(WindowStaticPositions.Barracks.TrainButton);
             Thread.Sleep(250);
             for (int i = 0; i < 10; i++)
             {
-                _blueStackController.Click(WindowStaticPositions.Barracks.TrainSpearmanButton);
+                _emulatorWindowController.Click(WindowStaticPositions.Barracks.TrainSpearmanButton);
                 Thread.Sleep(250);
             }
-            _blueStackController.Click(WindowStaticPositions.Barracks.CloseButton);
+            _emulatorWindowController.Click(WindowStaticPositions.Barracks.CloseButton);
             Thread.Sleep(250);
             Thread.Sleep(1000);
         }

@@ -5,13 +5,14 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0862F29C-4399-435A-9AAE-4D3175F95D87}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DominationsBot</RootNamespace>
     <AssemblyName>DominationsBot</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -61,8 +62,18 @@
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PInvoke.User32, Version=0.2.0.0, Culture=neutral, PublicKeyToken=9e300f9f87f04a7a, processorArchitecture=MSIL">
+      <HintPath>..\packages\PInvoke.User32.0.2.1\lib\net40\PInvoke.User32.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PInvoke.Windows.Core, Version=0.2.0.0, Culture=neutral, PublicKeyToken=9e300f9f87f04a7a, processorArchitecture=MSIL">
+      <HintPath>..\packages\PInvoke.Windows.Core.0.2.1\lib\portable-net40+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PInvoke.Windows.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="StructureMap, Version=4.1.1.372, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\structuremap.4.1.1.372\lib\net40\StructureMap.dll</HintPath>
       <Private>True</Private>
@@ -75,7 +86,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -86,26 +96,29 @@
       <HintPath>..\packages\Tesseract.3.0.2.0\lib\net451\Tesseract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WindowsBase" />
+    <Reference Include="Topshelf, Version=3.3.154.0, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Topshelf.3.3.1\lib\net40-full\Topshelf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
       <HintPath>..\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UI\MainView\MainView.xaml.cs">
-      <DependentUpon>MainView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Programm.cs" />
+    <Compile Include="Services\System\WorkerProcess\CyclicWorkerProducer.cs" />
+    <Compile Include="Services\System\WorkerProcess\TaskSheduler.cs" />
+    <Compile Include="Services\System\WorkerProcess\WorkerConsumer.cs" />
+    <Compile Include="Services\System\WorkerProcess\WorkerProducer.cs" />
+    <Compile Include="Services\System\WorkerProcess\WorkingQueue.cs" />
+    <Compile Include="Services\ImageProcessing\ColourFilter.cs" />
     <Compile Include="Extensions\BitmapExtensions.cs" />
     <Compile Include="DI\IoC.cs" />
     <Compile Include="DI\RootRegistry.cs" />
     <Compile Include="Extensions\PointExtensions.cs" />
     <Compile Include="Extensions\RectandleExtensions.cs" />
     <Compile Include="Extensions\SizeExtensions.cs" />
-    <Compile Include="UI\MainView\MainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screens.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -131,16 +144,14 @@
     <Compile Include="Services\ImageProcessing\SearchImage.cs" />
     <Compile Include="Services\ImageProcessing\TextReader.cs" />
     <Compile Include="Services\ImageProcessing\TextRecognition.cs" />
-    <Compile Include="Services\TaskRunner.cs" />
     <Compile Include="Services\WorkingAreaFilter.cs" />
-    <Compile Include="Services\BlueStackController.cs" />
+    <Compile Include="Services\EmulatorWindowController.cs" />
     <Compile Include="Services\System\KeyboardController.cs" />
     <Compile Include="Services\System\MouseController.cs" />
     <Compile Include="Services\System\ProcessHelper.cs" />
     <Compile Include="Services\ScreenCapture.cs" />
     <Compile Include="Services\SelfDiagnostics.cs" />
     <Compile Include="Services\System\Win32.cs" />
-    <Compile Include="UI\ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -252,16 +263,6 @@
     <Content Include="x86\libtesseract304.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="UI\MainView\MainView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <ApplicationDefinition Include="App.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </ApplicationDefinition>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

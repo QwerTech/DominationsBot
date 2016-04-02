@@ -13,8 +13,8 @@ namespace Tests
         [TestMethod]
         public void TestScreenDimentions()
         {
-            var blueStackController = _container.GetInstance<BlueStackController>();
-            blueStackController.ActivateBlueStack();
+            var blueStackController = _container.GetInstance<EmulatorWindowController>();
+            blueStackController.Activate();
             var screenCapture = _container.GetInstance<ScreenCapture>();
 
             var snapShot = screenCapture.SnapShot();
@@ -25,8 +25,8 @@ namespace Tests
         [TestMethod]
         public void TestScreenPixelFormat()
         {
-            var blueStackController = _container.GetInstance<BlueStackController>();
-            blueStackController.ActivateBlueStack();
+            var blueStackController = _container.GetInstance<EmulatorWindowController>();
+            blueStackController.Activate();
             var screenCapture = _container.GetInstance<ScreenCapture>();
 
             var snapShot = screenCapture.SnapShot();

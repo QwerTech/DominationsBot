@@ -25,9 +25,6 @@ namespace DominationsBot.Services.ImageProcessing
 
             //Retrieve the OcrConfig of the OcrEngine object
             OCRConfig ocrConfig = _engine.Config;
-            _engine.Config.RemoveNonText = true;
-            _engine.Config.DetectReadingOrder = true;
-            _engine.Config.DetectTextRegions = true;
             //Set the Whitelist property to recognize numbers only
             ocrConfig.Whitelist = new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
             var memoryStream = new MemoryStream();

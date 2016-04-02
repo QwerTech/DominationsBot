@@ -33,7 +33,7 @@ namespace DominationsBot.Services.GameProcess
         public static Point CommonCloseButton = new Point(1210, 90);
 
         public static Point SleepReloadGame = new Point(645, 465);
-
+        public static Point ZoomingButton = new Point(1720,500);
         public static class Barracks
         {
             public static Point TrainButton = ActionButtons.ButtonsPositionsBy2.RightOne;

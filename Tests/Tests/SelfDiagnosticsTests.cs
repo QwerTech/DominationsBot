@@ -13,7 +13,7 @@ namespace Tests
         public void TestCheckDimensions()
         {
             var selfDiagnostics = _container.GetInstance<SelfDiagnostics>();
-            _container.GetInstance<BlueStackController>().ActivateBlueStack();
+            _container.GetInstance<EmulatorWindowController>().Activate();
             selfDiagnostics.Check();
         }
     }

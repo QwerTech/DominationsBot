@@ -2,6 +2,7 @@
 using AForge.Imaging.Filters;
 using DominationsBot.Extensions;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 
@@ -22,6 +23,7 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 
         public virtual IEnumerable<TemplateMatch> FindTemplate(Bitmap bmp, Bitmap template)
         {
+            Trace.TraceInformation("Ищем совпадения");
             bmp = _bitmapPreparer.Prepare(bmp);
             template = _bitmapPreparer.Prepare(template);
             var newHeight = bmp.Height / Divisor;
@@ -31,6 +33,7 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
                 new ResizeNearestNeighbor(template.Width / Divisor, template.Height / Divisor).Apply(template),
                 new Rectangle(0, 0, newWidth, newHeight)
                 );
+            Trace.TraceInformation($"Нашли совпадения {tm.Length}");
             return tm.Select(t => new TemplateMatchExt(t, Divisor));
 
         }

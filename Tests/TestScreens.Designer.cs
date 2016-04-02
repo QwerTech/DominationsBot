@@ -73,9 +73,29 @@ namespace Tests {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _384174 {
+            get {
+                object obj = ResourceManager.GetObject("_384174", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap _4_12 {
             get {
                 object obj = ResourceManager.GetObject("_4_12", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _666348 {
+            get {
+                object obj = ResourceManager.GetObject("_666348", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -96,6 +116,16 @@ namespace Tests {
         internal static System.Drawing.Bitmap _96 {
             get {
                 object obj = ResourceManager.GetObject("_96", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _98 {
+            get {
+                object obj = ResourceManager.GetObject("_98", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

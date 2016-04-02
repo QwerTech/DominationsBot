@@ -6,24 +6,29 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using System.Windows.Forms;
+using WindowsInput;
+using DominationsBot.Extensions;
 
 namespace DominationsBot.Services
 {
-    public class BlueStackController
+    public class EmulatorWindowController
     {
         private readonly KeyboardController _keyboardController;
         private readonly MouseController _mouseController;
+        private readonly IInputSimulator _inputSimulator;
 
-        public BlueStackController(KeyboardController keyboardController, MouseController mouseController)
+        public EmulatorWindowController(KeyboardController keyboardController, MouseController mouseController, IInputSimulator inputSimulator)
         {
             _keyboardController = keyboardController;
             _mouseController = mouseController;
+            _inputSimulator = inputSimulator;
         }
 
-        private IntPtr _bshandle = IntPtr.Zero;
+        private IntPtr _handle = IntPtr.Zero;
         public bool IsForeground => IsRunning && IsVisible && Win32.GetForegroundWindow() == Handle;
 
-        public IntPtr Handle => GetBlueStackWindowHandle();
+        public IntPtr Handle => GetEmulatorWindowHandle();
 
         /// <summary>
         ///     Gets a value indicating whether BlueStacks is running.
@@ -73,25 +78,34 @@ namespace DominationsBot.Services
             return rectangle;
         }
 
-        private IntPtr GetBlueStackWindowHandle()
+        private IntPtr GetEmulatorWindowHandle()
         {
-            if (_bshandle != IntPtr.Zero)
-                return _bshandle;
-            if (_bshandle == IntPtr.Zero)
-                _bshandle = Win32.FindWindow("WindowsForms10.Window.8.app.0.33c0d9d", "BlueStacks App Player"); // First try
-            if (_bshandle == IntPtr.Zero)
-                _bshandle = Win32.FindWindow(null, "BlueStacks App Player"); // Maybe the class name has changes
-            if (_bshandle == IntPtr.Zero)
-            {
-                var proc = Process.GetProcessesByName("BlueStacks App Player");
-                // If failed, then try with .NET functions
-                if (!proc.Any())
-                    return IntPtr.Zero;
-                _bshandle = proc[0].MainWindowHandle;
-            }
-            if (_bshandle == IntPtr.Zero)
+            Trace.TraceInformation("Ищем окно с эмулятором");
+            if (_handle != IntPtr.Zero)
+                return _handle;
+            var processes = Process.GetProcesses();
+            var process = processes.Single(p => p.ProcessName == "Droid4X");
+            _handle = process.MainWindowHandle;
+            //if (_handle == IntPtr.Zero)
+            //    _handle = Win32.FindWindow(null, "Droid4X 0.9.0 Beta"); // First try
+
+            var windowText = Win32.GetWindowText(_handle);
+            var className = Win32.GetClassName(_handle);
+            //if (_handle == IntPtr.Zero)
+            //    _handle = Win32.FindWindow("WindowsForms10.Window.8.app.0.33c0d9d", "BlueStacks App Player"); // First try
+            //if (_handle == IntPtr.Zero)
+            //    _handle = Win32.FindWindow(null, "BlueStacks App Player"); // Maybe the class name has changes
+            //if (_handle == IntPtr.Zero)
+            //{
+            //    var proc = Process.GetProcessesByName("BlueStacks App Player");
+            //    // If failed, then try with .NET functions
+            //    if (!proc.Any())
+            //        return IntPtr.Zero;
+            //    _handle = proc[0].MainWindowHandle;
+            //}
+            if (_handle == IntPtr.Zero)
                 throw new ApplicationException("Не удалось найти BlueStack окно.");
-            return _bshandle;
+            return _handle;
         }
 
         public void SetDimensionsIntoRegistry()
@@ -122,9 +136,32 @@ namespace DominationsBot.Services
             Click(point.X, point.Y);
         }
 
+        public void Swipe(Point start, Point end)
+        {
+            var windowLocation = GetLocation().Location.ToSize();
+            _mouseController.Swipe(start + windowLocation, end + windowLocation);
+        }
+
+        public void SwipeOffset(Point start, Point offset)
+        {
+            var windowLocation = GetLocation().Location.ToSize();
+            _mouseController.SwipeOffset(start + windowLocation, offset);
+        }
+
         public void SendVirtualKey(KeyboardController.VirtualKeys vk)
         {
             _keyboardController.SendVirtualKeyDotNet(vk);
+        }
+
+        public void MouseCenter()
+        {
+            var location = GetLocation();
+            var screen = Screen.FromHandle(Handle);
+            var windowMiddleX = ushort.MaxValue*((double)location.Middle().X/screen.Bounds.Width);
+            var windowMiddleY = ushort.MaxValue *((double)location.Middle().Y / screen.Bounds.Height);
+
+            _inputSimulator.Mouse.MoveMouseTo(windowMiddleX, windowMiddleY);
+
         }
 
         public void Send(string message)
@@ -136,7 +173,7 @@ namespace DominationsBot.Services
         // SendMessage and PostMessage should work on hidden forms, use them with the WM_MOUSEXXXX codes and provide the mouse location in the wp or lp parameter, I forget which.
         public bool ClickOnPoint2(IntPtr wndHandle, Point clientPoint, int times = 1, int delay = 0)
         {
-            ActivateBlueStack();
+            Activate();
             try
             {
                 /// set cursor on coords, and press mouse
@@ -165,7 +202,7 @@ namespace DominationsBot.Services
         ///     Activates the window and displays it in its current size and position.
         /// </summary>
         /// <returns></returns>
-        public void ActivateBlueStack()
+        public void Activate()
         {
             if (IsVisible && IsForeground)
                 return;
@@ -173,7 +210,7 @@ namespace DominationsBot.Services
                 throw new ApplicationException("Не удалось активировать окно с Bluestack");
             if (!Win32.ShowWindow(Handle, Win32.WindowShowStyle.Show))
                 throw new ApplicationException("Не удалось активировать окно с Bluestack");
-
+            
             var foregroundWindow = Win32.GetForegroundWindow();
             if (foregroundWindow != Handle)
                 if (!Win32.SetForegroundWindow(Handle))
