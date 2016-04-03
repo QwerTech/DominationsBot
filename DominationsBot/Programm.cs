@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Text;
 using DominationsBot.DI;
-using DominationsBot.Services.GameProcess.WorkerProcess;
+using DominationsBot.Services.System.WorkerProcess;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
@@ -12,8 +13,6 @@ namespace DominationsBot
     {
         private static void Main()
         {
-            
-
             HostFactory.Run(x => //1
             {
                 x.Service<DominationsBot>();
@@ -31,21 +30,27 @@ namespace DominationsBot
     {
         public bool Start(HostControl hostControl)
         {
-            // Step 1. Create configuration object 
+            var consoleTarget = new ColoredConsoleTarget
+            {
+                Layout = @"${date:format=HH\:mm\:ss} ${logger} ${message}"
+            };
+
+            var fileTarget = new FileTarget
+            {
+                Layout = consoleTarget.Layout,
+                FileName = "logs/bot.log",
+                Encoding = Encoding.UTF8
+            };
+
+            var consoleRule = new LoggingRule("*", LogLevel.Trace, consoleTarget);
+            var fileRule = new LoggingRule("*", LogLevel.Trace, fileTarget);
+
             var config = new LoggingConfiguration();
-
-            // Step 2. Create targets and add them to the configuration 
-            var consoleTarget = new ColoredConsoleTarget();
             config.AddTarget("console", consoleTarget);
+            config.AddTarget("file", fileTarget);
+            config.LoggingRules.Add(consoleRule);
+            config.LoggingRules.Add(fileRule);
 
-
-            consoleTarget.Layout = @"${date:format=HH\:mm\:ss} ${logger} ${message}";
-
-            // Step 4. Define rules
-            var rule1 = new LoggingRule("*", LogLevel.Trace, consoleTarget);
-            config.LoggingRules.Add(rule1);
-
-            // Step 5. Activate the configuration
             LogManager.Configuration = config;
 
             var taskSheduler = IoC.Container.GetInstance<TaskSheduler>();

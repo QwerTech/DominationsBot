@@ -4,7 +4,7 @@ using DominationsBot.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StructureMap;
 
-namespace Tests
+namespace Tests.Tests
 {
     [TestClass]
     public class ScreenCaptureTests

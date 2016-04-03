@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DominationsBot.Services.GameProcess.WorkerProcess
+namespace DominationsBot.Services.System.WorkerProcess
 {
     public class WorkingQueue:ConcurrentQueue<Task>
     {

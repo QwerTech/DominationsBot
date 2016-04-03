@@ -1,16 +1,25 @@
-﻿using AForge.Imaging;
-using DominationsBot.Services.ImageProcessing.TemplateFinders;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using AForge.Imaging;
+using DominationsBot.Extensions;
 using Image = System.Drawing.Image;
 
-namespace DominationsBot.Services.ImageProcessing
+namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 {
     public class SaeedTemplateFinder : ITemplateFinder
     {
+        private readonly Settings _settings;
+
+        public SaeedTemplateFinder(Settings settings)
+        {
+            _settings = settings;
+        }
+
         private readonly double _deviation;
 
         public SaeedTemplateFinder(double deviation)
@@ -34,9 +43,13 @@ namespace DominationsBot.Services.ImageProcessing
         public IEnumerable<TemplateMatch> FindTemplate(Bitmap bmp, Bitmap template)
         {
             var search = SearchBitmap(bmp, template, _deviation);
+            Trace.TraceInformation("Совпадений не найдено");
             if (search == Rectangle.Empty)
                 return Enumerable.Empty<TemplateMatch>();
-            return new[] { new TemplateMatch(search, 1) };
+
+            var templateMatches = new[] { new TemplateMatch(search, 1) };
+            bmp.ViewContains(templateMatches).Save(Path.Combine(_settings.LogsPath, $"{DateTime.Now:yyyy-dd-M--HH-mm-ss}_SaeedTemplateFinderMatches.png"));
+            return templateMatches;
         }
 
         public static unsafe Rectangle SearchBitmap(Bitmap bigBmp, Bitmap smallBmp, double deviation)

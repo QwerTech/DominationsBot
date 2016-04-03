@@ -1,18 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DominationsBot.Services;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using WindowsInput;
+﻿using System.Windows.Forms;
 using DominationsBot.DI;
 using DominationsBot.Extensions;
+using DominationsBot.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StructureMap;
 
-namespace DominationsBot.Services.Tests
+namespace Tests.Services
 {
     [TestClass()]
     public class EmulatorWindowControllerTests

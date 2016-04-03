@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using AForge.Imaging;
+using DominationsBot.Extensions;
 
 namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 {
@@ -9,12 +12,14 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
     {
         private readonly BitmapPreparer _bitmapPreparer;
         private readonly ExhaustiveTemplateMatching _exhaustiveTemplateMatching;
+        private readonly Settings _settings;
 
         public ExhaustiveTemplateMathingFinder(BitmapPreparer bitmapPreparer,
-            ExhaustiveTemplateMatching exhaustiveTemplateMatching)
+            ExhaustiveTemplateMatching exhaustiveTemplateMatching, Settings settings)
         {
             _bitmapPreparer = bitmapPreparer;
             _exhaustiveTemplateMatching = exhaustiveTemplateMatching;
+            _settings = settings;
         }
         public bool Exists(Bitmap bmp, Bitmap template)
         {
@@ -38,6 +43,7 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
             bmp = _bitmapPreparer.Prepare(bmp);
             template = _bitmapPreparer.Prepare(template);
             var tm = _exhaustiveTemplateMatching.ProcessImage(bmp, template);
+            bmp.ViewContains(tm).Save(Path.Combine(_settings.LogsPath, $"{DateTime.Now:yyyy-dd-M--HH-mm-ss}_ExhaustiveTemplateMatches.png"));
             return tm;
         }
     }

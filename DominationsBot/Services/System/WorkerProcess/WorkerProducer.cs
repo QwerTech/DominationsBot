@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
+using DominationsBot.Services.GameProcess;
 
-namespace DominationsBot.Services.GameProcess.WorkerProcess
+namespace DominationsBot.Services.System.WorkerProcess
 {
     public class WorkerProducer
     {

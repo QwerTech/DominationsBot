@@ -57,11 +57,11 @@ namespace DominationsBot.Services
 
             Win32.RECT win32rect;
             if (!Win32.GetClientRect(Handle, out win32rect))
-                throw new ApplicationException("Не удалось получить размеры окна Bluestack. Скорее всего окно свернуто.");
+                throw new ApplicationException("Не удалось получить размеры окна Эмулятором. Скорее всего окно свернуто.");
 
             var area = Rectangle.FromLTRB(win32rect.Left, win32rect.Top, win32rect.Right, win32rect.Bottom);
             if (area == Rectangle.Empty)
-                throw new ApplicationException("Не удалось получить размеры окна Bluestack. Скорее всего окно свернуто.");
+                throw new ApplicationException("Не удалось получить размеры окна Эмулятором. Скорее всего окно свернуто.");
             return area;
         }
 
@@ -76,17 +76,16 @@ namespace DominationsBot.Services
 
         private IntPtr GetEmulatorWindowHandle()
         {
-            Trace.TraceInformation("Ищем окно с эмулятором");
+            
             if (_handle != IntPtr.Zero)
                 return _handle;
+            Trace.TraceInformation("Ищем окно с эмулятором");
             var processes = Process.GetProcesses();
             var process = processes.Single(p => p.ProcessName == "Droid4X");
             _handle = process.MainWindowHandle;
             //if (_handle == IntPtr.Zero)
             //    _handle = Win32.FindWindow(null, "Droid4X 0.9.0 Beta"); // First try
-
-            var windowText = Win32.GetWindowText(_handle);
-            var className = Win32.GetClassName(_handle);
+            
             //if (_handle == IntPtr.Zero)
             //    _handle = Win32.FindWindow("WindowsForms10.Window.8.app.0.33c0d9d", "BlueStacks App Player"); // First try
             //if (_handle == IntPtr.Zero)
@@ -200,17 +199,18 @@ namespace DominationsBot.Services
         /// <returns></returns>
         public void Activate()
         {
+            Trace.TraceInformation("Активируем окно с эмулятором");
             if (IsVisible && IsForeground)
                 return;
             if (!Win32.ShowWindow(Handle, Win32.WindowShowStyle.Restore))
-                throw new ApplicationException("Не удалось активировать окно с Bluestack");
+                throw new ApplicationException("Не удалось восстановить окно с Эмулятором");
             if (!Win32.ShowWindow(Handle, Win32.WindowShowStyle.Show))
-                throw new ApplicationException("Не удалось активировать окно с Bluestack");
+                throw new ApplicationException("Не удалось показать окно с Эмулятором");
             
             var foregroundWindow = Win32.GetForegroundWindow();
             if (foregroundWindow != Handle)
                 if (!Win32.SetForegroundWindow(Handle))
-                    throw new ApplicationException("Не удалось активировать окно с Bluestack");
+                    throw new ApplicationException("Не удалось сделать поставить окно с Эмулятором на передений план");
 
         }
     }

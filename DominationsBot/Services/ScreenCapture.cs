@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Reflection;
 using DominationsBot.Services.ImageProcessing;
 using DominationsBot.Services.System;
 
@@ -13,11 +15,14 @@ namespace DominationsBot.Services
     {
         private readonly BitmapPreparer _bitmapPreparer;
         private readonly EmulatorWindowController _emulatorWindowController;
+        private readonly Settings _settings;
 
-        public ScreenCapture(BitmapPreparer bitmapPreparer, EmulatorWindowController emulatorWindowController)
+        public ScreenCapture(BitmapPreparer bitmapPreparer, EmulatorWindowController emulatorWindowController,
+            Settings settings)
         {
             _bitmapPreparer = bitmapPreparer;
             _emulatorWindowController = emulatorWindowController;
+            _settings = settings;
         }
 
 
@@ -91,7 +96,9 @@ namespace DominationsBot.Services
                 gfxScreenshot.CopyFromScreen(rect.Left, rect.Top, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);
             }
             Trace.TraceInformation("Сделали скриншот");
-            //bitMap.Save("test.png");
+            
+            
+            bitMap.Save(Path.Combine(_settings.LogsPath,$"{DateTime.Now:yyyy-dd-M--HH-mm-ss}_snapshot.png"));
             return bitMap;
         }
     }

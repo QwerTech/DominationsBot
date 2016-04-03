@@ -1,4 +1,4 @@
-﻿namespace DominationsBot.Services.GameProcess.WorkerProcess
+﻿namespace DominationsBot.Services.System.WorkerProcess
 {
     public class CyclicWorkerProducer
     {

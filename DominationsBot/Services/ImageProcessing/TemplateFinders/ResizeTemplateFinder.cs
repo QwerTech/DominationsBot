@@ -1,9 +1,11 @@
-﻿using AForge.Imaging;
+﻿using System;
+using AForge.Imaging;
 using AForge.Imaging.Filters;
 using DominationsBot.Extensions;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 
 namespace DominationsBot.Services.ImageProcessing.TemplateFinders
@@ -12,14 +14,16 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
     {
         private readonly ITemplateMatching _templateMatching;
         private readonly BitmapPreparer _bitmapPreparer;
+        protected readonly Settings _settings;
 
-        public ResizeTemplateFinder(ITemplateMatching templateMatching, BitmapPreparer bitmapPreparer)
+        public ResizeTemplateFinder(ITemplateMatching templateMatching, BitmapPreparer bitmapPreparer, Settings settings)
         {
             _templateMatching = templateMatching;
             _bitmapPreparer = bitmapPreparer;
+            _settings = settings;
         }
 
-        private int Divisor => 4;
+        private int Divisor => 2;
 
         public virtual IEnumerable<TemplateMatch> FindTemplate(Bitmap bmp, Bitmap template)
         {
@@ -34,7 +38,10 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
                 new Rectangle(0, 0, newWidth, newHeight)
                 );
             Trace.TraceInformation($"Нашли совпадения {tm.Length}");
-            return tm.Select(t => new TemplateMatchExt(t, Divisor));
+
+            var templateMatchExts = tm.Select(t => new TemplateMatchExt(t, Divisor)).ToList();
+            bmp.ViewContains(templateMatchExts).Save(Path.Combine(_settings.LogsPath, $"{DateTime.Now:yyyy-dd-M--HH-mm-ss}_resizeMatches.png"));
+            return templateMatchExts;
 
         }
 
@@ -48,7 +55,7 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
             return FindTemplate(bmp, template).Count() == 1;
         }
 
-        public class TemplateMatchExt : TemplateMatch
+        public class TemplateMatchExt :  TemplateMatch
         {
 
             public TemplateMatchExt(TemplateMatch match, int divisor) : base(match.Rectangle.Multiply(divisor), match.Similarity)

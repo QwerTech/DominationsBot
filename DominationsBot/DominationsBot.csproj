@@ -37,6 +37,9 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AForge, Version=2.2.5.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
       <HintPath>..\packages\AForge.2.2.5\lib\AForge.dll</HintPath>
@@ -111,6 +114,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Programm.cs" />
+    <Compile Include="Services\GameProcess\GameState.cs" />
+    <Compile Include="Services\ImageProcessing\PictureTester.cs" />
     <Compile Include="Services\System\WorkerProcess\CyclicWorkerProducer.cs" />
     <Compile Include="Services\System\WorkerProcess\TaskSheduler.cs" />
     <Compile Include="Services\System\WorkerProcess\WorkerConsumer.cs" />
@@ -144,7 +149,7 @@
     <Compile Include="Services\ImageProcessing\TemplateFinders\ResizeEpsilonTemplateFinder.cs" />
     <Compile Include="Services\ImageProcessing\TemplateFinders\ResizeTemplateFinder.cs" />
     <Compile Include="Services\ImageProcessing\TemplateFinders\EqualTemplateFinder.cs" />
-    <Compile Include="Services\ImageProcessing\SaeedTemplateFinder.cs" />
+    <Compile Include="Services\ImageProcessing\TemplateFinders\SaeedTemplateFinder.cs" />
     <Compile Include="Services\ImageProcessing\SearchImage.cs" />
     <Compile Include="Services\ImageProcessing\TextReader.cs" />
     <Compile Include="Services\ImageProcessing\TextRecognition.cs" />
@@ -156,9 +161,14 @@
     <Compile Include="Services\ScreenCapture.cs" />
     <Compile Include="Services\SelfDiagnostics.cs" />
     <Compile Include="Services\System\Win32.cs" />
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="app.manifest" />
+    <None Include="logs\bot.log">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -194,6 +204,7 @@
     <EmbeddedResource Include="Screens.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Screens.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -201,7 +212,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Bear.PNG" />
-    <Content Include="Resources\coin.PNG" />
+    <Content Include="Resources\Coin.PNG" />
     <Content Include="Resources\Deer.PNG" />
     <Content Include="Resources\Food.PNG" />
     <Content Include="Resources\Fox.PNG" />
@@ -270,6 +281,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,16 +1,15 @@
-﻿using DominationsBot;
-using DominationsBot.DI;
-using DominationsBot.Extensions;
-using DominationsBot.Services.ImageProcessing;
-using DominationsBot.Services.ImageProcessing.TemplateFinders;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StructureMap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using DominationsBot;
+using DominationsBot.DI;
+using DominationsBot.Extensions;
+using DominationsBot.Services.ImageProcessing.TemplateFinders;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using StructureMap;
 
-namespace Tests
+namespace Tests.Tests
 {
     [TestClass]
     public class FinderTests
@@ -83,7 +82,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestSaeedTemplateFinderOnSleepScreen()
+        public void TestTemplateFinderOnSleepScreen()
         {
             var finder = _container.GetInstance<Func<double, SaeedTemplateFinder>>()(0.2);
 
@@ -92,7 +91,6 @@ namespace Tests
 
             Assert.AreEqual(1, finder.FindTemplate(TestScreens.SleepScreen, Screens.SleepDialog).Count());
             stopwatch.Stop();
-            Assert.AreEqual(1, finder.FindTemplate(TestScreens.SleepScreen2, Screens.SleepDialog).Count());
             Trace.TraceInformation($"Нашел за {stopwatch.ElapsedMilliseconds}ms");
         }
         [TestMethod]

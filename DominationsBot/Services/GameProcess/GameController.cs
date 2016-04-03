@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
 using DominationsBot.Services.System;
 using System.Threading;
 
@@ -17,8 +18,11 @@ namespace DominationsBot.Services.GameProcess
             _keyboardController = keyboardController;
         }
 
+
+
         public void Unzoom()
         {
+            Trace.TraceInformation("Анзумим");
             _emulatorWindowController.Activate();
                 //_emulatorWindowController.SendVirtualKey(KeyboardController.VirtualKeys.VK_DOWN);
                 _emulatorWindowController.SwipeOffset(WindowStaticPositions.ZoomingButton,new Point(0,250));

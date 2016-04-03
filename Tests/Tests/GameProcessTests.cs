@@ -1,11 +1,13 @@
 ﻿using DominationsBot.DI;
 using DominationsBot.Services.GameProcess;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using StructureMap;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
-namespace Tests
+namespace Tests.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class GameProcessTests
     {
         IContainer Container = new Container(new RootRegistry());
@@ -46,6 +48,13 @@ namespace Tests
             var controller = Container.GetInstance<AntiSleepGame>();
             controller.DoWork();
 
+        }
+        [Test]
+        public void TestGameIsSleep()
+        {
+            var controller = Container.GetInstance<AntiSleepGame>();
+            var isGameSleeps = controller.IsGameSleeps();
+            Assert.IsTrue(isGameSleeps);
         }
     }
 }

@@ -1,47 +1,49 @@
-﻿using DominationsBot.Services.ImageProcessing;
-using DominationsBot.Services.ImageProcessing.TemplateFinders;
-using System;
+﻿using System;
+using System.Diagnostics;
+using System.Drawing;
 using System.Threading;
+using DominationsBot.Services.ImageProcessing;
+using DominationsBot.Services.ImageProcessing.TemplateFinders;
 
 namespace DominationsBot.Services.GameProcess
 {
     public class AntiSleepGame : IWorker
     {
-        private readonly ITemplateFinder _sleepScreenFinder;
-        private readonly ScreenCapture _screenCapture;
-        private readonly EmulatorWindowController _emulatorWindowController;
         private readonly SaeedTemplateFinder _buttosFinder;
+        private readonly EmulatorWindowController _emulatorWindowController;
+        private readonly PictureTester _pictureTester;
+        private readonly ScreenCapture _screenCapture;
+        private readonly ITemplateFinder _sleepScreenFinder;
+        private Bitmap _snapShot;
 
         public AntiSleepGame(Func<double, SaeedTemplateFinder> saeedTemplateFinderProvider, ScreenCapture screenCapture,
-            EmulatorWindowController emulatorWindowController)
+            EmulatorWindowController emulatorWindowController, PictureTester pictureTester)
         {
             _sleepScreenFinder = saeedTemplateFinderProvider(0);
             _buttosFinder = saeedTemplateFinderProvider(0.3);
             _screenCapture = screenCapture;
             _emulatorWindowController = emulatorWindowController;
+            _pictureTester = pictureTester;
         }
 
         public void DoWork()
         {
-            var snapShot = _screenCapture.SnapShot();
-
-            if (_sleepScreenFinder.Exists(snapShot, Screens.SleepDialog))
+            Trace.TraceInformation("Проверяем игру на сон");
+            if (IsGameSleeps())
             {
-                _emulatorWindowController.Click(WindowStaticPositions.SleepReloadGame);
+                Trace.TraceInformation("Игра спит");
+                _emulatorWindowController.Click(WindowStaticPositions.SleepingDialog.SleepReloadGame);
                 Thread.Sleep(10000);
             }
-            snapShot = _screenCapture.SnapShot();
-            var i = 15;
-            while ((!_buttosFinder.Single(snapShot, Screens.StoreButton) ||
-                    !_buttosFinder.Single(snapShot, Screens.BattleButton))
-                   && i > 0)
-            {
-                Thread.Sleep(1000);
-                snapShot = _screenCapture.SnapShot();
-                i--;
-            }
+        }
 
-            Thread.Sleep(1000);
+        public bool IsGameSleeps()
+        {
+            _snapShot = _screenCapture.SnapShot();
+            return _pictureTester.TestLine(_snapShot, WindowStaticPositions.SleepingDialog.CheckDialogLine,
+                WindowStaticPositions.SleepingDialog.DialogBackground);
+            //var isGameSleeps = _sleepScreenFinder.Exists(_snapShot, Screens.SleepDialog);
+            //return isGameSleeps;
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using AForge.Imaging;
+using DominationsBot.Extensions;
 
 namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 {
@@ -15,7 +17,7 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
         {
             var tm = base.FindTemplate(bmp, template);
 
-            return tm.Where(t =>
+            var templateMatches = tm.Where(t =>
             {
                 Rectangle tempRect = t.Rectangle;
 
@@ -23,11 +25,13 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
                              &&
                              Math.Abs(template.Height - tempRect.Height) < Epsilon;
                 return result;
-            });
+            }).ToList();
+            bmp.ViewContains(templateMatches).Save(Path.Combine(_settings.LogsPath, $"{DateTime.Now:yyyy-dd-M--HH-mm-ss}_resizeEpsilonMatches.png"));
+            return templateMatches;
         }
 
-        public ResizeEpsilonTemplateFinder(ITemplateMatching templateMatching, BitmapPreparer bitmapPreparer)
-            : base(templateMatching, bitmapPreparer)
+        public ResizeEpsilonTemplateFinder(ITemplateMatching templateMatching, BitmapPreparer bitmapPreparer, Settings settings)
+            : base(templateMatching, bitmapPreparer,settings)
         {
         }
     }

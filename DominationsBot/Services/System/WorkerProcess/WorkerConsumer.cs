@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NLog;
 
-namespace DominationsBot.Services.GameProcess.WorkerProcess
+namespace DominationsBot.Services.System.WorkerProcess
 {
     public class WorkerConsumer
     {
