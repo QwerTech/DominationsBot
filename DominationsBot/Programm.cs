@@ -19,7 +19,7 @@ namespace DominationsBot
                 x.Service<DominationsBot>();
 
                 x.RunAsLocalSystem(); //6
-
+                x.UseNLog();
                 x.SetDescription("DominationsBot"); //7
                 x.SetDisplayName("DominationsBot"); //8
                 x.SetServiceName("DominationsBot"); //9

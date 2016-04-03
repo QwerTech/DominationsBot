@@ -29,11 +29,7 @@ namespace DominationsBot.Services
         public bool IsForeground => IsRunning && IsVisible && Win32.GetForegroundWindow() == Handle;
 
         public IntPtr Handle => GetEmulatorWindowHandle();
-
-        /// <summary>
-        ///     Gets a value indicating whether BlueStacks is running.
-        /// </summary>
-        /// <value><c>true</c> if BlueStacks is running; otherwise, <c>false</c>.</value>
+        
         public bool IsRunning => Handle != IntPtr.Zero;
 
         public bool IsVisible => IsRunning && Win32.IsWindowVisible(Handle) && !Win32.IsIconic(Handle);
