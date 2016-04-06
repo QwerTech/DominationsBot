@@ -99,6 +99,14 @@
       <HintPath>..\packages\Tesseract.3.0.2.0\lib\net451\Tesseract.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="TestApiCore, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TestApi.0.6.0.0\lib\net40\TestApiCore.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TestApiWpf, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.TestApi.0.6.0.0\lib\net40\TestApiWpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Topshelf, Version=3.3.154.0, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
       <HintPath>..\packages\Topshelf.3.3.1\lib\net40-full\Topshelf.dll</HintPath>
       <Private>True</Private>
@@ -115,6 +123,12 @@
   <ItemGroup>
     <Compile Include="Programm.cs" />
     <Compile Include="Services\GameProcess\GameState.cs" />
+    <Compile Include="Services\ImageProcessing\ImageComporators\Base64StringComparer.cs" />
+    <Compile Include="Services\ImageProcessing\ImageComporators\BlockImageComparer.cs" />
+    <Compile Include="Services\ImageProcessing\ImageComporators\ByPixelComparer.cs" />
+    <Compile Include="Services\ImageProcessing\ImageComporators\ByteLevelComparer.cs" />
+    <Compile Include="Services\ImageProcessing\ImageComporators\HashComparer.cs" />
+    <Compile Include="Services\ImageProcessing\ImageComporators\IImageComparer.cs" />
     <Compile Include="Services\ImageProcessing\PictureTester.cs" />
     <Compile Include="Services\System\WorkerProcess\CyclicWorkerProducer.cs" />
     <Compile Include="Services\System\WorkerProcess\TaskSheduler.cs" />
