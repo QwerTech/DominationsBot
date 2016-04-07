@@ -21,7 +21,7 @@ namespace Tests.Tests
             new object[] { TestScreens.Store_1, TestScreens.Store_2, true},
             new object[] { TestScreens.screen_1, TestScreens.screen_2, true},
             new object[] { TestScreens.simple_1, TestScreens.simple_2, true},
-            new object[] { TestScreens.space_1, TestScreens.space_2, true}
+            new object[] { TestScreens.space_1, TestScreens.space_2, false}
         };
 
         [Test]
