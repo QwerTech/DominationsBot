@@ -11,7 +11,7 @@ namespace Tests.Tests
     public class GameProcessTests
     {
         IContainer Container = new Container(new RootRegistry());
-        [TestMethod]
+        [Test,Explicit]
         public void TestUnzoom()
         {
             var gameController = Container.GetInstance<GameController>();
@@ -22,34 +22,34 @@ namespace Tests.Tests
             
 
         }
-        [TestMethod]
+        [Test,Explicit]
         public void TestCollectGold()
         {
             var controller = Container.GetInstance<CollectGold>();
             controller.DoWork();
 
         }
-        [TestMethod]
+        [Test,Explicit]
         public void TestCollectFood()
         {
             var controller = Container.GetInstance<CollectFood>();
             controller.DoWork();
 
         }
-        [TestMethod]
+        [Test,Explicit]
         public void TestTrainTroops()
         {
             var controller = Container.GetInstance<TrainTroops>();
             controller.DoWork();
         }
-        [TestMethod]
+        [Test, Explicit]
         public void TestAntiSleep()
         {
             var controller = Container.GetInstance<AntiSleepGame>();
             controller.DoWork();
 
         }
-        [Test]
+        [Test,Explicit]
         public void TestGameIsSleep()
         {
             var controller = Container.GetInstance<AntiSleepGame>();
