@@ -38,7 +38,7 @@ namespace Tests.Tests
         //    }
         //}
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void TestAllTemplateFinderOnSimple()
         {
             var finders =
@@ -81,7 +81,7 @@ namespace Tests.Tests
             }
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void TestTemplateFinderOnSleepScreen()
         {
             var finder = _container.GetInstance<Func<double, SaeedTemplateFinder>>()(0.2);
@@ -93,7 +93,7 @@ namespace Tests.Tests
             stopwatch.Stop();
             Trace.TraceInformation($"Нашел за {stopwatch.ElapsedMilliseconds}ms");
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void TestSaeedTemplateFinderOnBattleAndStoreButtons()
         {
             var finder = _container.GetInstance<Func<double, SaeedTemplateFinder>>()(0.3);

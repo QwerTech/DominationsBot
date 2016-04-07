@@ -27,7 +27,7 @@ namespace Tests.Tests
             bitmap.Save("filter.png");
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void GoldAndMoneyRecognition()
         {
             

@@ -10,7 +10,7 @@ namespace Tests.Services
     [TestClass()]
     public class EmulatorWindowControllerTests
     {
-        [TestMethod()]
+        [TestMethod, Ignore]
         public void MouseCenterTest()
         {
             var emulatorWindowController = _container.GetInstance<EmulatorWindowController>();
@@ -66,7 +66,7 @@ namespace Tests.Services
 
         }
 
-        [TestMethod()]
+        [TestMethod, Ignore]
         public void ActivateBlueStackTest()
         {
             _container.GetInstance<EmulatorWindowController>().Activate();

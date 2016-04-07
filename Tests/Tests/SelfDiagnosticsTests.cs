@@ -9,7 +9,7 @@ namespace Tests.Tests
     public class SelfDiagnosticsTests
     {
         readonly IContainer _container = new Container(new RootRegistry());
-        [TestMethod]
+        [TestMethod, Ignore]
         public void TestCheckDimensions()
         {
             var selfDiagnostics = _container.GetInstance<SelfDiagnostics>();

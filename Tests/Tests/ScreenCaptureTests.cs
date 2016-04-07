@@ -10,7 +10,7 @@ namespace Tests.Tests
     public class ScreenCaptureTests
     {
         readonly IContainer _container = new Container(new RootRegistry());
-        [TestMethod]
+        [TestMethod, Ignore]
         public void TestScreenDimentions()
         {
             var blueStackController = _container.GetInstance<EmulatorWindowController>();
@@ -22,7 +22,7 @@ namespace Tests.Tests
             snapShot.Save("snapshot.png");
             Assert.AreEqual(blueStackController.GetArea().Size, snapShot.Size);
         }
-        [TestMethod]
+        [TestMethod, Ignore]
         public void TestScreenPixelFormat()
         {
             var blueStackController = _container.GetInstance<EmulatorWindowController>();

@@ -16,7 +16,7 @@ namespace Tests.Tests
             _container = new Container(new RootRegistry());
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void GoldAndMoneyRecognition()
         {
             var foodReader = _container.With<ICurrentResourcesType>(new ResourcesType(NumberResourcesType.Food)).GetInstance<TextReader>();
@@ -29,7 +29,7 @@ namespace Tests.Tests
             Assert.AreEqual("819444", int819444);
         }
 
-        [TestMethod]
+        [TestMethod,Ignore]
         public void CitizensRecognition()
         {
             var reader = _container.With<ICurrentResourcesType>(new ResourcesType(NumberResourcesType.Citizens)).GetInstance<TextReader>();
@@ -40,7 +40,7 @@ namespace Tests.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void LevelRecognition()
         {
             var reader = _container.With<ICurrentResourcesType>(new ResourcesType(NumberResourcesType.Level)).GetInstance<TextReader>();
