@@ -13,12 +13,12 @@ namespace DominationsBot.Services.GameProcess
     public class TrainTroops : IWorker
     {
         private readonly ResizeTemplateFinder _finder;
-        private readonly ScreenCapture _screenCapture;
+        private readonly IScreenCapture _screenCapture;
         private readonly EmulatorWindowController _emulatorWindowController;
         private readonly ResourceLocator _resourceLocatorProvider;
         private readonly WorkingAreaFilter _workingAreaFilter;
 
-        public TrainTroops(ResizeTemplateFinder finder, ScreenCapture screenCapture,
+        public TrainTroops(ResizeTemplateFinder finder, IScreenCapture screenCapture,
             EmulatorWindowController emulatorWindowController,
             Func<NumberResourcesType, ResourceLocator> resourceLocatorProvider,
             WorkingAreaFilter workingAreaFilter)

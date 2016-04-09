@@ -17,13 +17,14 @@ namespace Tests.Services.GameProcess
             _gameController = _container.GetInstance<GameController>();
         }
 
-        [Test,Explicit]
+        [Test]
         public void ReadFoodAndGoldTest()
         {
             var readFood = _gameController.ReadFood();
 
             var readGold = _gameController.ReadGold();
-
+            Assert.AreEqual(321408,readGold);
+            Assert.AreEqual(767858, readFood);
             Assert.Pass($"Gold:{readGold} Food:{readFood}");
         }
 

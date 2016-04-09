@@ -16,7 +16,7 @@ namespace Tests.Tests
         public void TestScreenDimentions()
         {
             var blueStackController = _container.GetInstance<EmulatorWindowController>();
-            var screenCapture = _container.GetInstance<ScreenCapture>();
+            var screenCapture = _container.GetInstance<IScreenCapture>();
 
             var snapShot = screenCapture.SnapShot();
             
@@ -27,7 +27,7 @@ namespace Tests.Tests
         {
             var blueStackController = _container.GetInstance<EmulatorWindowController>();
             blueStackController.Activate();
-            var screenCapture = _container.GetInstance<ScreenCapture>();
+            var screenCapture = _container.GetInstance<IScreenCapture>();
 
             var snapShot = screenCapture.SnapShot();
 

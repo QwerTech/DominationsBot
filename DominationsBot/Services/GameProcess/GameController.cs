@@ -12,11 +12,11 @@ namespace DominationsBot.Services.GameProcess
         private readonly EmulatorWindowController _emulatorWindowController;
         private readonly MouseController _mouseController;
         private readonly KeyboardController _keyboardController;
-        private readonly ScreenCapture _screenCapture;
+        private readonly IScreenCapture _screenCapture;
         private readonly NumberReader _numberReader;
 
         public GameController(EmulatorWindowController emulatorWindowController, MouseController mouseController, KeyboardController keyboardController,
-            ScreenCapture screenCapture, NumberReader numberReader)
+            IScreenCapture screenCapture, NumberReader numberReader)
         {
             _emulatorWindowController = emulatorWindowController;
             _mouseController = mouseController;

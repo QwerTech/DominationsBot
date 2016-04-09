@@ -8,11 +8,11 @@ namespace DominationsBot.Services.GameProcess
     public class CollectGoldMines : IWorker
     {
         private readonly ResizeTemplateFinder _finder;
-        private readonly ScreenCapture _screenCapture;
+        private readonly IScreenCapture _screenCapture;
         private readonly EmulatorWindowController _emulatorWindowController;
         private readonly WorkingAreaFilter _workingAreaFilter;
 
-        public CollectGoldMines(ResizeTemplateFinder finder, ScreenCapture screenCapture,
+        public CollectGoldMines(ResizeTemplateFinder finder, IScreenCapture screenCapture,
             EmulatorWindowController emulatorWindowController,
             WorkingAreaFilter workingAreaFilter)
         {

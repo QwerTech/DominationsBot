@@ -12,11 +12,11 @@ namespace DominationsBot.Services.GameProcess
         private readonly SaeedTemplateFinder _buttosFinder;
         private readonly EmulatorWindowController _emulatorWindowController;
         private readonly PictureTester _pictureTester;
-        private readonly ScreenCapture _screenCapture;
+        private readonly IScreenCapture _screenCapture;
         private readonly ITemplateFinder _sleepScreenFinder;
         private Bitmap _snapShot;
 
-        public AntiSleepGame(Func<double, SaeedTemplateFinder> saeedTemplateFinderProvider, ScreenCapture screenCapture,
+        public AntiSleepGame(Func<double, SaeedTemplateFinder> saeedTemplateFinderProvider, IScreenCapture screenCapture,
             EmulatorWindowController emulatorWindowController, PictureTester pictureTester)
         {
             _sleepScreenFinder = saeedTemplateFinderProvider(0);

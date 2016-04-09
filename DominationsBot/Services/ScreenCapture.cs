@@ -12,17 +12,16 @@ using DominationsBot.Services.System;
 
 namespace DominationsBot.Services
 {
-    public class ScreenCapture
+    public class ScreenCapture : IScreenCapture
     {
+
         private readonly EmulatorWindowController _emulatorWindowController;
-        private readonly Settings _settings;
         private readonly ImageLogger _imageLogger;
 
         public ScreenCapture(EmulatorWindowController emulatorWindowController,
-            Settings settings,ImageLogger imageLogger)
+            ImageLogger imageLogger)
         {
             _emulatorWindowController = emulatorWindowController;
-            _settings = settings;
             _imageLogger = imageLogger;
         }
 
@@ -72,7 +71,7 @@ namespace DominationsBot.Services
         //    return bmp;
         //}
 
-        public Bitmap SnapShot()
+        public virtual Bitmap SnapShot()
         {
             Rectangle rect;
             rect = _emulatorWindowController.GetLocation();
@@ -80,7 +79,7 @@ namespace DominationsBot.Services
             return bitMap;
         }
 
-        public Bitmap SnapShot(Rectangle rect)
+        public virtual Bitmap SnapShot(Rectangle rect)
         {
             var emulatorLocation = _emulatorWindowController.GetLocation();
             rect.Offset(emulatorLocation.Location);

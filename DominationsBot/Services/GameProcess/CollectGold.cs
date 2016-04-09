@@ -11,11 +11,11 @@ namespace DominationsBot.Services.GameProcess
     {
         private readonly EmulatorWindowController _emulatorWindowController;
         private readonly ResizeTemplateFinder _finder;
-        private readonly ScreenCapture _screenCapture;
+        private readonly IScreenCapture _screenCapture;
         private readonly WorkingAreaFilter _workingAreaFilter;
         private readonly GameState _gameState;
 
-        public CollectGold(ResizeTemplateFinder finder, ScreenCapture screenCapture,
+        public CollectGold(ResizeTemplateFinder finder, IScreenCapture screenCapture,
             EmulatorWindowController emulatorWindowController,
             WorkingAreaFilter workingAreaFilter, GameState gameState)
         {

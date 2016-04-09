@@ -12,9 +12,9 @@ namespace DominationsBot.Services.GameProcess
         private readonly EmulatorWindowController _emulatorWindowController;
         private readonly GameState _gameState;
         private readonly ITemplateFinder _finder;
-        private readonly ScreenCapture _screenCapture;
+        private readonly IScreenCapture _screenCapture;
 
-        public CollectFood(ExhaustiveTemplateMathingFinder finder, ScreenCapture screenCapture,
+        public CollectFood(ExhaustiveTemplateMathingFinder finder, IScreenCapture screenCapture,
             EmulatorWindowController emulatorWindowController, GameState gameState)
         {
             _finder = finder;

@@ -6,12 +6,13 @@ namespace DominationsBot.Services.ImageProcessing
 {
     public class PictureTester
     {
-        public bool TestPixel(Bitmap bitmap, Point pixel, Color expectedColor)
+        public bool PixelEquals(Bitmap bitmap, Point pixel, Color expectedColor)
         {
             if (!new Rectangle(0, 0, bitmap.Width, bitmap.Height).Contains(pixel))
                 return false;
             var color = bitmap.GetPixel(pixel.X, pixel.Y);
-            return expectedColor.Equals(color);
+            var pixelEquals = expectedColor.Compare(color);
+            return pixelEquals;
         }
 
         public bool TestLine(Bitmap bitmap, LineSegment line, Color expectedColor)
@@ -21,8 +22,7 @@ namespace DominationsBot.Services.ImageProcessing
                 for (var i = 0; i < line.End.X - line.Start.X; i++)
                 {
                     var x = (int) line.Start.X + i;
-                    var pixel = bitmap.GetPixel(x, (int)line.Start.Y);
-                    if (!expectedColor.Equals(pixel))
+                    if (!PixelEquals(bitmap, new Point(x, (int)line.Start.Y), expectedColor))
                         return false;
                 }
             else
@@ -30,8 +30,7 @@ namespace DominationsBot.Services.ImageProcessing
                 for (var i = 0; i < line.End.Y - line.Start.Y; i++)
                 {
                     var y = (int)line.Start.Y + i;
-                    var pixel = bitmap.GetPixel((int) line.Start.X , y);
-                    if (!expectedColor.Compare(pixel))
+                    if (!PixelEquals(bitmap, new Point((int)line.Start.X, y), expectedColor))
                         return false;
                 }
             }
