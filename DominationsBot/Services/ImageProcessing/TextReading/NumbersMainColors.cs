@@ -13,11 +13,12 @@ namespace DominationsBot.Services.ImageProcessing.TextReading
 
         private static BaseInPlacePartialFilter CreateFilter(Color color)
         {
-            var delta = 2;
             //var colorFiltering = new ColorFiltering(new IntRange(color.R-delta, color.R + delta), new IntRange(color.G- delta, color.G+ delta), new IntRange(color.B- delta, color.B+ delta));
-            var hslFiltering = new HSLFiltering( );
-            hslFiltering.Hue = new IntRange(53,63);
-            hslFiltering.Luminance =  new Range(0.5f,1);
+            var hslFiltering = new HSLFiltering
+            {
+                Hue = new IntRange(53, 63),
+                Luminance = new Range(0.5f, 1)
+            };
             return hslFiltering;
         }
 

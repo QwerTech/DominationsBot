@@ -1,19 +1,18 @@
-﻿using DominationsBot.DI;
-using DominationsBot.Services.GameProcess;
+﻿using DominationsBot.Services.GameProcess;
 using NUnit.Framework;
 using StructureMap;
 
 namespace Tests.Services.GameProcess
 {
-    [TestFixture()]
+    [TestFixture]
     public class TrainTroopsTests
     {
-        readonly IContainer _container = new Container(new TestRootRegistry());
+        private readonly IContainer _container = new Container(new TestRootRegistry());
 
-        [Test()]
+        [Test, Explicit]
         public void DoWorkTest()
         {
-var controller = _container.GetInstance<TrainTroops>();
+            var controller = _container.GetInstance<TrainTroops>();
             controller.DoWork();
         }
     }

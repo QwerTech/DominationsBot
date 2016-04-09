@@ -8,6 +8,8 @@ namespace DominationsBot.Services.ImageProcessing
     {
         public bool TestPixel(Bitmap bitmap, Point pixel, Color expectedColor)
         {
+            if (!new Rectangle(0, 0, bitmap.Width, bitmap.Height).Contains(pixel))
+                return false;
             var color = bitmap.GetPixel(pixel.X, pixel.Y);
             return expectedColor.Equals(color);
         }

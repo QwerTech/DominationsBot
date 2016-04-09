@@ -19,8 +19,7 @@ namespace Tests.Tests
             var screenCapture = _container.GetInstance<ScreenCapture>();
 
             var snapShot = screenCapture.SnapShot();
-
-            snapShot.Save("c:\\temp\\snapshot.png");
+            
             Assert.AreEqual(blueStackController.GetArea().Size, snapShot.Size);
         }
         [Test, Explicit]

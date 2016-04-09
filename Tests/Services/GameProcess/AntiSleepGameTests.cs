@@ -5,11 +5,11 @@ using StructureMap;
 
 namespace Tests.Services.GameProcess
 {
-    [TestFixture()]
+    [TestFixture]
     public class AntiSleepGameTests
     {
         readonly IContainer _container = new Container(new TestRootRegistry());
-        [Test(),Explicit]
+        [Test,Explicit]
         public void IsGameSleepsTest()
         {
 var controller = _container.GetInstance<AntiSleepGame>();
@@ -17,7 +17,7 @@ var controller = _container.GetInstance<AntiSleepGame>();
             Assert.IsTrue(isGameSleeps);
         }
 
-        [Test()]
+        [Test]
         public void DoWorkTest()
         {
             var controller = _container.GetInstance<AntiSleepGame>();

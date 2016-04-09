@@ -43,6 +43,8 @@ namespace DominationsBot.Services.GameProcess
                 if (templateMatches.Any())
                     break;
             }
+            if (!templateMatches.Any())
+                throw new ApplicationException("Бараки не найдены");
 
             _emulatorWindowController.Click(templateMatches.FirstOrDefault().Rectangle.Middle());
 

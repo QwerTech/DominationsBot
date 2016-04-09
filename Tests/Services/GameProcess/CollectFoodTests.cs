@@ -5,11 +5,11 @@ using StructureMap;
 
 namespace Tests.Services.GameProcess
 {
-    [TestFixture()]
+    [TestFixture]
     public class CollectFoodTests
     {
         readonly IContainer _container = new Container(new TestRootRegistry());
-        [Test()]
+        [Test]
         public void DoWorkTest()
         {
             var controller = _container.GetInstance<CollectFood>();

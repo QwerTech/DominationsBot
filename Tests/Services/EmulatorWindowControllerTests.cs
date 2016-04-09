@@ -7,7 +7,7 @@ using StructureMap;
 
 namespace Tests.Services
 {
-    [TestClass()]
+    [TestClass]
     public class EmulatorWindowControllerTests
     {
         [TestMethod, Ignore]

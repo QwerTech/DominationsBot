@@ -2,7 +2,7 @@
 
 namespace Tests.Services
 {
-    [TestClass()]
+    [TestClass]
     public class BlueStackControllerTests
     {
         
