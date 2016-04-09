@@ -17,54 +17,9 @@ namespace Tests.Services
             emulatorWindowController.MouseCenter();
             Assert.AreEqual(emulatorWindowController.GetLocation().Middle(), Cursor.Position);
         }
-        IContainer _container = new Container(new RootRegistry());
-        [TestMethod()]
-        public void GetAreaTest()
-        {
 
-        }
-
-        [TestMethod()]
-        public void GetLocationTest()
-        {
-
-        }
-
-        [TestMethod()]
-        public void SetDimensionsIntoRegistryTest()
-        {
-
-        }
-
-        [TestMethod()]
-        public void ClickTest()
-        {
-
-        }
-
-        [TestMethod()]
-        public void ClickTest1()
-        {
-
-        }
-
-        [TestMethod()]
-        public void SendVirtualKeyTest()
-        {
-
-        }
-
-        [TestMethod()]
-        public void SendTest()
-        {
-
-        }
-
-        [TestMethod()]
-        public void ClickOnPoint2Test()
-        {
-
-        }
+        readonly IContainer _container = new Container(new RootRegistry());
+        
 
         [TestMethod, Ignore]
         public void ActivateBlueStackTest()

@@ -1,14 +1,22 @@
-﻿using DominationsBot.DI;
+﻿using System;
+using System.Collections;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using DominationsBot;
+using DominationsBot.DI;
 using DominationsBot.Services.ImageProcessing;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DominationsBot.Services.ImageProcessing.TextReading;
+using NUnit.Framework;
 using StructureMap;
+using TextReader = DominationsBot.Services.ImageProcessing.TextReading.TextReader;
 
 namespace Tests.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class NumberReadTests
     {
-        private Container _container;
+        private readonly Container _container;
 
 
         public NumberReadTests()
@@ -16,37 +24,55 @@ namespace Tests.Tests
             _container = new Container(new RootRegistry());
         }
 
-        [TestMethod, Ignore]
-        public void GoldAndMoneyRecognition()
+        private static IEnumerable Images
         {
-            var foodReader = _container.With<ICurrentResourcesType>(new ResourcesType(NumberResourcesType.Food)).GetInstance<TextReader>();
-            var goldReader = _container.With<ICurrentResourcesType>(new ResourcesType(NumberResourcesType.Gold)).GetInstance<TextReader>();
-
-            var int1790024 = goldReader.Read(TestScreens._1790024);
-            var int819444 = foodReader.Read(TestScreens._819444);
-
-            Assert.AreEqual("1790024", int1790024);
-            Assert.AreEqual("819444", int819444);
+            get
+            {
+                var path = Path.Combine(Settings.BasePath, "Resources\\NumbersRead");
+                var testCaseDatas = Directory.EnumerateFiles(path, "*.png", SearchOption.TopDirectoryOnly).Select(f =>
+                {
+                    var bitmap = new Bitmap(f);
+                    var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(f);
+                    var expectedResult = int.Parse(fileNameWithoutExtension);
+                    var testCaseData = new TestCaseData(bitmap, NumberResourcesType.Gold)
+                    {
+                        TestName = fileNameWithoutExtension,
+                        ExpectedResult = expectedResult
+                    };
+                    return testCaseData;
+                });
+                return testCaseDatas;
+            }
         }
 
-        [TestMethod,Ignore]
+        [Test, Explicit] 
+
         public void CitizensRecognition()
         {
-            var reader = _container.With<ICurrentResourcesType>(new ResourcesType(NumberResourcesType.Citizens)).GetInstance<TextReader>();
+            var textReader = _container.GetInstance<TextReader>();
 
-            var text4_12 = reader.Read(TestScreens._4_12);
+            var text412 = textReader.Read(TestScreens._4_12, NumberResourcesType.Citizens);
 
-            Assert.AreEqual("4/12", text4_12);
+            Assert.AreEqual("4/12", text412);
         }
 
 
-        [TestMethod, Ignore]
+        [Test, Explicit]
         public void LevelRecognition()
         {
-            var reader = _container.With<ICurrentResourcesType>(new ResourcesType(NumberResourcesType.Level)).GetInstance<TextReader>();
-            var int96 = reader.Read(TestScreens._96);
+            var reader = _container.GetInstance<TextReader>();
+            var int96 = reader.Read(TestScreens._96, NumberResourcesType.Level);
 
             Assert.AreEqual("96", int96);
+        }
+
+        [TestCaseSource(nameof(Images))]
+        [Test]
+        public int ReadTest(Bitmap bitmap, NumberResourcesType resourcesType)
+        {
+            var textReader = _container.GetInstance<NumberReader>();
+
+            return textReader.Read(bitmap, resourcesType);
         }
     }
 }

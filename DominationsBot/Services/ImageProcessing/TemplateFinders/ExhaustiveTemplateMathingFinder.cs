@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using AForge.Imaging;
 using DominationsBot.Extensions;
+using DominationsBot.Services.Logging;
 
 namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 {
@@ -12,14 +13,14 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
     {
         private readonly BitmapPreparer _bitmapPreparer;
         private readonly ExhaustiveTemplateMatching _exhaustiveTemplateMatching;
-        private readonly Settings _settings;
+        private readonly ImageLogger _imageLogger;
 
         public ExhaustiveTemplateMathingFinder(BitmapPreparer bitmapPreparer,
-            ExhaustiveTemplateMatching exhaustiveTemplateMatching, Settings settings)
+            ExhaustiveTemplateMatching exhaustiveTemplateMatching, ImageLogger imageLogger)
         {
             _bitmapPreparer = bitmapPreparer;
             _exhaustiveTemplateMatching = exhaustiveTemplateMatching;
-            _settings = settings;
+            _imageLogger = imageLogger;
         }
         public bool Exists(Bitmap bmp, Bitmap template)
         {
@@ -43,7 +44,7 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
             bmp = _bitmapPreparer.Prepare(bmp);
             template = _bitmapPreparer.Prepare(template);
             var tm = _exhaustiveTemplateMatching.ProcessImage(bmp, template);
-            bmp.ViewContains(tm).Save(Path.Combine(_settings.LogsPath, $"{DateTime.Now:yyyy-dd-M--HH-mm-ss}_ExhaustiveTemplateMatches.png"));
+            _imageLogger.Log(bmp.ViewContains(tm), "ExhaustiveTemplateMatches");
             return tm;
         }
     }

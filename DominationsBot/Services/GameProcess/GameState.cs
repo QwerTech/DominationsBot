@@ -7,7 +7,8 @@ namespace DominationsBot.Services.GameProcess
     {
         private readonly SaeedTemplateFinder _saeedTemplateFinderProvider;
         private readonly ScreenCapture _screenCapture;
-
+        public int Gold { get; set; }
+        public int Food { get; set; }
         public GameState(ScreenCapture screenCapture,
             Func<double, SaeedTemplateFinder> saeedTemplateFinderProvider)
         {

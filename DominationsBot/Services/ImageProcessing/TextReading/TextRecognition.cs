@@ -4,7 +4,7 @@ using AForge;
 using AForge.Imaging.Filters;
 using Tesseract;
 
-namespace DominationsBot.Services.ImageProcessing
+namespace DominationsBot.Services.ImageProcessing.TextReading
 {
     public class TextRecognition:ITextRecognition
     {

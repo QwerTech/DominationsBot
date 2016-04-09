@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using AForge.Imaging;
 using DominationsBot.Extensions;
+using DominationsBot.Services.Logging;
 
 namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 {
     public class EqualTemplateFinder : ITemplateFinder
     {
-        private readonly Settings _settings;
+        private readonly ImageLogger _imageLogger;
 
-        public EqualTemplateFinder(Settings settings)
+
+        public EqualTemplateFinder(ImageLogger imageLogger)
         {
-            _settings = settings;
+            _imageLogger = imageLogger;
         }
 
         public IEnumerable<TemplateMatch> FindTemplate(Bitmap bmp, Bitmap template)
@@ -22,9 +22,8 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
             var search =
                 SearchImage.GetSubPositions(bmp, template)
                     .Select(p => new TemplateMatch(new Rectangle(p, template.Size), 1)).ToList();
-            bmp.ViewContains(search)
-                .Save(Path.Combine(_settings.LogsPath,
-                    $"logs/{DateTime.Now:yyyy-dd-M--HH-mm-ss}_EqualTemplateFinderMatches.png"));
+            
+            _imageLogger.Log(bmp.ViewContains(search), "EqualTemplateFinderMatches");
             return search;
         }
 

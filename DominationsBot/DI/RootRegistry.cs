@@ -3,6 +3,7 @@ using AForge.Imaging;
 using DominationsBot.Services.GameProcess;
 using DominationsBot.Services.ImageProcessing;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
+using DominationsBot.Services.ImageProcessing.TextReading;
 using StructureMap;
 using StructureMap.Graph;
 using Tesseract;
@@ -44,13 +45,5 @@ namespace DominationsBot.DI
         }
     }
 
-    public interface ISettings
-    {
-        string SymbolsPath { get; }
-    }
-
-    public class Settings : ISettings
-    {
-        public string SymbolsPath => "Resources/Symbols";
-    }
+    
 }

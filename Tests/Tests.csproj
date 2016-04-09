@@ -102,12 +102,18 @@
   <ItemGroup>
     <Compile Include="Services\BlueStackControllerTests.cs" />
     <Compile Include="Services\EmulatorWindowControllerTests.cs" />
+    <Compile Include="Services\GameProcess\AntiSleepGameTests.cs" />
+    <Compile Include="Services\GameProcess\CollectFoodTests.cs" />
+    <Compile Include="Services\GameProcess\CollectGoldTests.cs" />
+    <Compile Include="Services\GameProcess\GameControllerTests.cs" />
+    <Compile Include="Services\GameProcess\TrainTroopsTests.cs" />
     <Compile Include="TestScreens.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TestScreens.resx</DependentUpon>
     </Compile>
     <Compile Include="Tests\FinderTests.cs" />
+    <Compile Include="Tests\IoCTests.cs" />
     <Compile Include="Tests\NumberReadTests.cs" />
     <Compile Include="Tests\ScreenCaptureTests.cs" />
     <Compile Include="Tests\ScreenRecognitionTest.cs" />
@@ -117,11 +123,7 @@
     <Compile Include="Tests\ImageComparatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\1790024.png" />
-    <Content Include="Resources\384174.png" />
     <Content Include="Resources\4.12.png" />
-    <Content Include="Resources\666348.png" />
-    <Content Include="Resources\819444.png" />
     <Content Include="Resources\96.png" />
     <Content Include="Resources\98.png" />
     <Content Include="Resources\ImageComparers\Battle-1.png" />
@@ -140,6 +142,36 @@
     <Content Include="Resources\ImageComparers\Store-2.png" />
     <Content Include="Resources\NormalScreen.png" />
     <Content Include="Resources\NormalScreen2.png" />
+    <Content Include="Resources\NumbersRead\132817.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\NumbersRead\134407.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\NumbersRead\135226.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\NumbersRead\136916.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\NumbersRead\171563.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\NumbersRead\981112.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\NumbersRead\981765.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\NumbersRead\982447.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\NumbersRead\983136.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\NumbersRead\983835.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\SimpleFind\SimpleFindBig.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

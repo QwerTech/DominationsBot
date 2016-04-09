@@ -36,19 +36,19 @@ namespace DominationsBot.Services.System
 
         public struct Size
         {
-            public int cx;
+            public int Cx;
 
-            public int cy;
+            public int Cy;
 
 
             public Size(int cx, int cy)
             {
-                this.cx = cx;
-                this.cy = cy;
+                this.Cx = cx;
+                this.Cy = cy;
             }
         }
 
-        public struct BLENDFUNCTION
+        public struct Blendfunction
         {
             public byte BlendOp;
 
@@ -60,22 +60,22 @@ namespace DominationsBot.Services.System
 
         }
 
-        public const int ULW_ALPHA = 2;
+        public const int UlwAlpha = 2;
 
-        public const byte AC_SRC_OVER = 0;
+        public const byte AcSrcOver = 0;
 
-        public const byte AC_SRC_ALPHA = 1;
+        public const byte AcSrcAlpha = 1;
 
 
 
         [DllImport("user32.dll")]
-        public extern static Bool UpdateLayeredWindow(IntPtr handle, IntPtr hdcDst, ref Point pptDst, ref Size psize, IntPtr hdcSrc, ref Point pprSrc, int crKey, ref BLENDFUNCTION pblend, int dwFlags);
+        public extern static Bool UpdateLayeredWindow(IntPtr handle, IntPtr hdcDst, ref Point pptDst, ref Size psize, IntPtr hdcSrc, ref Point pprSrc, int crKey, ref Blendfunction pblend, int dwFlags);
 
         [DllImport("user32.dll")]
         public extern static IntPtr GetDC(IntPtr handle);
 
         [DllImport("user32.dll", ExactSpelling = true)]
-        public extern static int ReleaseDC(IntPtr handle, IntPtr hDC);
+        public extern static int ReleaseDC(IntPtr handle, IntPtr hDc);
 
         /// <summary>
         ///        Creates a memory device context (DC) compatible with the specified device.
@@ -87,13 +87,13 @@ namespace DominationsBot.Services.System
         ///        If the function fails, the return value is <see cref="IntPtr.Zero"/>.
         /// </returns>
         [DllImport("gdi32.dll")]
-        public extern static IntPtr CreateCompatibleDC(IntPtr hDC);
+        public extern static IntPtr CreateCompatibleDC(IntPtr hDc);
 
         [DllImport("gdi32.dll")]
         public extern static Bool DeleteDC(IntPtr hdc);
 
         [DllImport("gdi32.dll")]
-        public extern static IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
+        public extern static IntPtr SelectObject(IntPtr hDc, IntPtr hObject);
 
         [DllImport("gdi32.dll")]
         public extern static Bool DeleteObject(IntPtr hObject);
@@ -124,7 +124,7 @@ namespace DominationsBot.Services.System
         }
         
         [StructLayout(LayoutKind.Sequential)]
-        public struct RECT
+        public struct Rect
         {
             public int Left;        // x position of upper-left corner
             public int Top;         // y position of upper-left corner
@@ -133,11 +133,11 @@ namespace DominationsBot.Services.System
         }
 
         [DllImport("user32.dll")]
-        public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+        public static extern bool GetClientRect(IntPtr hWnd, out Rect lpRect);
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
+        public static extern bool GetWindowRect(IntPtr hwnd, out Rect lpRect);
 
         [DllImport("user32.dll")]
         public static extern bool ClientToScreen(IntPtr hwnd, ref Point lpPoint);
@@ -155,7 +155,7 @@ namespace DominationsBot.Services.System
         // To capture only the client area of window, use PW_CLIENTONLY = 0x1 as nFlags
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool PrintWindow(IntPtr hwnd, IntPtr hDC, uint nFlags);
+        public static extern bool PrintWindow(IntPtr hwnd, IntPtr hDc, uint nFlags);
         /// <summary>
         /// Меняет активное окно Windows
         /// </summary>
@@ -173,22 +173,22 @@ namespace DominationsBot.Services.System
 
         public enum TernaryRasterOperations : uint
         {
-            SRCCOPY = 0x00CC0020,
-            SRCPAINT = 0x00EE0086,
-            SRCAND = 0x008800C6,
-            SRCINVERT = 0x00660046,
-            SRCERASE = 0x00440328,
-            NOTSRCCOPY = 0x00330008,
-            NOTSRCERASE = 0x001100A6,
-            MERGECOPY = 0x00C000CA,
-            MERGEPAINT = 0x00BB0226,
-            PATCOPY = 0x00F00021,
-            PATPAINT = 0x00FB0A09,
-            PATINVERT = 0x005A0049,
-            DSTINVERT = 0x00550009,
-            BLACKNESS = 0x00000042,
-            WHITENESS = 0x00FF0062,
-            CAPTUREBLT = 0x40000000 //only if WinVer >= 5.0.0 (see wingdi.h)
+            Srccopy = 0x00CC0020,
+            Srcpaint = 0x00EE0086,
+            Srcand = 0x008800C6,
+            Srcinvert = 0x00660046,
+            Srcerase = 0x00440328,
+            Notsrccopy = 0x00330008,
+            Notsrcerase = 0x001100A6,
+            Mergecopy = 0x00C000CA,
+            Mergepaint = 0x00BB0226,
+            Patcopy = 0x00F00021,
+            Patpaint = 0x00FB0A09,
+            Patinvert = 0x005A0049,
+            Dstinvert = 0x00550009,
+            Blackness = 0x00000042,
+            Whiteness = 0x00FF0062,
+            Captureblt = 0x40000000 //only if WinVer >= 5.0.0 (see wingdi.h)
         }
 
         /// <summary>
@@ -215,28 +215,28 @@ namespace DominationsBot.Services.System
         [DllImport("GDI32.dll")]
         public static extern int GetDeviceCaps(int hdc, int nIndex);
 
-        public const int SW_HIDE = 0;
-        public const int SW_RESTORE = 9;
-        public const int SW_SHOWNORMAL = 1;
+        public const int SwHide = 0;
+        public const int SwRestore = 9;
+        public const int SwShownormal = 1;
 
         [DllImport("User32")]
         public static extern int ShowWindow(IntPtr hwnd, int nCmdShow);
 
         [DllImport("user32.dll")]
-        public static extern int GetWindowThreadProcessId(IntPtr hWnd, out int ProcessId);
+        public static extern int GetWindowThreadProcessId(IntPtr hWnd, out int processId);
 
         // The WM_COMMAND message is sent when the user selects a command item from a menu, 
         // when a control sends a notification message to its parent window, or when an 
         // accelerator keystroke is translated.
-        public const uint WM_COMMAND = 0x111;
-        public const uint WM_LBUTTONDOWN = 0x201;
-        public const uint WM_LBUTTONUP = 0x202;
-        public const uint WM_LBUTTONDBLCLK = 0x203;
-        public const uint WM_RBUTTONDOWN = 0x204;
-        public const uint WM_RBUTTONUP = 0x205;
-        public const uint WM_RBUTTONDBLCLK = 0x206;
-        public const uint WM_KEYDOWN = 0x100;
-        public const uint WM_KEYUP = 0x101;
+        public const uint WmCommand = 0x111;
+        public const uint WmLbuttondown = 0x201;
+        public const uint WmLbuttonup = 0x202;
+        public const uint WmLbuttondblclk = 0x203;
+        public const uint WmRbuttondown = 0x204;
+        public const uint WmRbuttonup = 0x205;
+        public const uint WmRbuttondblclk = 0x206;
+        public const uint WmKeydown = 0x100;
+        public const uint WmKeyup = 0x101;
 
 
         // The FindWindow function retrieves a handle to the top-level window whose class name
@@ -259,7 +259,7 @@ namespace DominationsBot.Services.System
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(
           IntPtr hWnd,   // handle to destination window
-          UInt32 Msg,    // message
+          UInt32 msg,    // message
           IntPtr wParam, // first message parameter
           IntPtr lParam  // second message parameter 
           );
@@ -319,9 +319,9 @@ namespace DominationsBot.Services.System
         public static extern bool ShowWindow(IntPtr hWnd, WindowShowStyle nCmdShow);
         [return: MarshalAs(UnmanagedType.Bool)]
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool GetWindowInfo(IntPtr hwnd, ref WINDOWINFO pwi);
+        public static extern bool GetWindowInfo(IntPtr hwnd, ref Windowinfo pwi);
         [StructLayout(LayoutKind.Sequential)]
-        public struct WINDOWINFO
+        public struct Windowinfo
         {
             //cbSize
             //Type: DWORD
@@ -354,8 +354,8 @@ namespace DominationsBot.Services.System
             //Type: WORD
             //The Windows version of the application that created the window.
             public uint cbSize;
-            public RECT rcWindow;
-            public RECT rcClient;
+            public Rect rcWindow;
+            public Rect rcClient;
             public uint dwStyle;
             public uint dwExStyle;
             public uint dwWindowStatus;
@@ -364,9 +364,9 @@ namespace DominationsBot.Services.System
             public ushort atomWindowType;
             public ushort wCreatorVersion;
 
-            public WINDOWINFO(Boolean? filler) : this()   // Allows automatic initialization of "cbSize" with "new WINDOWINFO(null/true/false)".
+            public Windowinfo(Boolean? filler) : this()   // Allows automatic initialization of "cbSize" with "new WINDOWINFO(null/true/false)".
             {
-                cbSize = (UInt32)(Marshal.SizeOf(typeof(WINDOWINFO)));
+                cbSize = (UInt32)(Marshal.SizeOf(typeof(Windowinfo)));
             }
 
         }
@@ -450,7 +450,7 @@ namespace DominationsBot.Services.System
 
         [return: MarshalAs(UnmanagedType.Bool)]
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+        public static extern bool PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("kernel32.dll")]
         public static extern bool QueryFullProcessImageName(IntPtr hProcess, uint dwFlags, StringBuilder lpExeName, ref uint lpdwSize);
@@ -464,11 +464,11 @@ namespace DominationsBot.Services.System
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public static extern short VkKeyScan(char ch);
 
-        public const uint MAPVK_VK_TO_VSC = 0x00;
-        public const uint MAPVK_VSC_TO_VK = 0x01;
-        public const uint MAPVK_VK_TO_CHAR = 0x02;
-        public const uint MAPVK_VSC_TO_VK_EX = 0x03;
-        public const uint MAPVK_VK_TO_VSC_EX = 0x04;
+        public const uint MapvkVkToVsc = 0x00;
+        public const uint MapvkVscToVk = 0x01;
+        public const uint MapvkVkToChar = 0x02;
+        public const uint MapvkVscToVkEx = 0x03;
+        public const uint MapvkVkToVscEx = 0x04;
 
         [DllImport("user32.dll")]
         public static extern uint MapVirtualKey(uint uCode, uint uMapType);

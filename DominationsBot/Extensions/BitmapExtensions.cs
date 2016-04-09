@@ -1,8 +1,8 @@
-﻿using AForge.Imaging;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
+using AForge.Imaging;
+
 namespace DominationsBot.Extensions
 {
     public static class BitmapExtensions
@@ -19,6 +19,12 @@ namespace DominationsBot.Extensions
             }
             bmp.UnlockBits(data);
             return bmp;
+        }
+
+        public static bool Compare(this Color color, Color other)
+        {
+            return color == other || 
+                (color.R == other.R && color.B == other.B && color.G == other.G);
         }
     }
 }

@@ -53,13 +53,13 @@ namespace DominationsBot.Services
 
         public Rectangle GetArea()
         {
-            if (!IsVisible) throw new ApplicationException("blueStack не активен.");
+            if (!IsVisible) Activate();
 
-            Win32.RECT win32rect;
-            if (!Win32.GetClientRect(Handle, out win32rect))
+            Win32.Rect win32Rect;
+            if (!Win32.GetClientRect(Handle, out win32Rect))
                 throw new ApplicationException("Не удалось получить размеры окна Эмулятором. Скорее всего окно свернуто.");
 
-            var area = Rectangle.FromLTRB(win32rect.Left, win32rect.Top, win32rect.Right, win32rect.Bottom);
+            var area = Rectangle.FromLTRB(win32Rect.Left, win32Rect.Top, win32Rect.Right, win32Rect.Bottom);
             if (area == Rectangle.Empty)
                 throw new ApplicationException("Не удалось получить размеры окна Эмулятором. Скорее всего окно свернуто.");
             return area;
@@ -176,9 +176,9 @@ namespace DominationsBot.Services
                 {
                     for (var x = 0; x < times; x++)
                     {
-                        _mouseController.PostMessageSafe(wndHandle, Win32.WM_LBUTTONDOWN, (IntPtr)0x01,
+                        _mouseController.PostMessageSafe(wndHandle, Win32.WmLbuttondown, (IntPtr)0x01,
                             (IntPtr)(clientPoint.X | (clientPoint.Y << 16)));
-                        _mouseController.PostMessageSafe(wndHandle, Win32.WM_LBUTTONUP, (IntPtr)0x01,
+                        _mouseController.PostMessageSafe(wndHandle, Win32.WmLbuttonup, (IntPtr)0x01,
                             (IntPtr)(clientPoint.X | (clientPoint.Y << 16)));
                         Thread.Sleep(delay);
                     }

@@ -4,7 +4,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
-using DominationsBot.Services.ImageProcessing;
+using System.Threading;
+using DominationsBot.Services.Logging;
 using DominationsBot.Services.System;
 
 //using System.Windows.Forms;
@@ -13,26 +14,19 @@ namespace DominationsBot.Services
 {
     public class ScreenCapture
     {
-        private readonly BitmapPreparer _bitmapPreparer;
         private readonly EmulatorWindowController _emulatorWindowController;
         private readonly Settings _settings;
+        private readonly ImageLogger _imageLogger;
 
-        public ScreenCapture(BitmapPreparer bitmapPreparer, EmulatorWindowController emulatorWindowController,
-            Settings settings)
+        public ScreenCapture(EmulatorWindowController emulatorWindowController,
+            Settings settings,ImageLogger imageLogger)
         {
-            _bitmapPreparer = bitmapPreparer;
             _emulatorWindowController = emulatorWindowController;
             _settings = settings;
+            _imageLogger = imageLogger;
         }
 
-
-        //// Full client area variant of BackgroundSnapShot
-        //public Bitmap SnapShot()
-        //{
-        //    return SnapShot(_emulatorWindowController.GetArea());
-        //}
-
-        //private Bitmap SnapShot(Rectangle rect)
+        //private Bitmap SnapShotInternal(Rectangle rect)
         //{
         //    return SnapShot(rect.Left, rect.Top, rect.Width, rect.Height);
         //}
@@ -48,7 +42,7 @@ namespace DominationsBot.Services
         ///// <returns></returns>
         //private Bitmap SnapShot(int left, int top, int width, int height)
         //{
-        //    _emulatorWindowController.Activate();
+        //    //_emulatorWindowController.Activate();
         //    Bitmap bitMap = null;
         //    var hWnd = _emulatorWindowController.Handle;
         //    var hCaptureDC = Win32.GetWindowDC(hWnd);
@@ -69,6 +63,7 @@ namespace DominationsBot.Services
         //private Bitmap SnapShot(int left, int top, int width, int height)
         //{
         //    _emulatorWindowController.Activate();
+        //    Thread.Sleep(100);
         //    Bitmap bmp = new Bitmap(width, height);
         //    Graphics memoryGraphics = Graphics.FromImage(bmp);
         //    IntPtr dc = memoryGraphics.GetHdc();
@@ -76,18 +71,29 @@ namespace DominationsBot.Services
         //    memoryGraphics.ReleaseHdc(dc);
         //    return bmp;
         //}
-        /// <summary>
-        ///     Simple capture implementation using C# high level functions.
-        ///     It should only work when BlueStack is fully visible (NOT background mode).
-        /// </summary>
-        /// <returns></returns>
+
         public Bitmap SnapShot()
         {
+            Rectangle rect;
+            rect = _emulatorWindowController.GetLocation();
+            var bitMap = SnapShotInternal(rect);
+            return bitMap;
+        }
+
+        public Bitmap SnapShot(Rectangle rect)
+        {
+            var emulatorLocation = _emulatorWindowController.GetLocation();
+            rect.Offset(emulatorLocation.Location);
+            var bitMap = SnapShotInternal(rect);
+            return bitMap;
+        }
+        private Bitmap SnapShotInternal(Rectangle rect)
+        {
             Trace.TraceInformation("Делаем скриншот");
-            _emulatorWindowController.Activate();
-            var rect = _emulatorWindowController.GetLocation();
+            if(!_emulatorWindowController.IsForeground)
+                _emulatorWindowController.Activate();
             //Create a new bitmap.
-            var bitMap = new Bitmap(rect.Width, rect.Height, PixelFormat.Format32bppArgb);
+            var bitMap = new Bitmap(rect.Width, rect.Height, PixelFormat.Format24bppRgb);
 
             // Create a graphics object from the bitmap.
             using (var gfxScreenshot = Graphics.FromImage(bitMap))
@@ -96,9 +102,7 @@ namespace DominationsBot.Services
                 gfxScreenshot.CopyFromScreen(rect.Left, rect.Top, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);
             }
             Trace.TraceInformation("Сделали скриншот");
-            
-            
-            bitMap.Save(Path.Combine(_settings.LogsPath,$"{DateTime.Now:yyyy-dd-M--HH-mm-ss}_snapshot.png"));
+            _imageLogger.Log(bitMap,"snapshot");
             return bitMap;
         }
     }

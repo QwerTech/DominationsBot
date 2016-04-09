@@ -125,7 +125,10 @@
     <Compile Include="Services\ImageProcessing\ImageComporators\ByteLevelComparer.cs" />
     <Compile Include="Services\ImageProcessing\ImageComporators\HashComparer.cs" />
     <Compile Include="Services\ImageProcessing\ImageComporators\IImageComparer.cs" />
+    <Compile Include="Services\ImageProcessing\TextReading\NumbersMainColors.cs" />
+    <Compile Include="Services\ImageProcessing\TextReading\NumberReader.cs" />
     <Compile Include="Services\ImageProcessing\PictureTester.cs" />
+    <Compile Include="Services\Logging\ImageLogger.cs" />
     <Compile Include="Services\System\WorkerProcess\CyclicWorkerProducer.cs" />
     <Compile Include="Services\System\WorkerProcess\TaskSheduler.cs" />
     <Compile Include="Services\System\WorkerProcess\WorkerConsumer.cs" />
@@ -160,8 +163,8 @@
     <Compile Include="Services\ImageProcessing\TemplateFinders\EqualTemplateFinder.cs" />
     <Compile Include="Services\ImageProcessing\TemplateFinders\SaeedTemplateFinder.cs" />
     <Compile Include="Services\ImageProcessing\SearchImage.cs" />
-    <Compile Include="Services\ImageProcessing\TextReader.cs" />
-    <Compile Include="Services\ImageProcessing\TextRecognition.cs" />
+    <Compile Include="Services\ImageProcessing\TextReading\TextReader.cs" />
+    <Compile Include="Services\ImageProcessing\TextReading\TextRecognition.cs" />
     <Compile Include="Services\WorkingAreaFilter.cs" />
     <Compile Include="Services\EmulatorWindowController.cs" />
     <Compile Include="Services\System\KeyboardController.cs" />
@@ -256,7 +259,16 @@
     <Content Include="Resources\Symbols\FoodAndGold\2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Symbols\FoodAndGold\3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Symbols\FoodAndGold\4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\FoodAndGold\5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\FoodAndGold\6.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Symbols\FoodAndGold\7.png">

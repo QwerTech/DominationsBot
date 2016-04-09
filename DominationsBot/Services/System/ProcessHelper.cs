@@ -41,7 +41,7 @@ namespace DominationsBot.Services.System
 
         #endregion
         private const uint PathBufferSize = 512; // plenty big enough
-        private readonly static StringBuilder _PathBuffer = new StringBuilder((int)PathBufferSize);
+        private readonly static StringBuilder PathBuffer = new StringBuilder((int)PathBufferSize);
 
 
         private static string GetExecutablePath(IntPtr hwnd)
@@ -60,9 +60,9 @@ namespace DominationsBot.Services.System
             {
                 try
                 {
-                    if (GetModuleFileNameEx(hprocess, IntPtr.Zero, _PathBuffer, PathBufferSize) > 0)
+                    if (GetModuleFileNameEx(hprocess, IntPtr.Zero, PathBuffer, PathBufferSize) > 0)
                     {
-                        return _PathBuffer.ToString();
+                        return PathBuffer.ToString();
                     }
                 }
                 finally
@@ -79,22 +79,22 @@ namespace DominationsBot.Services.System
                     // Try this method for Vista or higher operating systems
                     uint size = PathBufferSize;
                     if ((Environment.OSVersion.Version.Major >= 6) &&
-                     (QueryFullProcessImageName(hprocess, 0, _PathBuffer, ref size) && (size > 0)))
+                     (QueryFullProcessImageName(hprocess, 0, PathBuffer, ref size) && (size > 0)))
                     {
-                        return _PathBuffer.ToString();
+                        return PathBuffer.ToString();
                     }
 
                     // Try the GetProcessImageFileName method
-                    if (GetProcessImageFileName(hprocess, _PathBuffer, PathBufferSize) > 0)
+                    if (GetProcessImageFileName(hprocess, PathBuffer, PathBufferSize) > 0)
                     {
-                        string dospath = _PathBuffer.ToString();
+                        string dospath = PathBuffer.ToString();
                         foreach (string drive in Environment.GetLogicalDrives())
                         {
-                            if (QueryDosDevice(drive.TrimEnd('\\'), _PathBuffer, PathBufferSize) > 0)
+                            if (QueryDosDevice(drive.TrimEnd('\\'), PathBuffer, PathBufferSize) > 0)
                             {
-                                if (dospath.StartsWith(_PathBuffer.ToString()))
+                                if (dospath.StartsWith(PathBuffer.ToString()))
                                 {
-                                    return drive + dospath.Remove(0, _PathBuffer.Length);
+                                    return drive + dospath.Remove(0, PathBuffer.Length);
                                 }
                             }
                         }

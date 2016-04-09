@@ -5,12 +5,14 @@ using System.IO;
 using System.Linq;
 using AForge.Imaging;
 using DominationsBot.Extensions;
+using DominationsBot.Services.Logging;
 
 namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 {
     public class ResizeEpsilonTemplateFinder : ResizeTemplateFinder
     {
-        
+        private readonly ImageLogger _imageLogger;
+
         private const int Epsilon = 10;
 
         public override IEnumerable<TemplateMatch> FindTemplate(Bitmap bmp, Bitmap template)
@@ -26,13 +28,14 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
                              Math.Abs(template.Height - tempRect.Height) < Epsilon;
                 return result;
             }).ToList();
-            bmp.ViewContains(templateMatches).Save(Path.Combine(_settings.LogsPath, $"{DateTime.Now:yyyy-dd-M--HH-mm-ss}_resizeEpsilonMatches.png"));
+            _imageLogger.Log(bmp.ViewContains(templateMatches), "resizeEpsilonMatches");
             return templateMatches;
         }
 
-        public ResizeEpsilonTemplateFinder(ITemplateMatching templateMatching, BitmapPreparer bitmapPreparer, Settings settings)
-            : base(templateMatching, bitmapPreparer,settings)
+        public ResizeEpsilonTemplateFinder(ITemplateMatching templateMatching, BitmapPreparer bitmapPreparer, ImageLogger imageLogger)
+            : base(templateMatching, bitmapPreparer,imageLogger)
         {
+            _imageLogger = imageLogger;
         }
     }
 }

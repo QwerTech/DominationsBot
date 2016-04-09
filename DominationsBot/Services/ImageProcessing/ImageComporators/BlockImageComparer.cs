@@ -47,8 +47,8 @@ namespace DominationsBot.Services.ImageProcessing.ImageComporators
                                     var hj = h + j;
                                     if (hj >= bd1.Height || hj >= bd2.Height) break;
 
-                                    var pc1 = (ICColor*) (p1 + wi*3 + bd1.Stride*j);
-                                    var pc2 = (ICColor*) (p2 + wi*3 + bd2.Stride*j);
+                                    var pc1 = (IcColor*) (p1 + wi*3 + bd1.Stride*j);
+                                    var pc2 = (IcColor*) (p2 + wi*3 + bd2.Stride*j);
 
                                     if (pc1->R != pc2->R || pc1->G != pc2->G || pc1->B != pc2->B)
                                     {
@@ -79,7 +79,7 @@ namespace DominationsBot.Services.ImageProcessing.ImageComporators
         }
 
         [StructLayout(LayoutKind.Explicit)]
-        private struct ICColor
+        private struct IcColor
         {
             [FieldOffset(0)] public readonly byte B;
             [FieldOffset(1)] public readonly byte G;

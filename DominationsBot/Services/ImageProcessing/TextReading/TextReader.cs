@@ -1,103 +1,29 @@
-﻿using AForge.Imaging;
-using Castle.Core.Internal;
-using DominationsBot.DI;
-using DominationsBot.Services.ImageProcessing.TemplateFinders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using AForge.Imaging;
+using Castle.Core.Internal;
+using DominationsBot.Services.ImageProcessing.TemplateFinders;
 
-namespace DominationsBot.Services.ImageProcessing
+namespace DominationsBot.Services.ImageProcessing.TextReading
 {
-    public class NumberReader
-    {
-        private readonly ITemplateFinder _templateFinder;
-        private readonly ResourceLocator _resourceLocator;
-
-        public NumberReader(ITemplateFinder templateFinder, ResourceLocator resourceLocator)
-        {
-            _templateFinder = templateFinder;
-            _resourceLocator = resourceLocator;
-        }
-
-        public int ReadText(Bitmap image)
-        {
-            List<PointInt> res = new List<PointInt>();
-
-            for (int i = 0; i <= 9; i++)
-            {
-                var template = _resourceLocator.GetResouce(i);
-                var matches = _templateFinder.FindTemplate(image, template);
-                var locations = matches.Select(tm => tm.Rectangle.Location);
-                res.AddRange(locations.Select(l => new PointInt(l, i)));
-            }
-            res.Sort(Comparison);
-
-
-            var result = res.Select((t, i) => t.Value * (res.Count - i)).Sum();
-            return result;
-        }
-
-        public int Read(Bitmap image)
-        {
-            List<PointInt> res = new List<PointInt>();
-
-            for (int i = 0; i <= 9; i++)
-            {
-                var template = _resourceLocator.GetResouce(i);
-                var matches = _templateFinder.FindTemplate(image, template);
-                var locations = matches.Select(tm => tm.Rectangle.Location);
-                res.AddRange(locations.Select(l => new PointInt(l, i)));
-            }
-            res.Sort(Comparison);
-
-
-            var result = res.Select((t, i) => t.Value * (res.Count - i)).Sum();
-            return result;
-        }
-
-        private static int Comparison(PointInt pos1, PointInt pos2)
-        {
-            if (pos1.Position.X >= pos2.Position.X)
-                return 1;
-            return -1;
-        }
-
-        private class PointInt
-        {
-            public readonly int Value;
-            public Point Position;
-
-            public PointInt(Point pos, int value)
-            {
-                Value = value;
-                Position = pos;
-            }
-        }
-    }
-
     public class TextReader
     {
+        private readonly Func<NumberResourcesType, ResourceLocator> _resourceLocator;
         private readonly ITemplateFinder _templateFinder;
-        private readonly ResourceLocator _resourceLocator;
 
-        public TextReader(ITemplateFinder templateFinder, ResourceLocator resourceLocator)
+        public TextReader(ITemplateFinder templateFinder, Func<NumberResourcesType, ResourceLocator> resourceLocator)
         {
             _templateFinder = templateFinder;
             _resourceLocator = resourceLocator;
         }
 
-        private class ResourceMatch
-        {
-            public IEnumerable<TemplateMatch> TemplateMatches { get; set; }
-            public KeyValuePair<string, Bitmap> Resource { get; set; }
-        }
 
-
-        public string Read(Bitmap image)
+        public string Read(Bitmap image, NumberResourcesType resourcesType)
         {
-            var resouces = _resourceLocator.GetAllResouces();
+            var resouces = _resourceLocator(resourcesType).GetAllResouces();
 
             var resourceMatches = resouces
                 .Select(
@@ -105,11 +31,11 @@ namespace DominationsBot.Services.ImageProcessing
                     {
                         var filteredMatches = new List<TemplateMatch>();
                         var templateMatches = _templateFinder.FindTemplate(image, pair.Value).ToList();
-                        for (int i = 0; i < templateMatches.Count; i++)
+                        for (var i = 0; i < templateMatches.Count; i++)
                         {
                             var match = templateMatches[i];
-                            bool duble = false;
-                            for (int j = i + 1; j < templateMatches.Count; j++)
+                            var duble = false;
+                            for (var j = i + 1; j < templateMatches.Count; j++)
                             {
                                 var match2 = templateMatches[j];
                                 if (match.Rectangle.IntersectsWith(match2.Rectangle))
@@ -121,7 +47,7 @@ namespace DominationsBot.Services.ImageProcessing
                             if (!duble)
                                 filteredMatches.Add(match);
                         }
-                        return new ResourceMatch { Resource = pair, TemplateMatches = filteredMatches };
+                        return new ResourceMatch {Resource = pair, TemplateMatches = filteredMatches};
                     });
 
             var flatMathes = resourceMatches.SelectMany(
@@ -131,9 +57,15 @@ namespace DominationsBot.Services.ImageProcessing
                             new KeyValuePair<string, TemplateMatch>(resourceMatch.Resource.Key, templateMatch)))
                 .OrderBy(m => m.Value.Rectangle.Location.X);
 
-            string result = string.Empty;
+            var result = string.Empty;
             flatMathes.ForEach(m => result += m.Key);
             return result;
+        }
+
+        private class ResourceMatch
+        {
+            public IEnumerable<TemplateMatch> TemplateMatches { get; set; }
+            public KeyValuePair<string, Bitmap> Resource { get; set; }
         }
     }
 
@@ -164,11 +96,10 @@ namespace DominationsBot.Services.ImageProcessing
 
     public class ResourceLocator
     {
-        private readonly ISettings _settings;
         private readonly ResourceNameConverter _converter;
 
         private readonly IDictionary<NumberResourcesType, string> _resourceFolders = new Dictionary
-            <NumberResourcesType, string>()
+            <NumberResourcesType, string>
         {
             {NumberResourcesType.Food, "FoodAndGold"},
             {NumberResourcesType.Barracks, "Barracks"},
@@ -177,43 +108,49 @@ namespace DominationsBot.Services.ImageProcessing
             {NumberResourcesType.Level, "Level"}
         };
 
+        private readonly ISettings _settings;
+
         private readonly string _resourceFolder;
 
-        public ResourceLocator(NumberResourcesType resourcesType, ISettings settings, ResourceNameConverter converter)
+        private IDictionary<string, Bitmap> _cache;
+
+        public ResourceLocator(ISettings settings, ResourceNameConverter converter, NumberResourcesType resourcesType)
         {
+            _resourceFolder = _resourceFolders[resourcesType];
             _settings = settings;
             _converter = converter;
-            _resourceFolder = _resourceFolders[resourcesType];
         }
 
         public IDictionary<string, Bitmap> GetAllResouces()
         {
+            if (_cache != null)
+                return _cache;
             var pngExtension = ".png";
             var folder = Path.Combine(_settings.SymbolsPath, _resourceFolder);
             var files = Directory.GetFiles(folder, "*" + pngExtension);
 
-            var result =
+            _cache =
                 files.ToDictionary(
                     s =>
                         _converter.Convert(new FileInfo(s).Name
                             .Replace(folder, string.Empty)
-                            .Replace(pngExtension, String.Empty)),
+                            .Replace(pngExtension, string.Empty)),
                     s => new Bitmap(s));
-            return result;
+            return _cache;
         }
 
         public Bitmap GetResouce(int index)
         {
-            return (Bitmap)Screens.ResourceManager.GetObject(_resourceFolder + index);
+            return GetAllResouces()[index.ToString()];
         }
     }
 
     public class ResourceNameConverter
     {
         private readonly IDictionary<string, string> _resourceFileNameConvertRules = new Dictionary
-            <string, string>()
+            <string, string>
         {
-            {"slesh", "/"},
+            {"slesh", "/"}
         };
 
         public string Convert(string input)
@@ -221,10 +158,7 @@ namespace DominationsBot.Services.ImageProcessing
             string output;
             if (_resourceFileNameConvertRules.TryGetValue(input, out output))
                 return output;
-            else
-            {
-                return input;
-            }
+            return input;
         }
     }
 }

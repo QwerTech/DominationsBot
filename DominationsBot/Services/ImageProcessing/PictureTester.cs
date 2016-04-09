@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using AForge.Math.Geometry;
+using DominationsBot.Extensions;
 
 namespace DominationsBot.Services.ImageProcessing
 {
@@ -28,7 +29,7 @@ namespace DominationsBot.Services.ImageProcessing
                 {
                     var y = (int)line.Start.Y + i;
                     var pixel = bitmap.GetPixel((int) line.Start.X , y);
-                    if (!expectedColor.Equals(pixel))
+                    if (!expectedColor.Compare(pixel))
                         return false;
                 }
             }
@@ -39,9 +40,11 @@ namespace DominationsBot.Services.ImageProcessing
         {
             for (var i = 0; i < rectangle.Width; i++)
             {
+                var up = new AForge.Point(rectangle.X + i, rectangle.Y);
+                var down = new AForge.Point(rectangle.X + i, rectangle.Bottom);
                 if (!TestLine(bitmap,
-                    new LineSegment(new AForge.Point(rectangle.X + i, rectangle.Y),
-                        new AForge.Point(rectangle.X + i, rectangle.Y)), expectedColor))
+                    new LineSegment(up,
+                        down), expectedColor))
                     return false;
             }
             return true;

@@ -29,15 +29,15 @@ namespace DominationsBot.Services.ImageProcessing
 
             int bytesMain = Math.Abs(bmMainData.Stride) * mainheight;
             int strideMain = bmMainData.Stride;
-            global::System.IntPtr Scan0Main = bmMainData.Scan0;
+            global::System.IntPtr scan0Main = bmMainData.Scan0;
             byte[] dataMain = new byte[bytesMain];
-            global::System.Runtime.InteropServices.Marshal.Copy(Scan0Main, dataMain, 0, bytesMain);
+            global::System.Runtime.InteropServices.Marshal.Copy(scan0Main, dataMain, 0, bytesMain);
 
             int bytesSub = Math.Abs(bmSubData.Stride) * subheight;
             int strideSub = bmSubData.Stride;
-            global::System.IntPtr Scan0Sub = bmSubData.Scan0;
+            global::System.IntPtr scan0Sub = bmSubData.Scan0;
             byte[] dataSub = new byte[bytesSub];
-            global::System.Runtime.InteropServices.Marshal.Copy(Scan0Sub, dataSub, 0, bytesSub);
+            global::System.Runtime.InteropServices.Marshal.Copy(scan0Sub, dataSub, 0, bytesSub);
 
             for (int y = 0; y <= moveheight; ++y)
             {
@@ -66,10 +66,10 @@ namespace DominationsBot.Services.ImageProcessing
                 }
             }
 
-            global::System.Runtime.InteropServices.Marshal.Copy(dataSub, 0, Scan0Sub, bytesSub);
+            global::System.Runtime.InteropServices.Marshal.Copy(dataSub, 0, scan0Sub, bytesSub);
             sub.UnlockBits(bmSubData);
 
-            global::System.Runtime.InteropServices.Marshal.Copy(dataMain, 0, Scan0Main, bytesMain);
+            global::System.Runtime.InteropServices.Marshal.Copy(dataMain, 0, scan0Main, bytesMain);
             main.UnlockBits(bmMainData);
 
             return possiblepos;

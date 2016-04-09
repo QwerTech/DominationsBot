@@ -2,27 +2,28 @@
 using DominationsBot.DI;
 using DominationsBot.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using StructureMap;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace Tests.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class ScreenCaptureTests
     {
         readonly IContainer _container = new Container(new RootRegistry());
-        [TestMethod, Ignore]
+        [Test]
         public void TestScreenDimentions()
         {
             var blueStackController = _container.GetInstance<EmulatorWindowController>();
-            blueStackController.Activate();
             var screenCapture = _container.GetInstance<ScreenCapture>();
 
             var snapShot = screenCapture.SnapShot();
 
-            snapShot.Save("snapshot.png");
+            snapShot.Save("c:\\temp\\snapshot.png");
             Assert.AreEqual(blueStackController.GetArea().Size, snapShot.Size);
         }
-        [TestMethod, Ignore]
+        [Test, Explicit]
         public void TestScreenPixelFormat()
         {
             var blueStackController = _container.GetInstance<EmulatorWindowController>();

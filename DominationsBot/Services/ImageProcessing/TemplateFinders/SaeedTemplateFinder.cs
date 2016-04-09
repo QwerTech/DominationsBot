@@ -3,29 +3,30 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
 using AForge.Imaging;
 using DominationsBot.Extensions;
+using DominationsBot.Services.Logging;
 using Image = System.Drawing.Image;
 
 namespace DominationsBot.Services.ImageProcessing.TemplateFinders
 {
     public class SaeedTemplateFinder : ITemplateFinder
     {
-        private readonly Settings _settings;
-
-        public SaeedTemplateFinder(Settings settings)
-        {
-            _settings = settings;
-        }
-
         private readonly double _deviation;
+        private readonly ImageLogger _imageLogger;
+
+        public SaeedTemplateFinder(ImageLogger imageLogger)
+        {
+            _imageLogger = imageLogger;
+        }
 
         public SaeedTemplateFinder(double deviation)
         {
             _deviation = deviation;
         }
+
+        public int Divisor => 1;
 
         public bool Exists(Bitmap bmp, Bitmap template)
         {
@@ -38,8 +39,6 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
             return templateMatches.Count() == 1;
         }
 
-        public int Divisor => 1;
-
         public IEnumerable<TemplateMatch> FindTemplate(Bitmap bmp, Bitmap template)
         {
             var search = SearchBitmap(bmp, template, _deviation);
@@ -47,43 +46,47 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
             if (search == Rectangle.Empty)
                 return Enumerable.Empty<TemplateMatch>();
 
-            var templateMatches = new[] { new TemplateMatch(search, 1) };
-            bmp.ViewContains(templateMatches).Save(Path.Combine(_settings.LogsPath, $"{DateTime.Now:yyyy-dd-M--HH-mm-ss}_SaeedTemplateFinderMatches.png"));
+            var templateMatches = new[] {new TemplateMatch(search, 1)};
+
+            _imageLogger.Log(bmp.ViewContains(templateMatches), "SaeedTemplateFinderMatches");
+
             return templateMatches;
         }
 
         public static unsafe Rectangle SearchBitmap(Bitmap bigBmp, Bitmap smallBmp, double deviation)
         {
-            BitmapData smallBmpData = smallBmp.LockBits(new Rectangle(0, 0, smallBmp.Width, smallBmp.Height),
+            var smallBmpData = smallBmp.LockBits(new Rectangle(0, 0, smallBmp.Width, smallBmp.Height),
                 ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-            BitmapData bigBmpData = bigBmp.LockBits(new Rectangle(0, 0, bigBmp.Width, bigBmp.Height),
+            var bigBmpData = bigBmp.LockBits(new Rectangle(0, 0, bigBmp.Width, bigBmp.Height),
                 ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-            int smallStride = smallBmpData.Stride;
-            int bigStride = bigBmpData.Stride;
-            int widthInPixels = bigBmp.Width;
-            int lookingHeight = bigBmp.Height - smallBmp.Height + 1;
-            var bytesPerPixel = Image.GetPixelFormatSize(bigBmp.PixelFormat) / 8;
-            int bytesInLineOfSmallBmp = smallBmp.Width * bytesPerPixel;
-            int smallBmpHeightInPixels = smallBmp.Height;
-            Rectangle rectangle = Rectangle.Empty;
-            int byteDeviation = Convert.ToInt32((double)byte.MaxValue * deviation);
-            byte* smallBmpPointer = (byte*)smallBmpData.Scan0.ToPointer();
-            byte* bigBmpPointer = (byte*)bigBmpData.Scan0.ToPointer();
-            int num5 = bigStride - bigBmp.Width * bytesPerPixel;
-            bool templateFound = true;
-            for (int lineNumber = 0; lineNumber < lookingHeight; ++lineNumber)
+            var smallStride = smallBmpData.Stride;
+            var bigStride = bigBmpData.Stride;
+            var widthInPixels = bigBmp.Width;
+            var lookingHeight = bigBmp.Height - smallBmp.Height + 1;
+            var bytesPerPixel = Image.GetPixelFormatSize(bigBmp.PixelFormat)/8;
+            var bytesInLineOfSmallBmp = smallBmp.Width*bytesPerPixel;
+            var smallBmpHeightInPixels = smallBmp.Height;
+            var rectangle = Rectangle.Empty;
+            var byteDeviation = Convert.ToInt32(byte.MaxValue*deviation);
+            var smallBmpPointer = (byte*) smallBmpData.Scan0.ToPointer();
+            var bigBmpPointer = (byte*) bigBmpData.Scan0.ToPointer();
+            var num5 = bigStride - bigBmp.Width*bytesPerPixel;
+            var templateFound = true;
+            for (var lineNumber = 0; lineNumber < lookingHeight; ++lineNumber)
             {
-                for (int linePixelNumber = 0; linePixelNumber < widthInPixels; ++linePixelNumber)
+                for (var linePixelNumber = 0; linePixelNumber < widthInPixels; ++linePixelNumber)
                 {
-                    byte* numPtr3 = bigBmpPointer;
-                    byte* numPtr4 = smallBmpPointer;
-                    for (int heightIndex = 0; heightIndex < smallBmpHeightInPixels; ++heightIndex)
+                    var numPtr3 = bigBmpPointer;
+                    var numPtr4 = smallBmpPointer;
+                    for (var heightIndex = 0; heightIndex < smallBmpHeightInPixels; ++heightIndex)
                     {
                         templateFound = true;
-                        for (int byteInSmallBmlLine = 0; byteInSmallBmlLine < bytesInLineOfSmallBmp; ++byteInSmallBmlLine)
+                        for (var byteInSmallBmlLine = 0;
+                            byteInSmallBmlLine < bytesInLineOfSmallBmp;
+                            ++byteInSmallBmlLine)
                         {
-                            if ((int)*bigBmpPointer + byteDeviation < (int)*smallBmpPointer ||
-                                (int)*bigBmpPointer - byteDeviation > (int)*smallBmpPointer)
+                            if (*bigBmpPointer + byteDeviation < *smallBmpPointer ||
+                                *bigBmpPointer - byteDeviation > *smallBmpPointer)
                             {
                                 templateFound = false;
                                 break;
@@ -93,8 +96,8 @@ namespace DominationsBot.Services.ImageProcessing.TemplateFinders
                         }
                         if (templateFound)
                         {
-                            smallBmpPointer = numPtr4 + (smallStride * (1 + heightIndex));
-                            bigBmpPointer = numPtr3 + (bigStride * (1 + heightIndex));
+                            smallBmpPointer = numPtr4 + smallStride*(1 + heightIndex);
+                            bigBmpPointer = numPtr3 + bigStride*(1 + heightIndex);
                         }
                         else
                             break;
