@@ -11,7 +11,7 @@ namespace Tests.Tests
     [TestFixture]
     public class ScreenCaptureTests
     {
-        readonly IContainer _container = new Container(new RootRegistry());
+        readonly IContainer _container = new Container(new TestRootRegistry());
         [Test]
         public void TestScreenDimentions()
         {

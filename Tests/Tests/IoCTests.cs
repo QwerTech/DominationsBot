@@ -11,7 +11,7 @@ namespace Tests.Tests
         [Test, Explicit]
         public void TestIoCConfiguration()
         {
-            new Container(new RootRegistry()).AssertConfigurationIsValid();
+            new Container(new TestRootRegistry()).AssertConfigurationIsValid();
 
         }         
     }

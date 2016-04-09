@@ -14,7 +14,7 @@ namespace Tests.Tests
     [TestClass]
     public class FinderTests
     {
-        private readonly IContainer _container = new Container(new RootRegistry());
+        private readonly IContainer _container = new Container(new TestRootRegistry());
 
 
         public static void Init(TestContext testContext)

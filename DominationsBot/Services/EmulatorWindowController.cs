@@ -18,6 +18,10 @@ namespace DominationsBot.Services
         private readonly MouseController _mouseController;
         private readonly IInputSimulator _inputSimulator;
 
+        protected EmulatorWindowController()
+        {
+        }
+
         public EmulatorWindowController(KeyboardController keyboardController, MouseController mouseController, IInputSimulator inputSimulator)
         {
             _keyboardController = keyboardController;
@@ -26,19 +30,19 @@ namespace DominationsBot.Services
         }
 
         private IntPtr _handle = IntPtr.Zero;
-        public bool IsForeground => IsRunning && IsVisible && Win32.GetForegroundWindow() == Handle;
+        public virtual bool IsForeground => IsRunning && IsVisible && Win32.GetForegroundWindow() == Handle;
 
-        public IntPtr Handle => GetEmulatorWindowHandle();
+        public virtual IntPtr Handle => GetEmulatorWindowHandle();
         
-        public bool IsRunning => Handle != IntPtr.Zero;
+        public virtual bool IsRunning => Handle != IntPtr.Zero;
 
-        public bool IsVisible => IsRunning && Win32.IsWindowVisible(Handle) && !Win32.IsIconic(Handle);
+        public virtual bool IsVisible => IsRunning && Win32.IsWindowVisible(Handle) && !Win32.IsIconic(Handle);
 
         /// <summary>
         ///     Gets a value indicating whether BlueStacks is running with required dimensions.
         /// </summary>
         /// <value><c>true</c> if this BlueStacks is running with required dimensions; otherwise, <c>false</c>.</value>
-        public bool IsRunningWithRequiredDimensions
+        public virtual bool IsRunningWithRequiredDimensions
         {
             get
             {
@@ -51,7 +55,7 @@ namespace DominationsBot.Services
             }
         }
 
-        public Rectangle GetArea()
+        public virtual Rectangle GetArea()
         {
             if (!IsVisible) Activate();
 
@@ -65,7 +69,7 @@ namespace DominationsBot.Services
             return area;
         }
 
-        public Rectangle GetLocation()
+        public virtual Rectangle GetLocation()
         {
             var rectangle = GetArea();
             Win32.Point origin = new Win32.Point(0, 0);
@@ -103,7 +107,7 @@ namespace DominationsBot.Services
             return _handle;
         }
 
-        public void SetDimensionsIntoRegistry()
+        public virtual void SetDimensionsIntoRegistry()
         {
             var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\BlueStacks\Guests\Android\FrameBuffer\0", true);
             if (key == null)
@@ -121,34 +125,34 @@ namespace DominationsBot.Services
             key.Close();
         }
 
-        public void Click(int x, int y)
+        public virtual void Click(int x, int y)
         {
             _mouseController.ClickOnPoint(Handle, new Win32.Point(x, y));
         }
 
-        public void Click(Point point)
+        public virtual void Click(Point point)
         {
             Click(point.X, point.Y);
         }
 
-        public void Swipe(Point start, Point end)
+        public virtual void Swipe(Point start, Point end)
         {
             var windowLocation = GetLocation().Location.ToSize();
             _mouseController.Swipe(start + windowLocation, end + windowLocation);
         }
 
-        public void SwipeOffset(Point start, Point offset)
+        public virtual void SwipeOffset(Point start, Point offset)
         {
             var windowLocation = GetLocation().Location.ToSize();
             _mouseController.SwipeOffset(start + windowLocation, offset);
         }
 
-        public void SendVirtualKey(KeyboardController.VirtualKeys vk)
+        public virtual void SendVirtualKey(KeyboardController.VirtualKeys vk)
         {
             _keyboardController.SendVirtualKeyDotNet(vk);
         }
 
-        public void MouseCenter()
+        public  virtual void MouseCenter()
         {
             var location = GetLocation();
             var screen = Screen.FromHandle(Handle);
@@ -159,14 +163,14 @@ namespace DominationsBot.Services
 
         }
 
-        public void Send(string message)
+        public virtual void Send(string message)
         {
             _keyboardController.Send(Handle, message);
         }
 
 
         // SendMessage and PostMessage should work on hidden forms, use them with the WM_MOUSEXXXX codes and provide the mouse location in the wp or lp parameter, I forget which.
-        public bool ClickOnPoint2(IntPtr wndHandle, Point clientPoint, int times = 1, int delay = 0)
+        public virtual bool ClickOnPoint2(IntPtr wndHandle, Point clientPoint, int times = 1, int delay = 0)
         {
             Activate();
             try
@@ -197,7 +201,7 @@ namespace DominationsBot.Services
         ///     Activates the window and displays it in its current size and position.
         /// </summary>
         /// <returns></returns>
-        public void Activate()
+        public virtual void Activate()
         {
             Trace.TraceInformation("Активируем окно с эмулятором");
             if (IsVisible && IsForeground)

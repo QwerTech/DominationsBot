@@ -8,7 +8,7 @@ namespace Tests.Services.GameProcess
     [TestFixture()]
     public class AntiSleepGameTests
     {
-        readonly IContainer _container = new Container(new RootRegistry());
+        readonly IContainer _container = new Container(new TestRootRegistry());
         [Test(),Explicit]
         public void IsGameSleepsTest()
         {

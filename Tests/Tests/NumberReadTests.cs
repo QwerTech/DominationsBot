@@ -21,7 +21,7 @@ namespace Tests.Tests
 
         public NumberReadTests()
         {
-            _container = new Container(new RootRegistry());
+            _container = new Container(new TestRootRegistry());
         }
 
         private static IEnumerable Images

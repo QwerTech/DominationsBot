@@ -9,7 +9,7 @@ namespace Tests.Services.GameProcess
     public class GameControllerTests
     {
         private readonly GameController _gameController;
-        readonly IContainer _container = new Container(new RootRegistry());
+        readonly IContainer _container = new Container(new TestRootRegistry());
 
         
         public GameControllerTests()

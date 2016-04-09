@@ -9,7 +9,7 @@ namespace Tests.Tests
     [TestFixture]
     public class ImageComparatorTests
     {
-        private readonly IContainer _container = new Container(new RootRegistry());
+        private readonly IContainer _container = new Container(new TestRootRegistry());
 
         private static readonly TestCaseData[] Images =
         {

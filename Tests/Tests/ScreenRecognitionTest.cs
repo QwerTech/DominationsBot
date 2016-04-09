@@ -15,7 +15,7 @@ namespace Tests.Tests
 
         public ScreenRecognitionTests()
         {
-            IContainer container = new Container(new RootRegistry());
+            IContainer container = new Container(new TestRootRegistry());
             _textRecognition = container.GetInstance<TextRecognition>();
             _colourFilter = container.GetInstance<ColourFilter>();
         }

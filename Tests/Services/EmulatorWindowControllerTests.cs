@@ -18,7 +18,7 @@ namespace Tests.Services
             Assert.AreEqual(emulatorWindowController.GetLocation().Middle(), Cursor.Position);
         }
 
-        readonly IContainer _container = new Container(new RootRegistry());
+        readonly IContainer _container = new Container(new TestRootRegistry());
         
 
         [TestMethod, Ignore]
