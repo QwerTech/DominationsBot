@@ -11,13 +11,11 @@ namespace Tests.Tests
     public class ScreenRecognitionTests
     {
         private readonly ITextRecognition _textRecognition;
-        private readonly ColourFilter _colourFilter;
 
         public ScreenRecognitionTests()
         {
             IContainer container = new Container(new TestRootRegistry());
             _textRecognition = container.GetInstance<TextRecognition>();
-            _colourFilter = container.GetInstance<ColourFilter>();
         }
 
         //[TestMethod]

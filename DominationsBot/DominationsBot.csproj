@@ -131,11 +131,11 @@
     <Compile Include="Services\IScreenCapture.cs" />
     <Compile Include="Services\Logging\ImageLogger.cs" />
     <Compile Include="Services\System\WorkerProcess\CyclicWorkerProducer.cs" />
+    <Compile Include="Services\System\WorkerProcess\IntervalTask.cs" />
     <Compile Include="Services\System\WorkerProcess\TaskSheduler.cs" />
     <Compile Include="Services\System\WorkerProcess\WorkerConsumer.cs" />
     <Compile Include="Services\System\WorkerProcess\WorkerProducer.cs" />
     <Compile Include="Services\System\WorkerProcess\WorkingQueue.cs" />
-    <Compile Include="Services\ImageProcessing\ColourFilter.cs" />
     <Compile Include="Extensions\BitmapExtensions.cs" />
     <Compile Include="DI\IoC.cs" />
     <Compile Include="DI\RootRegistry.cs" />
@@ -170,7 +170,6 @@
     <Compile Include="Services\EmulatorWindowController.cs" />
     <Compile Include="Services\System\KeyboardController.cs" />
     <Compile Include="Services\System\MouseController.cs" />
-    <Compile Include="Services\System\ProcessHelper.cs" />
     <Compile Include="Services\ScreenCapture.cs" />
     <Compile Include="Services\SelfDiagnostics.cs" />
     <Compile Include="Services\System\Win32.cs" />
