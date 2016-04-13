@@ -8,7 +8,7 @@ namespace DominationsBot.Services
 
         public bool IsInWorkingArea(Point point)
         {
-            return !WindowStaticPositions.GoldInfo.Contains(point);
+            return !WindowStaticPositions.MainScreen.GoldInfo.Contains(point);
         }
     }
 }

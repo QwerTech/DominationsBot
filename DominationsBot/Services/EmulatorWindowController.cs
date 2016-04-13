@@ -30,13 +30,13 @@ namespace DominationsBot.Services
         }
 
         private IntPtr _handle = IntPtr.Zero;
-        public virtual bool IsForeground => IsRunning && IsVisible && Win32.GetForegroundWindow() == Handle;
+        public virtual bool IsForeground => IsRunning && IsVisible && User32.GetForegroundWindow() == Handle;
 
         public virtual IntPtr Handle => GetEmulatorWindowHandle();
         
         public virtual bool IsRunning => Handle != IntPtr.Zero;
 
-        public virtual bool IsVisible => IsRunning && Win32.IsWindowVisible(Handle) && !Win32.IsIconic(Handle);
+        public virtual bool IsVisible => IsRunning && User32.IsWindowVisible(Handle) && !User32.IsIconic(Handle);
 
         /// <summary>
         ///     Gets a value indicating whether BlueStacks is running with required dimensions.
@@ -48,7 +48,7 @@ namespace DominationsBot.Services
             {
                 if (!IsVisible)
                     return false;
-                if (Win32.IsZoomed(Handle))
+                if (User32.IsZoomed(Handle))
                     return false;
                 var rectangle = GetArea();
                 return (rectangle.Width == 1280 || rectangle.Width == 1282) && (rectangle.Height == 720 || rectangle.Height == 760);
@@ -59,8 +59,8 @@ namespace DominationsBot.Services
         {
             if (!IsVisible) Activate();
 
-            Win32.Rect win32Rect;
-            if (!Win32.GetClientRect(Handle, out win32Rect))
+            User32.Rect win32Rect;
+            if (!User32.GetClientRect(Handle, out win32Rect))
                 throw new ApplicationException("Не удалось получить размеры окна Эмулятором. Скорее всего окно свернуто.");
 
             var area = Rectangle.FromLTRB(win32Rect.Left, win32Rect.Top, win32Rect.Right, win32Rect.Bottom);
@@ -72,8 +72,8 @@ namespace DominationsBot.Services
         public virtual Rectangle GetLocation()
         {
             var rectangle = GetArea();
-            Win32.Point origin = new Win32.Point(0, 0);
-            if (!Win32.ClientToScreen(Handle, ref origin)) throw new ApplicationException("Не удалось получить расположение окна bluestack");
+            User32.Point origin = new User32.Point(0, 0);
+            if (!User32.ClientToScreen(Handle, ref origin)) throw new ApplicationException("Не удалось получить расположение окна bluestack");
             rectangle.Offset(origin.X, origin.Y);
             return rectangle;
         }
@@ -83,7 +83,7 @@ namespace DominationsBot.Services
             
             if (_handle != IntPtr.Zero)
                 return _handle;
-            Trace.TraceInformation("Ищем окно с эмулятором");
+            //Trace.TraceInformation("Ищем окно с эмулятором");
             var processes = Process.GetProcesses();
             var process = processes.Single(p => p.ProcessName == "Droid4X");
             _handle = process.MainWindowHandle;
@@ -127,7 +127,8 @@ namespace DominationsBot.Services
 
         public virtual void Click(int x, int y)
         {
-            _mouseController.ClickOnPoint(Handle, new Win32.Point(x, y));
+            var clientPoint = new User32.Point(x, y);
+            _mouseController.ClickOnPoint2(Handle, clientPoint);
         }
 
         public virtual void Click(Point point)
@@ -180,9 +181,9 @@ namespace DominationsBot.Services
                 {
                     for (var x = 0; x < times; x++)
                     {
-                        _mouseController.PostMessageSafe(wndHandle, Win32.WmLbuttondown, (IntPtr)0x01,
+                        _mouseController.PostMessageSafe(wndHandle, User32.WmLbuttondown, (IntPtr)0x01,
                             (IntPtr)(clientPoint.X | (clientPoint.Y << 16)));
-                        _mouseController.PostMessageSafe(wndHandle, Win32.WmLbuttonup, (IntPtr)0x01,
+                        _mouseController.PostMessageSafe(wndHandle, User32.WmLbuttonup, (IntPtr)0x01,
                             (IntPtr)(clientPoint.X | (clientPoint.Y << 16)));
                         Thread.Sleep(delay);
                     }
@@ -203,17 +204,17 @@ namespace DominationsBot.Services
         /// <returns></returns>
         public virtual void Activate()
         {
-            Trace.TraceInformation("Активируем окно с эмулятором");
+            //Trace.TraceInformation("Активируем окно с эмулятором");
             if (IsVisible && IsForeground)
                 return;
-            if (!Win32.ShowWindow(Handle, Win32.WindowShowStyle.Restore))
+            if (!User32.ShowWindow(Handle, User32.WindowShowStyle.Restore))
                 throw new ApplicationException("Не удалось восстановить окно с Эмулятором");
-            if (!Win32.ShowWindow(Handle, Win32.WindowShowStyle.Show))
+            if (!User32.ShowWindow(Handle, User32.WindowShowStyle.Show))
                 throw new ApplicationException("Не удалось показать окно с Эмулятором");
             
-            var foregroundWindow = Win32.GetForegroundWindow();
+            var foregroundWindow = User32.GetForegroundWindow();
             if (foregroundWindow != Handle)
-                if (!Win32.SetForegroundWindow(Handle))
+                if (!User32.SetForegroundWindow(Handle))
                     throw new ApplicationException("Не удалось сделать поставить окно с Эмулятором на передений план");
 
         }

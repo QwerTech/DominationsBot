@@ -14,13 +14,12 @@ namespace DominationsBot.Services.System.WorkerProcess
 
         public void Start(TimeSpan interval, Action action)
         {
-            var task = new Task(() =>
-            {
-                action();
-                Task.Delay(interval).Wait();
-            });
+            var task = new Task(action);
             _workingQueue.EnqueueAndSignal(task);
-            task.ContinueWith(task1 => Start(interval,action));
+            task
+                .ContinueWith(task1 => Task
+                    .Delay(interval)
+                    .ContinueWith(task2 => Start(interval, action)));
         }
     }
 }

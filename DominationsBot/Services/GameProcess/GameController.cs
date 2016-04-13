@@ -42,7 +42,6 @@ namespace DominationsBot.Services.GameProcess
         public void Unzoom()
         {
             Trace.TraceInformation("Анзумим");
-            _emulatorWindowController.Activate();
                 //_emulatorWindowController.SendVirtualKey(KeyboardController.VirtualKeys.VK_DOWN);
                 _emulatorWindowController.SwipeOffset(WindowStaticPositions.ZoomingButton,new Point(0,250));
                 //_emulatorWindowController.MouseCenter();
@@ -51,7 +50,7 @@ namespace DominationsBot.Services.GameProcess
                 //_mouseController.MouseScrollDown();
                 //_keyboardController.UpCtrl();
 
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
         }
     }
 }

@@ -222,11 +222,11 @@ namespace DominationsBot.Services.System
             {
                 if (AdvancedMode)
                 {
-                    VirtualKeys vk = (VirtualKeys)Win32.VkKeyScan((char)letter);
+                    VirtualKeys vk = (VirtualKeys)User32.VkKeyScan((char)letter);
                     SendVirtualKey(hWnd, vk);
                 }
                 else
-                    Win32.PostMessage(hWnd, WmChar, (IntPtr)letter, IntPtr.Zero);
+                    User32.PostMessage(hWnd, WmChar, (IntPtr)letter, IntPtr.Zero);
             }
         }
 
@@ -246,17 +246,17 @@ namespace DominationsBot.Services.System
         {
             IntPtr wParam = (IntPtr)(((short)vk) & 0xFF);
             IntPtr lParam = (IntPtr)1;
-            lParam += (int)(Win32.MapVirtualKey((uint)wParam, Win32.MapvkVkToVsc) << 16);
+            lParam += (int)(User32.MapVirtualKey((uint)wParam, User32.MapvkVkToVsc) << 16);
             bool shift = ((int)vk & 0x0100) == 0x0100 ? true : false;
-            if (shift) Win32.PostMessage(hWnd, WmKeydown, (IntPtr)VirtualKeys.VkLshift, (IntPtr)0);
-            if (!Win32.PostMessage(hWnd, WmKeydown, wParam, lParam))
+            if (shift) User32.PostMessage(hWnd, WmKeydown, (IntPtr)VirtualKeys.VkLshift, (IntPtr)0);
+            if (!User32.PostMessage(hWnd, WmKeydown, wParam, lParam))
                 throw new ApplicationException("Не удалось отправить сообщение");
             Thread.Sleep(5);
             lParam += 1 << 30;
             lParam += 1 << 31;
-            if (!Win32.PostMessage(hWnd, WmKeyup, wParam, lParam))
+            if (!User32.PostMessage(hWnd, WmKeyup, wParam, lParam))
                 throw new ApplicationException("Не удалось отправить сообщение");
-            if (shift) Win32.PostMessage(hWnd, WmKeyup, (IntPtr)VirtualKeys.VkLshift, (IntPtr)0);
+            if (shift) User32.PostMessage(hWnd, WmKeyup, (IntPtr)VirtualKeys.VkLshift, (IntPtr)0);
             Thread.Sleep(5);
         }
     }

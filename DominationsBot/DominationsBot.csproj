@@ -130,6 +130,7 @@
     <Compile Include="Services\ImageProcessing\PictureTester.cs" />
     <Compile Include="Services\IScreenCapture.cs" />
     <Compile Include="Services\Logging\ImageLogger.cs" />
+    <Compile Include="Services\System\User32.cs" />
     <Compile Include="Services\System\WorkerProcess\CyclicWorkerProducer.cs" />
     <Compile Include="Services\System\WorkerProcess\IntervalTask.cs" />
     <Compile Include="Services\System\WorkerProcess\TaskSheduler.cs" />
