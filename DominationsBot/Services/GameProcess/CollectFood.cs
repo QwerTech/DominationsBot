@@ -30,7 +30,6 @@ namespace DominationsBot.Services.GameProcess
             Trace.TraceInformation("Начинаем собирать еду");
             var snapShot = _screenCapture.SnapShot();
             var templateMatches = _finder.FindTemplate(snapShot, Screens.Food).ToList();
-            Trace.TraceInformation($"Результаты поиска еды: {string.Join(", ", templateMatches.Select(t => t.Rectangle))}");
             foreach (var match in templateMatches)
             {
                 _emulatorWindowController.Click(match.Rectangle.Middle());

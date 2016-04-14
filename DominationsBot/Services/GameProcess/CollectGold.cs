@@ -33,12 +33,11 @@ namespace DominationsBot.Services.GameProcess
             Trace.TraceInformation("Собираем золото");
             var snapShot = _screenCapture.SnapShot();
             var templateMatches = _finder.FindTemplate(snapShot, Screens.Coin).ToList();
-            Trace.TraceInformation($"Результаты поиска золота: {string.Join(", ", templateMatches.Select(t=>t.Rectangle))}");
             foreach (var match in templateMatches.Where(tm => _workingAreaFilter.IsInWorkingArea(tm.Rectangle.Middle()))
                 )
             {
                 _emulatorWindowController.Click(match.Rectangle.Middle());
-                Thread.Sleep(250);
+                
             }
             Trace.TraceInformation("Собрали золото");
         }

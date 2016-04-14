@@ -39,7 +39,7 @@ namespace DominationsBot.Services.System.WorkerProcess
             var timeSpan = TimeSpan.FromMinutes(15);
             _intervalTask.Start(timeSpan, () => _antiSleepGame.DoWork());
             _intervalTask.Start(timeSpan, () => _gameController.Unzoom());
-            //_intervalTask.Start(timeSpan, () => _collectFood.DoWork());
+            _intervalTask.Start(timeSpan, () => _collectFood.DoWork());
             _intervalTask.Start(timeSpan, () => _collectGold.DoWork());
         }
     }

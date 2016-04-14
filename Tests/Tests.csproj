@@ -112,6 +112,7 @@
     <Compile Include="Services\GameProcess\CollectGoldTests.cs" />
     <Compile Include="Services\GameProcess\GameControllerTests.cs" />
     <Compile Include="Services\GameProcess\TrainTroopsTests.cs" />
+    <Compile Include="Services\GameProcess\WindowStaticPositionsTests.cs" />
     <Compile Include="TestRootRegistry.cs" />
     <Compile Include="TestScreens.Designer.cs">
       <AutoGen>True</AutoGen>
