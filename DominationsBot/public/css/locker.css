@@ -1,0 +1,7 @@
+.locker {
+    display: none
+}
+.locker-locked .locker {
+    margin-left: 5px;
+    display: initial
+}

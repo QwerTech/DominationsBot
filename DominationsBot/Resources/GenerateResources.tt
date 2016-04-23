@@ -1,0 +1,56 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#
+
+   
+#>
+// This is the output code from your template
+// you only get syntax-highlighting here - not intellisense
+using System.Drawing;
+using System.IO;
+using System;
+
+namespace DominationsBot.Resources{
+<#OutputResourceFolder(Host.ResolvePath(""));#>
+}
+<#+
+	private void	OutputResourceFolder(string folderPath, string folderName = "BotResources", string upClassName = null)
+	{
+		var files = Directory.GetFiles(folderPath,"*.png",SearchOption.TopDirectoryOnly);
+		#>
+
+
+	public static class <#=folderName#>
+	{
+		public static string ThisPath = Path.Combine(<#=upClassName==null?"Settings.BasePath": upClassName+".ThisPath"#>, @"<#=upClassName==null?"Resources": folderName#>");
+		<#+
+		foreach(var file in files)
+		{
+			var fileInfo =new FileInfo(file);
+			var fileName =Path.GetFileNameWithoutExtension(fileInfo.Name);
+			#>
+	
+		public static string Path<#=fileName#> => Path.Combine( ThisPath, @"<#=fileInfo.Name#>");
+		private static readonly Lazy<Bitmap> Bmp<#=fileName#>Lazy = new Lazy<Bitmap>(()=> new Bitmap(Path<#=fileName#>));
+		public static Bitmap Bmp<#=fileName#> => Bmp<#=fileName#>Lazy.Value;
+	 
+			<#+	
+		}
+		var subDirs = Directory.GetDirectories(folderPath,"*",SearchOption.TopDirectoryOnly);
+		foreach(var dir in subDirs)
+		{
+			var dirInfo = new DirectoryInfo(dir);
+			OutputResourceFolder(dir, dirInfo.Name, folderName);
+		}#>
+	}
+		<#+
+    }
+#>

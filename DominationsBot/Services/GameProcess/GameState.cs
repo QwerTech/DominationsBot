@@ -1,4 +1,5 @@
 ﻿using System;
+using DominationsBot.Resources;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
 
 namespace DominationsBot.Services.GameProcess
@@ -22,8 +23,8 @@ namespace DominationsBot.Services.GameProcess
         {
             var snapShot = _screenCapture.SnapShot();
 
-            return !_saeedTemplateFinderProvider.Single(snapShot, Screens.StoreButton) ||
-                   !_saeedTemplateFinderProvider.Single(snapShot, Screens.BattleButton);
+            return !_saeedTemplateFinderProvider.Single(snapShot, BotResources.BmpStoreButton) ||
+                   !_saeedTemplateFinderProvider.Single(snapShot, BotResources.BmpBattleButton);
         }
     }
 }

@@ -1,0 +1,19 @@
+﻿<div ng-messages="field.$error">
+    <ng-transclude></ng-transclude>
+    <div ng-message="email">Значение поля должно быть корректным e-mail!</div>
+    <div ng-message="max">Значение поля должно быть меньше!</div>
+    <div ng-message="maxlength">Значение поля должно содержать меньше символов!</div>
+    <div ng-message="min">Значение поля должно быть больше!</div>
+    <div ng-message="minlength">Значение поля должно содержать больше символов!</div>
+    <div ng-message="number">Значение поля должно быть числом!</div>
+    <div ng-message="pattern">Некорректное значение поля!</div>
+    <div ng-message="required">Поле является обязательным!</div>
+    <div ng-message="url"></div>
+    <div ng-message="date">Значение поля должно быть датой!</div>
+    <div ng-message="datetimelocal">Значение поля должно быть датой!</div>
+    <div ng-message="time">Значение поля должно быть временем!</div>
+    <div ng-message="week"></div>
+    <div ng-message="month"></div>
+    <div ng-message="kmAndM">Значение поля не соответствует формату км + м!</div>
+    <div ng-message="password">{{field.Errors[0]}}</div>
+</div>

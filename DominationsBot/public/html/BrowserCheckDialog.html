@@ -1,0 +1,45 @@
+﻿<div ng-if="showDialog" tabindex="-1" role="dialog" class="modal fade in" style="z-index: 1050; display: block;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header alert-danger ng-scope">
+                <button type="button" class="close" data-dismiss="modal" ng-click="close()">
+                    <span aria-hidden="true">×</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                
+                <h4>Вы используете браузер, который мы не поддерживаем.</h4>
+            </div>
+            <div class="modal-body">
+
+                <p>
+                    Мы выявили, что Вы используете старую версию {{browserName}}, которая несовместима с ИС РТО ГПА. Для корректной работы ИС РТО ГПА, пожалуйста обновите или загрузите один из следующих браузеров:    
+                </p>
+
+                <ul>
+                    <li>
+                        <a href="https://www.google.ru/chrome/browser/">Google Chrome версии 43 или выше;</a>
+                    </li>
+                    <li>
+                        <a href="https://browser.yandex.ru">Яндекс.Браузер версии 15 или выше;</a>
+                    </li>
+                    <li>
+                        <a href="https://www.mozilla.org/ru/firefox">Mozilla Firefox версии 38 или выше;</a>
+                    </li>
+                    <li>
+                        <a href="http://www.opera.com/">Opera версии 34 или выше;</a>
+                    </li>
+                    <li>
+                        <a href="http://windows.microsoft.com/ru-ru/internet-explorer/download-ie">Microsoft Internet Explorer версии 10 или выше.</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="modal-footer ng-scope">
+                <label class="checkbox-inline pull-left" ng-show="showCheckBox">
+                    <input type="checkbox" ng-model="dontShowAgain.value"> Больше не показывать
+                </label>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="close()">Ок</button>
+            </div>
+        </div>
+    </div>
+</div>

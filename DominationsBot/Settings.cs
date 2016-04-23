@@ -1,5 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using DominationsBot.Storage;
+using NLog.Internal;
 
 namespace DominationsBot
 {
@@ -14,8 +17,12 @@ namespace DominationsBot
         public static readonly string BasePath = AppDomain.CurrentDomain.BaseDirectory;
 
         private readonly Lazy<string> _logPath;
+        
 
-        public Settings()
+        public string SymbolsPath => Path.Combine(BasePath, "Resources/Symbols");
+
+        public string LogsPath => _logPath.Value;
+        public Settings(StorageContext gcrDbContext)
         {
             _logPath = new Lazy<string>(() =>
             {
@@ -24,10 +31,23 @@ namespace DominationsBot
                     Directory.CreateDirectory(logsPath);
                 return logsPath;
             });
+            var database = gcrDbContext.Database;
+            //IsDebugDatabase = new Lazy<bool>(() => database.SqlQuery<int>("SELECT 1 FROM sys.fn_listextendedproperty( default,  default, default, default, default, default, default) WHERE name='Debug'").Any()).Value;
         }
 
-        public string SymbolsPath => Path.Combine(BasePath, "Resources/Symbols");
-
-        public string LogsPath => _logPath.Value;
+        public bool IsDebugDatabase { get; } = true;
+        public bool IsDebugCode
+        {
+            get
+            {
+#if (DEBUG)
+                return true;
+#else
+                return false;
+#endif
+            }
+        }
+        public bool IsAnyDebug => IsDebugDatabase || IsDebugCode;
+        
     }
 }

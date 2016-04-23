@@ -1,7 +1,10 @@
-﻿using DominationsBot.Extensions;
+﻿using System;
+using System.Diagnostics;
+using DominationsBot.Extensions;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
 using System.Linq;
 using System.Threading;
+using DominationsBot.Resources;
 
 namespace DominationsBot.Services.GameProcess
 {
@@ -25,7 +28,7 @@ namespace DominationsBot.Services.GameProcess
         public void DoWork()
         {
             var snapShot = _screenCapture.SnapShot();
-            var templateMatches = _finder.FindTemplate(snapShot, Screens.GoldMine);
+            var templateMatches = _finder.FindTemplate(snapShot, BotResources.BmpGoldMine);
 
             foreach (var match in templateMatches.Where(tm => _workingAreaFilter.IsInWorkingArea(tm.Rectangle.Middle()))
                 )
@@ -36,4 +39,5 @@ namespace DominationsBot.Services.GameProcess
             Thread.Sleep(1000);
         }
     }
+    
 }

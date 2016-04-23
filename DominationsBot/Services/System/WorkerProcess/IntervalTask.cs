@@ -3,23 +3,30 @@ using System.Threading.Tasks;
 
 namespace DominationsBot.Services.System.WorkerProcess
 {
-    public class IntervalTask
+    public interface IWork
+    {
+        void StartSheduling();
+    }
+
+    public abstract class Work:GameWork, IWork
     {
         private readonly WorkingQueue _workingQueue;
+        private readonly TimeSpan _interval;
 
-        public IntervalTask(WorkingQueue workingQueue)
+        protected Work(WorkingQueue workingQueue, TimeSpan interval)
         {
             _workingQueue = workingQueue;
+            _interval = interval;
         }
 
-        public void Start(TimeSpan interval, Action action)
+        public void StartSheduling()
         {
-            var task = new Task(action);
-            _workingQueue.EnqueueAndSignal(task);
-            task
+            var gameTask = new GameTask(this);
+            _workingQueue.EnqueueAndSignal(gameTask);
+            gameTask.Task
                 .ContinueWith(task1 => Task
-                    .Delay(interval)
-                    .ContinueWith(task2 => Start(interval, action)));
+                    .Delay(_interval)
+                    .ContinueWith(task2 => StartSheduling()));
         }
     }
 }

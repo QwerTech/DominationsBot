@@ -1,9 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using DominationsBot.Services.System;
-using System.Threading;
 using DominationsBot.Services.ImageProcessing;
+using DominationsBot.Services.ImageProcessing.TemplateFinders;
 using DominationsBot.Services.ImageProcessing.TextReading;
+using Microsoft.Test.VisualVerification;
 
 namespace DominationsBot.Services.GameProcess
 {
@@ -14,9 +16,10 @@ namespace DominationsBot.Services.GameProcess
         private readonly KeyboardController _keyboardController;
         private readonly IScreenCapture _screenCapture;
         private readonly NumberReader _numberReader;
+        
 
         public GameController(EmulatorWindowController emulatorWindowController, MouseController mouseController, KeyboardController keyboardController,
-            IScreenCapture screenCapture, NumberReader numberReader)
+            IScreenCapture screenCapture, NumberReader numberReader, ScreenCapture snapshot)
         {
             _emulatorWindowController = emulatorWindowController;
             _mouseController = mouseController;
@@ -25,32 +28,31 @@ namespace DominationsBot.Services.GameProcess
             _numberReader = numberReader;
         }
 
-        public int ReadGold()
+        public int? ReadGold()
         {
             return ReadStateNumbers(WindowStaticPositions.MainScreen.GoldNumbers, NumberResourcesType.Gold);
         }
-        public int ReadFood()
+        public int? ReadFood()
         {
             return ReadStateNumbers(WindowStaticPositions.MainScreen.FoodNumbers, NumberResourcesType.Food);
         }
-        private int ReadStateNumbers(Rectangle position, NumberResourcesType resourcesType)
+        private int? ReadStateNumbers(Rectangle position, NumberResourcesType resourcesType)
         {
             var snapShot = _screenCapture.SnapShot(position);
             return _numberReader.Read(snapShot, resourcesType);
         }
+    }
 
-        public void Unzoom()
+    public abstract class WorkabilityDo
+    {
+        public abstract bool Workability();
+        public abstract void Do();
+
+        public void CanWorkAndDo()
         {
-            Trace.TraceInformation("Анзумим");
-                //_emulatorWindowController.SendVirtualKey(KeyboardController.VirtualKeys.VK_DOWN);
-                _emulatorWindowController.SwipeOffset(WindowStaticPositions.ZoomingButton,new Point(0,250));
-                //_emulatorWindowController.MouseCenter();
-                //_keyboardController.DownCtrl();
-                //Thread.Sleep(0);
-                //_mouseController.MouseScrollDown();
-                //_keyboardController.UpCtrl();
-
-                Thread.Sleep(1000);
+            if(!Workability())
+                throw new InvalidOperationException();
+            Do();
         }
     }
 }

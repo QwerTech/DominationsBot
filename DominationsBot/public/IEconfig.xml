@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square70x70logo src="~/Content/images/Rosavtodor-70.png"/>
+      <square150x150logo src="~/Content/images/Rosavtodor-150.png"/>
+      <wide310x150logo src="~/Content/images/Rosavtodor-310x150.png"/>
+      <square310x310logo src="~/Content/images/Rosavtodor-310.png"/>
+      <TileColor>#009900</TileColor>
+    </tile>
+  </msapplication>
+</browserconfig>

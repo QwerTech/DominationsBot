@@ -1,0 +1,5 @@
+﻿.tab-pane > .panel {
+     border-top: none; 
+     border-top-left-radius: 0px; 
+     border-top-right-radius: 0px;
+}

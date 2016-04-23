@@ -28,11 +28,6 @@ namespace Tests.Services.GameProcess
             Assert.Pass($"Gold:{readGold} Food:{readFood}");
         }
 
-
-        [Test]
-        public void UnzoomTest()
-        {
-            _gameController.Unzoom();
-        }
+        
     }
 }

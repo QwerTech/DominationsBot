@@ -1,0 +1,119 @@
+﻿/* Кастомизации и кастыли для Kendo */
+
+.k-grid-header th.k-with-icon .k-link { position: relative }
+
+.k-grid-header th > .k-link > .k-icon { position: absolute; right: 0; }
+
+.k-grid table { table-layout: fixed; }
+
+.k-grid tbody tr { height: 38px; }
+
+.k-grid tr:not(.k-state-selected) td { white-space: nowrap }
+
+.resultsGrid .k-grid-content { max-height: calc(100vh - 188px); height: auto !important; min-height: 35px; }
+
+.k-grid .k-header-column-menu span.filter-accepted { background-color: gainsboro; border: 1px solid darkgray; border-radius: 3px; }
+.tree-panel [kendo-tree-view] { max-height: calc(100vh - 164px); overflow-y: auto; }
+@media print {
+    .resultsGrid .k-grid-content { max-height: initial; height: auto !important; }
+}
+
+.resultsGrid .alert-danger.k-state-selected { color: #fff; background-color: #a94442; }
+
+.internalResult .k-grid-content { height: 84%; }
+
+.k-pager-wrap .k-dropdown { width: auto; }
+
+
+.k-state-selected a { color: #fff; }
+
+input[kendo-masked-text-box][readonly]:hover { background-color: #eee; border-color: #ccc }
+
+@media print {
+    .k-grid-pager { display: none !important; }
+
+    .k-grid, .k-grid-header-wrap { border: none }
+
+    .k-grid tr td, .k-grid tr th { border-width: 1px 1px 1px 1px !important; }
+}
+
+/* Алтернативное отображение для выпадающих списков
+.k-list>.k-state-hover, .k-list>.k-state-hover.k-state-selected {
+    background-color: #72a8d7;
+    border-color:  #72a8d7;
+}
+
+.k-list>.k-state-selected {
+    color: #333;
+    background-color: transparent;
+    border-color:  transparent;
+}
+*/
+
+a.k-grid-edit, a.k-grid-delete { margin: 0.5em !important; }
+
+/* reset everything to the default box model */
+
+*,
+:before,
+:after { -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; }
+
+/* set a border-box model only to elements that need it */
+
+.form-control, /* if this class is applied to a Kendo UI widget, its layout may change */
+.container,
+.container-fluid,
+.btn.btn-default,
+.row,
+.col-xs-1,
+.col-sm-1,
+.col-md-1,
+.col-lg-1,
+.col-xs-2,
+.col-sm-2,
+.col-md-2,
+.col-lg-2,
+.col-xs-3,
+.col-sm-3,
+.col-md-3,
+.col-lg-3,
+.col-xs-4,
+.col-sm-4,
+.col-md-4,
+.col-lg-4,
+.col-xs-5,
+.col-sm-5,
+.col-md-5,
+.col-lg-5,
+.col-xs-6,
+.col-sm-6,
+.col-md-6,
+.col-lg-6,
+.col-xs-7,
+.col-sm-7,
+.col-md-7,
+.col-lg-7,
+.col-xs-8,
+.col-sm-8,
+.col-md-8,
+.col-lg-8,
+.col-xs-9,
+.col-sm-9,
+.col-md-9,
+.col-lg-9,
+.col-xs-10,
+.col-sm-10,
+.col-md-10,
+.col-lg-10,
+.col-xs-11,
+.col-sm-11,
+.col-md-11,
+.col-lg-11,
+.col-xs-12,
+.col-sm-12,
+.col-md-12,
+.col-lg-12 { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+
+.k-treeview .k-image {
+    width: 16px;
+}

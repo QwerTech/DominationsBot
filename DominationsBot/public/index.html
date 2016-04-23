@@ -1,0 +1,303 @@
+﻿<!DOCTYPE html>
+<html lang="ru" ng-app="app" ng-strict-di>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <noscript>
+        <meta http-equiv="refresh" content="0;URL=/NoJavaScript.html" />
+    </noscript>
+
+    <base href="/" target="_blank">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <title> ИС РТО ГПА</title>
+
+    <link rel="apple-touch-icon-precomposed" href="/images/Rosavtodor-144.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/Rosavtodor-57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/Rosavtodor-72.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/Rosavtodor-114.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/Rosavtodor-144.png" />
+    <!-- build:css bundle.css -->
+    <link rel="stylesheet" href="/css/KendoUI/kendo.common-bootstrap.css" />
+    <link rel="stylesheet" href="/css/KendoUI/kendo.bootstrap.css" />
+    <link rel="stylesheet" href="/Scripts/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/scripts/bower_components/AngularJS-Toaster/toaster.css" />
+    <link rel="stylesheet" href="/scripts/bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="/scripts/bower_components/ui-select/dist/select.css" />
+    <!--<link rel="stylesheet" href="/css/angular-pane-splitter.css" />-->
+    <link rel="stylesheet" href="/css/FormValidation.css" />
+    <link rel="stylesheet" href="/css/locker.css" />
+    <link rel="stylesheet" href="/css/modal-spinner.css" />
+    <link rel="stylesheet" href="/css/pace-theme-fill-left.css" />
+    <link rel="stylesheet" href="/css/Site-Bootstrap-Custom.css" />
+    <link rel="stylesheet" href="/css/Site-Kendo-Custom.css" />
+    <link rel="stylesheet" href="/css/Site.css"/>
+    <link rel="stylesheet" href="/css/ks.ui.leftMenu.css" />
+    <link rel="stylesheet" href="/scripts/bower_components/bootstrap-additions/dist/modules/datepicker.css" />
+    <link rel="stylesheet" href="/scripts/bower_components/bootstrap-additions/dist/modules/timepicker.css" />
+    <link rel="stylesheet" href="/scripts/bower_components/bootstrap-additions/dist/modules/tooltip.css" />
+    <link rel="stylesheet" href="/css/plan-grafik.css" />
+    <link rel="stylesheet" href="/css/custom-styles.css" />
+    <link rel="stylesheet" href="/scripts/bower_components/ks.splitter/css/style.css" />
+    <link rel="stylesheet" href="/css/leaflet.css"/>
+    <link rel="stylesheet" href="/css/Login.css" />
+    <!-- endbuild -->
+
+    <meta name="msapplication-config" content="IEconfig.xml" />
+    <script type="text/javascript">
+        paceOptions = { ajax: { trackWebSockets: false, trackMethods: ["GET", "POST", "DELETE"] } };
+    </script>
+</head>
+
+<!--
+<body ng-show="currentUser" ng-cloak ng-class="{
+      'aside-collapsed' : isAsideCollapsed(),
+      'aside-collapsed-sm': isAsideOpen() && !isSm()
+      }">
+-->
+
+<body  ng-cloak>
+
+    <div class="slider-locker"></div>
+    <div browser-check-dialog=""></div>
+    <div class="wrapper">
+        <div class="navbar navbar-default  navbar-style navbar-fixed-top">
+
+            <a id="logo-home-page" href="/" class="pull-left">
+                <img src="/images/logo-full.png" class="hidden-xs" height="45" alt="App Logo" />
+                <img src="/images/logo-small.png" class="visible-xs" height="45" alt="App Logo" />
+            </a>
+
+            <ul ng-show="currentUser" class="nav navbar-nav">
+                <!--<li>
+                        <a ui-sref="layout.tree.path.structure">
+                            <em class="fa fa-sitemap"></em> Структура
+                        </a>
+                </li>-->
+                <li ui-sref-active="active" ng-class="{ 'disabled': !treePath.isCurrentNodeTypeEq('pao', 'do') }">
+                    <a ui-sref="layout.tree.path.maps">
+                        <em class="fa fa-globe"></em> Карта
+                    </a>
+                </li>
+
+                <li ng-class="{ 'disabled': !treePath.isCurrentNodeTypeEq('lpu', 'ks', 'kc') }" ui-sref-active="active" >
+                    <a ui-sref="layout.tree.path.toir.plan">
+                        <em class="fa fa-bar-chart"></em> Текущее состояние ТОиР
+                    </a>
+                </li>
+
+                <li ng-class="{ 'disabled': !treePath.isCurrentNodeTypeEq('gpa') }">
+                    <a ui-sref="layout.tree.path.gpaCard">
+                        <em class="fa fa-gear"></em> Карточка ГПА
+                    </a>
+                </li>
+
+                <li ui-sref-active="active" ng-class="{ 'disabled': !treePath.isCurrentNodeTypeEq('do') }">
+                    <a ui-sref="layout.tree.path.plan-grafik">
+                        <em class="fa fa-area-chart"></em> План-график
+                    </a>
+                </li>
+
+                <li ui-sref-active="active" ng-class="{ 'disabled': !treePath.isCurrentNodeTypeEq('do') }">
+                    <a ng-disabled ="true" ui-sref="layout.tree.path.qa">
+                        <em class="fa fa-thumbs-up"></em> Оценка качества
+                    </a>
+                </li>
+
+                <!--<li>
+                    <a ui-sref="layout.tree.path">
+                        <em class="fa fa-file-text"></em> Отчеты
+                    </a>
+                </li>-->
+
+                <li ui-sref-active="active" ng-show="currentUser.isInRole('admin')">
+                    <a ui-sref="layout.admin.users">
+                        <em class="fa fa-users"></em> Администрирование
+                    </a>
+                </li>
+            </ul>
+
+
+            <ul ng-show="currentUser" class="nav nav-pills pull-right">
+                <li class="hidden-xs">
+                    <a style="color: #fff">{{currentUser.UserName}} ({{currentUser.Login}})</a>
+                </li>
+                <li class="dropdown">
+                    <a id="human-button" data-toggle="dropdown" data-play="fadeIn" class="dropdown-toggle btn btn-link">
+                        <em class="fa fa-user"></em>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <!--<li>
+                            <a target="_blank" href="/Content/HtmlHelp/index.html">Справка</a>
+                        </li>
+                        <li>
+                            <a ng-href="{{'/Users#/Edit/' +CurrentUserObjectID}}">Мой профиль</a>
+                        </li>-->
+                        <li>
+                            <a href ng-controller="userLogOutController" ng-click="logout()">Выход</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <toaster-container toaster-options="{'prevent-duplicates':true, 'position-class': 'toast-bottom-left'}" style="z-index: 10000"></toaster-container>
+
+                    <div ui-view  id="main">
+
+                </div>
+
+        <modal-spinner>
+            <div class="modal_back" ng-show="isLoading()">
+                <div class="spinner">
+                    <div class="rect1"></div>
+                    <div class="rect2"></div>
+                    <div class="rect3"></div>
+                    <div class="rect4"></div>
+                    <div class="rect5"></div>
+                </div>
+            </div>
+        </modal-spinner>
+    </div>
+
+    <!--<span id="top-link-block" class="hidden-print" data-spy="affix" data-offset-top="80">
+        <a id="top-link-block-a" href="#main" class="well well-sm">
+            <i class="fa fa-arrow-circle-up"></i> Наверх
+        </a>
+    </span>-->
+    <!-- build:js bundle.js -->
+    <script src="/scripts/bower_components/jQuery/dist/jquery.js"></script>
+    <script src="/scripts/bower_components/fastclick/lib/fastclick.js"></script>
+    <script src="/scripts/bower_components/PACE/pace.js"></script>
+    <script src="/scripts/bower_components/angular/angular.js"></script>
+    <script src="/scripts/bower_components/angular-route/angular-route.js"></script>
+    <script src="/scripts/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="/scripts/bower_components/angular-messages/angular-messages.js"></script>
+    <script src="/scripts/bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="/scripts/bower_components/angular-resource/angular-resource.js"></script>
+    <script src="/scripts/bower_components/angular-i18n/angular-locale_ru.js"></script>
+    <script src="/scripts/bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="/scripts/bower_components/angular-strap/dist/angular-strap.js"></script>
+    <script src="/scripts/bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
+    <script src="/scripts/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/scripts/bower_components/angular-file-upload/dist/angular-file-upload.js"></script>
+    <script src="/scripts/bower_components/angular-ipCookie.js"></script>
+    <script src="/scripts/bower_components/AngularJS-Toaster/toaster.js"></script>
+    <script src="/scripts/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="/scripts/bower_components/ui-select/dist/select.js"></script>
+    <script src="/scripts/bower_components/ks.ui.locker.js"></script>
+    <script src="/scripts/bower_components/ks.ui.modalSpinner.js"></script>
+    <script src="/scripts/bower_components/ks.validator.js"></script>
+    <script src="/scripts/bower_components/store.json2.js"></script>
+    <script src="/scripts/bower_components/ks.httpinterceptors/ks.httpinterceptors.js"></script>
+
+    <script src="/Scripts/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="/scripts/bower_components/underscore/underscore.js"></script>
+    <script src="/scripts/bower_components/JSZip/dist/jszip.js"></script>
+    <script src="/scripts/bower_components/KendoUI/kendo.all.js"></script>
+    <script src="/scripts/bower_components/KendoUI/cultures/kendo.culture.ru.js"></script>
+    <script src="/scripts/bower_components/KendoUI/messages/kendo.messages.ru-RU.js"></script>
+    <script src="/scripts/bower_components/angular-breadcrumb/dist/angular-breadcrumb.js"></script>
+    <script src="/scripts/bower_components/browserInformation/browserInformation.js"></script>
+    <script src="/scripts/bower_components/ks.splitter/js/ks.splitter.js"></script>
+    <script src="/scripts/bower_components/ks.alert/ks.alert.js"></script>
+    <script src="/scripts/app/app.js"></script>
+    <script src="/scripts/app/app.routing.js"></script>
+
+    <script src="/scripts/components/entityEditor/entityEditor.js"></script>
+    <script src="/scripts/components/entityEditor/controllers/entityEditorCtrl.js"></script>
+    <script src="/scripts/components/entityEditor/dataFactories/entityDataFactory.js"></script>
+    <script src="/scripts/components/entityEditor/dataFactories/entityTypeDataFactory.js"></script>
+    <script src="/scripts/components/entityEditor/directives/inputDirectives/boolInput.js"></script>
+    <script src="/scripts/components/entityEditor/directives/inputDirectives/dateTimeInput.js"></script>
+    <script src="/scripts/components/entityEditor/directives/inputDirectives/noInput.js"></script>
+    <script src="/scripts/components/entityEditor/directives/inputDirectives/numericInput.js"></script>
+    <script src="/scripts/components/entityEditor/directives/inputDirectives/stringInput.js"></script>
+    <script src="/scripts/components/entityEditor/directives/starControlCreator.js"></script>
+    <script src="/scripts/components/entityEditor/directives/starGeneratedEntityEditor.js"></script>
+    <script src="/scripts/components/entityEditor/directives/starPanel.js"></script>    
+    <script src="/scripts/components/entityeditor/controllers/saveentitycontroller.js"></script>
+    <script src="/scripts/components/entityeditor/directives/inputdirectives/fileEditor/fileinput.js"></script>
+    <script src="/scripts/components/entityeditor/datafactories/testcontrollerdatafactory.js"></script>
+    <script src="/scripts/components/entityeditor/controllers/directiveexamplescontroller.js"></script>
+
+    <script src="/scripts/components/interactivePlan/interactivePlan.js"></script>
+    <script src="/scripts/components/interactivePlan/dataFactories/interactivePlanDataFactory.js"></script>
+    <script src="/scripts/components/interactivePlan/controllers/gpaCtrl.js"></script>
+    <script src="/scripts/components/interactivePlan/chart/highstock.js"></script>
+    <script src="/scripts/components/interactivePlan/chart/highcharts-localization-ru.js"></script>
+    <script src="/scripts/components/interactivePlan/chart/gpaChart.js"></script>
+    <script src="/scripts/components/interactivePlan/chart/gpaOperatingTimeChart.js"></script>
+    <script src="/scripts/components/interactivePlan/chart/gpaTable.js"></script>
+    <script src="/scripts/components/interactivePlan/chart/gpaRepairChart.js"></script>
+
+    <script src="/Scripts/components/tree/module.js"></script>
+    <script src="/Scripts/components/tree/controllers/treeCtrl.js"></script>
+    <script src="/Scripts/components/tree/dataFactories/treeDataFactory.js"></script>
+    <script src="/Scripts/components/tree/services/treePath.js"></script>
+
+
+    <script src="/Scripts/components/qa/module.js"></script>
+    <script src="/Scripts/components/qa/controllers/qaCtrl.js"></script>
+    <script src="/Scripts/components/qa/dataFactories/qaDataFactory.js"></script>
+    <script src="/Scripts/components/qa/directives/remont-grid/remont-grid.js"></script>
+
+    <script src="/scripts/components/grid/grid.js"></script>
+    <script src="/scripts/components/forms/ks.editors.js"></script>
+    <script src="/scripts/components/grid/grideditor.js"></script>
+
+    <script src="/scripts/components/admin/users/admin.users.js"></script>
+    <script src="/scripts/components/admin/users/factories/defaultuserslistfilterfactory.js"></script>
+    <script src="/scripts/components/admin/users/datafactories/adminusersdatafactory.js"></script>
+    <script src="/scripts/components/admin/users/controllers/userslistcontroller.js"></script>
+    
+    <script src="/scripts/components/plangrafik/plangrafik.js"></script>    
+    <script src="/scripts/components/plangrafik/directives/plangrafik.js"></script>
+    <script src="/scripts/components/plangrafik/directives/importPlanGrafik.js"></script>
+    <script src="/scripts/components/plangrafik/directives/importPlanGrafikMain.js"></script>
+    <script src="/scripts/components/plangrafik/directives/importPlanGrafikWorksheetSelection.js"></script>
+    <script src="/scripts/components/plangrafik/directives/importPlanGrafikNotFoundGpa.js"></script>
+    <script src="/scripts/components/plangrafik/datafactories/plangrafikdatafactory.js"></script>
+    <script src="/scripts/components/plangrafik/datafactories/importPlangrafikdatafactory.js"></script>
+    <script src="/scripts/components/plangrafik/datafactories/sorDataFactory.js"></script>
+    <script src="/Scripts/components/toir/module.js"></script>
+    <script src="/Scripts/components/toir/controllers/toirCtrl.js"></script>
+    <script src="/Scripts/components/toir/controllers/planCtrl.js"></script>
+    <script src="/Scripts/components/planGrafik/controllers/planGrafikCtrl.js"></script>
+    <script src="/Scripts/components/planGrafik/controllers/importPlanGrafikCtrl.js"></script>
+
+
+    <script src="/Scripts/components/gpaCard/gpaCard.js"></script>
+    <script src="/Scripts/components/gpaCard/controllers/gpaCardController.js"></script>
+    <script src="/Scripts/components/gpaCard/dataFactories/gpaDataFactory.js"></script>
+
+    <script src="/scripts/components/maps/mapsCtrl.js"></script>
+
+    <script src="/scripts/components/remont/remont.js"></script>
+    <script src="/scripts/components/remont/controllers/remontEditCtrl.js"></script>
+    <script src="/scripts/components/remont/datafactories/remontdatafactory.js"></script>
+    <script src="/scripts/components/remont/directives/gcrRemontProlongReason.js"></script>
+    <script src="/scripts/components/remont/directives/gcrRemontIdleReason.js"></script>
+
+    <script src="/scripts/components/leaflet/leaflet.js"></script>
+
+    <script src="/scripts/app/app.login.js"></script>
+
+<!-- endbuild -->
+
+    <script type="text/javascript">
+        angular.module('app').value('isDebug', true);
+        window.onerror = function (msg, url, line, col, error) {
+            var extra = !col ? '' : '\ncolumn: ' + col;
+            extra += !error ? '' : '\nerror: ' + error;
+            alert("Error: " + msg + "\nurl: " + url + "\nline: " + line + extra);
+        };
+    </script>
+
+    <!--<script type="text/javascript">
+        angular.module('app').value('isDebug', false);
+    </script>-->
+
+</body>
+</html>

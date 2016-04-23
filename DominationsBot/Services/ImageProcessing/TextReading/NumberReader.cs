@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using AForge.Imaging;
 using AForge.Math.Geometry;
+using DominationsBot.Extensions;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
 using DominationsBot.Services.Logging;
 
@@ -31,9 +32,16 @@ namespace DominationsBot.Services.ImageProcessing.TextReading
             _exhaustiveTemplateMatching = finderFunc(0);
         }
 
+        public int? Read(Bitmap image, NumberResourcesType resourcesType)
+        {
+            var readenString = ReadString( image,  resourcesType);
+            int result;
+            if (int.TryParse(readenString, out result))
+                return result;
+            return null;
+        }
 
-
-        public int Read(Bitmap image, NumberResourcesType resourcesType)
+        public string ReadString(Bitmap image, NumberResourcesType resourcesType)
         {
             var colorFiltering = _numbersMainColors[resourcesType];
             var filteredImage =
@@ -49,7 +57,7 @@ namespace DominationsBot.Services.ImageProcessing.TextReading
                 {
                     var width = i - lastX;
 
-                    var rectangle = new Rectangle(lastX+1, 0, width + 2, filteredImage.Height);
+                    var rectangle = new Rectangle(lastX+1, 0, width , filteredImage.Height);
                     lastX = i;
                     if (width < 4)
                     {
@@ -58,46 +66,58 @@ namespace DominationsBot.Services.ImageProcessing.TextReading
                     numersRectangles.Add(rectangle);
                 }
             }
-            var rectangleNumbers = new Dictionary<Rectangle, Dictionary<int, float>>();
+            var allResouces = _resourceLocator(resourcesType).GetAllResouces();
+
+            var rectangleNumbers = new Dictionary<Rectangle, Dictionary<string, float>>();
             foreach (var numberRectangle in numersRectangles)
             {
-                var dictionary = new Dictionary<int, float>();
+                var dictionary = new Dictionary<string, float>();
                 if(_pictureTester.TestArea(filteredImage,
                     new Rectangle(numberRectangle.Location,
                         new Size(numberRectangle.Width, ((int) numberRectangle.Height/2))), Color.Black))
                     continue;//comma
-                for (var i = 0; i <= 9; i++)
+                foreach (var resouce in allResouces)
                 {
-                    using (var template = _resourceLocator(resourcesType).GetResouce(i))
-                    {
+                    var template = resouce.Value;
+                
                         float similarity = 0;
-                        if (template.Width > numberRectangle.Width)
-                            continue;
-                        using (
-                            var region =
-                                image.Clone(
-                                    new Rectangle(numberRectangle.Location,
-                                        new Size(Math.Max(template.Width,numberRectangle.Width), numberRectangle.Height)), image.PixelFormat))
+                    int subRectX = numberRectangle.Location.X;
+                    int subRectWidth = numberRectangle.Width;
+                    if (template.Width > numberRectangle.Width)
+                    {
+                        subRectX = numberRectangle.Middle().X - template.Width / 2;
+                        subRectWidth = template.Width;
+                    }
+                    if (subRectX + subRectWidth > image.Width)
+                    {
+                        subRectX = image.Width - subRectWidth;
+                    }
+                    if (subRectX < 0)
+                    {
+                        subRectX = 0;
+                    }
+                        var subRect = new Rectangle(new Point(subRectX, numberRectangle.Location.Y),
+                            new Size(subRectWidth,numberRectangle.Height));
+                        var region = image.GetSubImage(subRect);
+                        using (region)
                         {
                             similarity =
                                 _exhaustiveTemplateMatching.ProcessImage(region,
                                     template).Max(tm => tm.Similarity);
                             //_imageLogger.Log(region,$"region_{i}_{similarity}");
                         }
-                        dictionary.Add(i, similarity);
-                    }
+                        dictionary.Add(resouce.Key, similarity);
+                    
                 }
                 if(dictionary.Any())
                 rectangleNumbers.Add(numberRectangle, dictionary);
             }
-            var result = 0;
-            var numberPosition = 1;
+            var result = String.Empty;
             var ordered = rectangleNumbers.OrderBy(r => r.Key.X).Select(k => k.Value);
             foreach (var item in ordered)
             {
-                result += item.OrderByDescending(v => v.Value).First().Key*
-                          (int) Math.Pow(10, rectangleNumbers.Count - numberPosition);
-                numberPosition++;
+                var readenSymbol = item.OrderByDescending(v => v.Value).First().Key;
+                result += readenSymbol;
             }
 
 

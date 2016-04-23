@@ -1,0 +1,89 @@
+﻿.split-panes {
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    position: absolute;
+}
+
+.split-panes div.k-treeview {
+    overflow: visible;
+}
+
+    .split-panes > .split-handler {
+        background: transparent;
+        position: absolute;
+        z-index: 999;
+    }
+
+.split-handler:hover {
+    background-color: rgb(217, 217, 217) !important;
+}
+
+/* vertical */
+
+.split-panes.vertical > .split-handler {
+    width: 6px;
+    top: 0px;
+    bottom: 0px;
+    cursor: ew-resize;
+}
+
+.split-panes.vertical .split-handler-icon {
+    width: 2px;
+    height: 25px;
+    display: none;
+    background-color: black;
+}
+
+.split-panes.vertical .split-handler:hover .split-handler-icon {
+    display: block;
+    position: absolute;
+    top: 45%;
+    margin-left: 2px;
+}
+
+.split-panes.vertical > .split-pane1,
+.split-panes.vertical > .split-pane2 {
+    position: absolute;
+    height: 100%;
+}
+
+.split-panes.vertical > .split-pane1 {
+}
+
+.split-panes.vertical > .split-pane2 {
+    right: 0;
+    padding-left: 6px;
+}
+
+
+/* horizontal */
+
+.split-panes.horizontal > .split-handler {
+    height: 6px;
+    left: 0px;
+    right: 0px;
+    cursor: ns-resize;
+}
+
+.split-panes.horizontal .split-handler:hover .split-handler-icon {
+    display: block;
+    position: absolute;
+    left: 50%;
+    margin-top: 2px;
+}
+
+.split-panes.horizontal > .split-pane1,
+.split-panes.horizontal > .split-pane2 {
+    position: absolute;
+    width: 100%;
+}
+
+.split-panes.horizontal > .split-pane1 {
+}
+
+.split-panes.horizontal > .split-pane2 {
+    bottom: 0px;
+    padding-top: 6px;
+}

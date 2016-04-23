@@ -1,0 +1,38 @@
+﻿<div class="modal-header alert-danger">
+    <button type="button" class="close" data-dismiss="modal" ng-click="$dismiss(reason)">
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-only">Close</span>
+    </button>
+    <h4 class="modal-title">
+        Ошибка {{status}} - {{statusText}}
+    </h4>
+</div>
+<div class="modal-body">
+    
+        <blockquote >
+            При выполнении операции произошла ошибка. Попробуйте обовить страницу.<br/>
+            <!--Если ошибка повторится, обратитесь в <a href="mailto:helpdesk@kgroup.msk.ru?subject=ПС%20УГИЗ%20-%20Ошибка%20№%20{{ErrorId}}">службу технической поддержки</a>.-->
+        </blockquote>
+        <blockquote ng-show="ErrorId">
+            Ваша ошибка зарегистрирована под номером <b>{{ErrorId}}</b>.
+        </blockquote>
+        
+    
+    <div ng-show="Exception || showFrame" class="panel panel-default">
+        <a href="" ng-init="isOpen =false" ng-click="isOpen =!isOpen" class="panel-heading">
+            Подробнее
+            <span class="pull-right">
+                <em class="glyphicon" ng-class="{'glyphicon-menu-up': isOpen, 'glyphicon-menu-down':!isOpen}"></em>
+            </span>
+        </a>
+        <div uib-collapse="!isOpen" class="form-group">
+            <div class="panel-body container-fluid">
+                <pre ng-show="Exception" style="height: 700px; overflow-wrap: normal;">{{Exception}}</pre>
+                <iframe ng-show="showFrame" style="width: 100%; height: 600px" id="errorFrame"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" ng-click="$close(reason)" data-dismiss="modal">Ок</button>
+</div>

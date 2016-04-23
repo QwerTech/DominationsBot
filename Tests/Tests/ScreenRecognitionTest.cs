@@ -43,23 +43,6 @@ namespace Tests.Tests
         //    Assert.AreEqual(666348, int666348);
         //    Assert.AreEqual(384174, int384174);
         //}
-
-        [TestMethod]
-        public void CitizensRecognition()
-        {
-            var textRecognition = _textRecognition;
-
-            var text412 = textRecognition.GetText(TestScreens._4_12);
-
-            Assert.AreEqual(text412, "4/12");
-        }
-
-        [TestMethod, Ignore]
-        public void LevelRecognition()
-        {
-            var int96 = _textRecognition.GetText<int>(TestScreens._96);
-
-            Assert.AreEqual(96, int96);
-        }
+        
     }
 }

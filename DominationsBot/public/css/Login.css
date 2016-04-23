@@ -1,0 +1,50 @@
+﻿.page-wrapper {
+    background-color: #e8ebec;
+    height: 100%;
+    padding: 50px 0;
+    position: absolute;
+}
+
+.login-page form { margin: 25px 0px; }
+
+.login-page .row-table > [class*="col-"] {
+    display: table-cell;
+    float: none;
+    table-layout: fixed;
+    vertical-align: middle;
+}
+
+.login-page .row-table {
+    display: table;
+    height: 100%;
+    margin: 0;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.login-page .panel-dark { border-color: #d1d2d3; }
+
+.login-page .panel-flat {
+    border: 0;
+    margin: 0 !important;
+}
+
+.login-page .panel {
+    border: 1px solid #e1e2e3;
+    box-shadow: 0 0 0 #000;
+}
+
+.login-page .panel-dark > .panel-heading {
+    background-color: #35394b;
+    border-color: #35394b;
+    color: #ffffff;
+}
+
+.login-page .panel .panel-heading {
+    border-bottom: 0;
+    font-size: 14px;
+}
+
+.login-page .has-feedback { position: relative; }
+
+.login-page .has-feedback .form-control-feedback { top: 10px; }

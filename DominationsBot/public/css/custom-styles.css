@@ -1,0 +1,16 @@
+﻿.mapsContainer {
+    padding: 10px 40px 10px 10px;
+}
+
+/*.mapsContainer img {
+        width: 100%;
+        height: auto;
+        box-sizing: border-box;
+        padding: 10px 40px 10px 10px;
+    }*/
+
+.leaflet-container{
+    width: 100%;
+    height: calc(100vh - 80px);
+    border: 1px solid #ccc;
+}

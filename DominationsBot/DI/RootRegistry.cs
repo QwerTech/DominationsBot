@@ -4,6 +4,7 @@ using DominationsBot.Services.GameProcess;
 using DominationsBot.Services.ImageProcessing;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
 using DominationsBot.Services.ImageProcessing.TextReading;
+using DominationsBot.Services.System.WorkerProcess;
 using StructureMap;
 using StructureMap.Graph;
 using Tesseract;
@@ -32,11 +33,18 @@ namespace DominationsBot.DI
                 .Ctor<EngineMode>().Is(EngineMode.Default)
                 .Singleton();
 
+            ForConcreteType<ResourceLocator>().Configure.Singleton();
+
             For<ITemplateMatching>()
                 .Use<ExhaustiveTemplateMatching>().Ctor<float>().Is(0.8f);
             For<IInputSimulator>().Use<InputSimulator>().SelectConstructor(() => new InputSimulator());
 
             ForConcreteType<TextReader>().Configure.Ctor<ITemplateFinder>().Is<ExhaustiveTemplateMathingFinder>();
+
+            var iinterval = For<IWork>();
+            //iinterval.Add<CollectFood>();
+            //iinterval.Add<CollectGold>();
+            iinterval.Add<AttackWork>();
 
             var workers = For<IWorker>();
             workers.Add<CollectGold>();

@@ -7,7 +7,7 @@ namespace DominationsBot.Services.System.WorkerProcess
     public class TaskSheduler
     {
         private readonly AntiSleepGame _antiSleepGame;
-        private readonly IntervalTask _intervalTask;
+        private readonly IWork[] _works;
         private readonly CollectFood _collectFood;
         private readonly CollectGold _collectGold;
         private readonly GameController _gameController;
@@ -18,7 +18,7 @@ namespace DominationsBot.Services.System.WorkerProcess
 
         public TaskSheduler(WorkerProducer workerProducer, WorkerConsumer workerConsumer, 
             CollectFood collectFood, CollectGold collectGold, GameController gameController, AntiSleepGame antiSleepGame,
-            IntervalTask intervalTask)
+            IWork[] works)
         {
             _workerProducer = workerProducer;
             _workerConsumer = workerConsumer;
@@ -27,7 +27,7 @@ namespace DominationsBot.Services.System.WorkerProcess
             _collectGold = collectGold;
             _gameController = gameController;
             _antiSleepGame = antiSleepGame;
-            _intervalTask = intervalTask;
+            _works = works;
         }
 
         public void DoWork()
@@ -35,12 +35,10 @@ namespace DominationsBot.Services.System.WorkerProcess
             Trace.TraceInformation("Начинаем выполнять задания");
             _workerProducer.StartFill();
             _workerConsumer.StartRake();
-
-            var timeSpan = TimeSpan.FromMinutes(15);
-            _intervalTask.Start(timeSpan, () => _antiSleepGame.DoWork());
-            _intervalTask.Start(timeSpan, () => _gameController.Unzoom());
-            _intervalTask.Start(timeSpan, () => _collectFood.DoWork());
-            _intervalTask.Start(timeSpan, () => _collectGold.DoWork());
+            foreach (var intervalWork in _works)
+            {
+                intervalWork.StartSheduling();
+            }
         }
     }
 }

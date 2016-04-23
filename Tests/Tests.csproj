@@ -112,6 +112,7 @@
     <Compile Include="Services\GameProcess\CollectGoldTests.cs" />
     <Compile Include="Services\GameProcess\GameControllerTests.cs" />
     <Compile Include="Services\GameProcess\TrainTroopsTests.cs" />
+    <Compile Include="Services\GameProcess\UnzoomingTests.cs" />
     <Compile Include="Services\GameProcess\WindowStaticPositionsTests.cs" />
     <Compile Include="TestRootRegistry.cs" />
     <Compile Include="TestScreens.Designer.cs">
@@ -131,8 +132,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\4.12.png" />
-    <Content Include="Resources\96.png" />
-    <Content Include="Resources\98.png" />
     <Content Include="Resources\ImageComparers\Battle-1.png" />
     <Content Include="Resources\ImageComparers\Battle-2.png" />
     <Content Include="Resources\ImageComparers\Food-1.png" />
@@ -179,6 +178,39 @@
     <Content Include="Resources\NumbersRead\983835.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\NumbersRead\Level\16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\NumbersRead\Level\17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\NumbersRead\Level\20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\NumbersRead\Level\4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Screens\Battle\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Screens\Battle\2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Screens\Battle\AfterBattle\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Screens\Battle\AfterBattle\2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Screens\Other\PeaceTretyConfirm.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Screens\Other\PreBattle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Screens\Other\Surrender.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\SimpleFind\SimpleFindBig.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -195,6 +227,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\SleepScreen2.png" />
+    <Content Include="Resources\Zoom\false.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Zoom\true.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="x64\liblept172.dll" />
     <Content Include="x64\libtesseract304.dll" />
     <Content Include="x86\liblept172.dll" />
@@ -208,6 +246,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -215,6 +254,9 @@
       <Project>{0862F29C-4399-435A-9AAE-4D3175F95D87}</Project>
       <Name>DominationsBot</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Screens\Main\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

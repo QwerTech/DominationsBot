@@ -7,7 +7,23 @@ using DominationsBot.Services.ImageProcessing.TemplateFinders;
 
 namespace DominationsBot.Services.GameProcess
 {
-    public class AntiSleepGame : IWorker
+    public abstract class ObstacleResolver
+    {
+        public abstract void Act();
+
+
+        public abstract bool Check();
+
+        public virtual void CheckAndAct()
+        {
+            if (Check())
+            {
+                Act();
+            }
+        }
+    }
+
+    public class AntiSleepGame : ObstacleResolver, IWorker
     {
         private readonly SaeedTemplateFinder _buttosFinder;
         private readonly EmulatorWindowController _emulatorWindowController;
@@ -29,13 +45,21 @@ namespace DominationsBot.Services.GameProcess
         public void DoWork()
         {
             Trace.TraceInformation("Проверяем игру на сон");
-            if (IsGameSleeps())
-            {
-                Trace.TraceInformation("Игра спит");
-                _emulatorWindowController.Click(WindowStaticPositions.SleepingDialog.SleepReloadGame);
-                Thread.Sleep(10000);
-            }
+            CheckAndAct();
         }
+
+
+        public override void Act()
+        {
+            _emulatorWindowController.Click(WindowStaticPositions.SleepingDialog.SleepReloadGame);
+            Thread.Sleep(10000);
+        }
+
+        public override bool Check()
+        {
+            return IsGameSleeps();
+        }
+
 
         public bool IsGameSleeps()
         {

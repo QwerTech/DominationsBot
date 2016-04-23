@@ -37,6 +37,14 @@ namespace DominationsBot.Extensions
             return bmp;
         }
 
+        public static Bitmap GetSubImage(this Bitmap bmp, Rectangle rectangle)
+        {
+            var bmpRect = new Rectangle(Point.Empty, bmp.Size);
+            if(!bmpRect.Contains(rectangle))
+                throw new ArgumentOutOfRangeException(nameof(rectangle));
+            return bmp.Clone(new Rectangle(rectangle.Location,rectangle.Size), bmp.PixelFormat);
+        }
+
         public static Bitmap DrawPointPosition(this Bitmap bmp, Point point)
         {
             var up = point.Y - 5;
@@ -48,8 +56,8 @@ namespace DominationsBot.Extensions
             var points = new[] {new Point(point.X, up), point, new Point(left, point.Y)};
             points.ForEach(bmp.CheckPoint);
             var graphics = Graphics.FromImage(bmp);
-            graphics.DrawLines(new Pen(Color.Red),points);
-            
+            graphics.DrawLines(new Pen(Color.Red), points);
+
             return bmp;
         }
 
@@ -63,16 +71,20 @@ namespace DominationsBot.Extensions
             graphics.DrawString(text, new Font(FontFamily.GenericMonospace, 8), Brushes.Red, point);
             graphics.Flush();
         }
+
         public static void CheckPoint(this Bitmap bitmap, Point point)
         {
             if (!new Rectangle(new Point(), bitmap.Size).Contains(point))
                 throw new ArgumentOutOfRangeException($"Точка {point} не внутри изображения c разрмерами {bitmap.Size}");
         }
+
         public static void CheckRectangle(this Bitmap bitmap, Rectangle rectangle)
         {
             if (!new Rectangle(new Point(), bitmap.Size).Contains(rectangle))
-                throw new ArgumentOutOfRangeException($"Прямоугольник {rectangle} не внутри изображения c разрмерами {bitmap.Size}");
+                throw new ArgumentOutOfRangeException(
+                    $"Прямоугольник {rectangle} не внутри изображения c разрмерами {bitmap.Size}");
         }
+
         public static bool Compare(this Color color, Color other)
         {
             return color == other ||

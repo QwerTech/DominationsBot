@@ -1,0 +1,49 @@
+﻿<div class="login-page">
+    <div class="row row-table page-wrapper">
+        <div class="col-lg-3 col-md-6 col-sm-8 col-xs-12 align-middle">
+            <div data-toggle="play-animation" data-play="fadeIn" data-offset="0" class="panel panel-dark panel-flat anim-running anim-done" style="">
+                <div class="panel-heading text-center">
+                    <a href="/">
+                        <img src="/images/logo-full.png" alt="Портал">
+                    </a>
+                </div>
+                <div class="panel-body" style="position: relative" ng-controller="loginController">
+                    <div ng-show="Success" ng-cloak class="alert-success" style="right: 0;bottom: 0;left: 0;top: 0;position: absolute;z-index: 99;opacity: 0.8;">
+                        <h1 class="text-center">
+                            <span class="fa fa-check "></span>Успешно
+                        </h1>
+                    </div>
+                    <form role="form" class="mb-lg" method="post" id="loginForm" ng-submit="logIn()" name="formsLoginForm" novalidate="novalidate">
+                        <div class="form-group has-feedback">
+                            <input class="form-control" ng-required="true" ng-model="logInfo.UserName" name="UserName" type="text" value="" placeholder="Логин">
+                            <span class="fa fa-user form-control-feedback text-muted"></span>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <input class="form-control" ng-required="true" ng-model="logInfo.Password" id="Password" name="Password" type="password" placeholder="Пароль">
+                            <span class="fa fa-lock form-control-feedback text-muted"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <input data-val="true" ng-model="logInfo.RememberMe" id="RememberMe" name="RememberMe" type="checkbox" value="true" style="margin-left:0">
+                                <input name="RememberMe" type="hidden" value="false">
+                                <label for="RememberMe">Запомнить?</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-block btn-success col-md-12">Вход</button>
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <div ng-cloak ng-if="wrongCredentials" class="alert alert-danger">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Неверное имя пользователя или пароль.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div ng-cloak ng-if="!Success && Message" class="alert alert-danger">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{Message}}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

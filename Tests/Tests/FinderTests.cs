@@ -5,6 +5,7 @@ using System.Linq;
 using DominationsBot;
 using DominationsBot.DI;
 using DominationsBot.Extensions;
+using DominationsBot.Resources;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StructureMap;
@@ -72,7 +73,7 @@ namespace Tests.Tests
             {
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
-                var templateMatches = templateFinder.FindTemplate(TestScreens.SleepScreen, Screens.SleepDialog).ToList();
+                var templateMatches = templateFinder.FindTemplate(TestScreens.SleepScreen, BotResources.BmpSleepDialog).ToList();
                 stopwatch.Stop();
 
                 Assert.AreEqual(1, templateMatches.Count, $"Поисковик {templateFinder.GetType().Name}");
@@ -89,7 +90,7 @@ namespace Tests.Tests
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            Assert.AreEqual(1, finder.FindTemplate(TestScreens.SleepScreen, Screens.SleepDialog).Count());
+            Assert.AreEqual(1, finder.FindTemplate(TestScreens.SleepScreen, BotResources.BmpSleepDialog).Count());
             stopwatch.Stop();
             Trace.TraceInformation($"Нашел за {stopwatch.ElapsedMilliseconds}ms");
         }
@@ -101,12 +102,12 @@ namespace Tests.Tests
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            Assert.AreEqual(1, finder.FindTemplate(TestScreens.NormalScreen, Screens.StoreButton).Count());
+            Assert.AreEqual(1, finder.FindTemplate(TestScreens.NormalScreen, BotResources.BmpStoreButton).Count());
             stopwatch.Stop();
-            Assert.AreEqual(1, finder.FindTemplate(TestScreens.NormalScreen, Screens.BattleButton).Count());
+            Assert.AreEqual(1, finder.FindTemplate(TestScreens.NormalScreen, BotResources.BmpBattleButton).Count());
 
-            Assert.AreEqual(1, finder.FindTemplate(TestScreens.NormalScreen2, Screens.StoreButton).Count());
-            Assert.AreEqual(1, finder.FindTemplate(TestScreens.NormalScreen2, Screens.BattleButton).Count());
+            Assert.AreEqual(1, finder.FindTemplate(TestScreens.NormalScreen2, BotResources.BmpStoreButton).Count());
+            Assert.AreEqual(1, finder.FindTemplate(TestScreens.NormalScreen2, BotResources.BmpBattleButton).Count());
             Trace.TraceInformation($"Нашел за {stopwatch.ElapsedMilliseconds}ms");
         }
 
@@ -127,21 +128,21 @@ namespace Tests.Tests
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
                 var templateMatches =
-                    templateFinder.FindTemplate(TestScreens.NormalScreen, Screens.BattleButton).ToList();
+                    templateFinder.FindTemplate(TestScreens.NormalScreen, BotResources.BmpBattleButton).ToList();
                 stopwatch.Stop();
                 var finderName = templateFinder.GetType().Name;
                 TestScreens.NormalScreen.ViewContains(templateMatches)
-                    .Save($"{finderName}.{nameof(Screens.BattleButton)}.png");
+                    .Save($"{finderName}.{nameof(BotResources.BmpBattleButton)}.png");
                 //Assert.AreEqual(1, templateMatches.Count,$"{nameof(Screens.BattleButton)} Поисковик {finderName}");
                 Trace.TraceInformation(
-                    $"{nameof(Screens.BattleButton)} Поисковик {finderName} нашел за {stopwatch.ElapsedMilliseconds}ms");
+                    $"{nameof(BotResources.BmpBattleButton)} Поисковик {finderName} нашел за {stopwatch.ElapsedMilliseconds}ms");
 
-                templateMatches = templateFinder.FindTemplate(TestScreens.NormalScreen, Screens.StoreButton).ToList();
+                templateMatches = templateFinder.FindTemplate(TestScreens.NormalScreen, BotResources.BmpStoreButton).ToList();
                 TestScreens.NormalScreen.ViewContains(templateMatches)
-                    .Save($"{finderName}.{nameof(Screens.StoreButton)}.png");
+                    .Save($"{finderName}.{nameof(BotResources.BmpStoreButton)}.png");
                 //Assert.AreEqual(1, templateMatches.Count,$"{nameof(Screens.StoreButton)} Поисковик {finderName} ");
 
-                Trace.TraceInformation($"{nameof(Screens.StoreButton)} Поисковик {finderName}");
+                Trace.TraceInformation($"{nameof(BotResources.BmpStoreButton)} Поисковик {finderName}");
             }
         }
     }

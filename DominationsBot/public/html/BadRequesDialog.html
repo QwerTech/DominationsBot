@@ -1,0 +1,21 @@
+﻿    <div class="modal-header alert-danger">
+        <button type="button" class="close" data-dismiss="modal" ng-click="$dismiss(reason)">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+        </button>
+        <h4>Некорректный запрос</h4>
+    </div>
+    <div class="modal-body" ks-coplex-modal>
+
+        <blockquote ng-repeat="fieldErrors in errorResponse.ModelState">
+            <span ng-if="fieldErrors.length==1">{{fieldErrors[0]}}</span>
+            <ul ng-if="fieldErrors.length>1">
+                <li ng-repeat="error in fieldErrors">
+                    {{error}}
+                </li>
+            </ul>
+        </blockquote>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="$dismiss(reason)">Ок</button>
+    </div>

@@ -47,6 +47,18 @@ namespace DominationsBot.Services.GameProcess
         public static Rectangle EmulatorHeader= new Rectangle(0,0,1020,15);
         public static Rectangle EmulatorFooter = new Rectangle(0, 954, 1020, 66);
         public static Rectangle Dimensions = new Rectangle(0, 0, 1649, 1020 );
+
+        public static class Battle
+        {
+            public static Rectangle EndBattle = new Rectangle(23, 118, 209, 53);
+            public static Point FindOpponent = new Point(810,300);
+            public static Point NextMatch = new Point(1515, 690);
+            public static Rectangle OpponentAge= new Rectangle(1435, 80, 146, 26);
+            public static Rectangle OpponentGold = new Rectangle(1434, 174,144,30);
+            public static Rectangle OpponentLevel = new Rectangle(1581, 58, 53, 30);
+            public static Rectangle OpponentFood = new Rectangle(1434, 221, 144, 30);
+
+        }
         public static class MainScreen
         {
             public static Rectangle Store = new Rectangle(1488, 781, 161, 177);
@@ -67,8 +79,9 @@ namespace DominationsBot.Services.GameProcess
             public static Rectangle GoldNumbers = new Rectangle(75, 46, 145, 26);
             public static Rectangle FoodNumbers = new Rectangle(289, 46, 145, 26);
         }
-        public static Point ZoomingButton = new Point(1630, 475);
-
+        
+        public static Rectangle ZoomingButtonRect = new Rectangle(1621, 466,22,21);
+        public static Point ZoomingButton = ZoomingButtonRect.Middle();
         public static class Barracks
         {
             public static Point TrainButton = ActionButtons.ButtonsPositionsBy2.RightOne;

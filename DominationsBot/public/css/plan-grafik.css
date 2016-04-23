@@ -1,0 +1,107 @@
+﻿.planGrafikTable .k-grid-header .k-header.verTh span {
+    display: inline-block;
+    white-space: nowrap;
+    transform: translate(0,100%) rotate(-90deg);
+    transform-origin: 0 0;
+    position: absolute;
+    bottom: 3px;
+}
+
+.planGrafikTable .k-grid-header .k-header.verTh.weekend {
+    background-color: #808080;
+}
+
+.planGrafikTable .k-grid-header .k-header {
+    height: 65px !important;
+}
+
+.planGrafikTable .k-grid-content {
+    min-height: 200px;
+}
+
+.planGrafikTable.k-grid tr {
+    height: 20px;
+}
+
+.planGrafikTable.k-grid td {
+    padding: .1em .3em;
+    height: 22px;
+}
+
+    .planGrafikTable.k-grid td.today {
+        border-right: 2px solid red;
+    }
+
+    .planGrafikTable.k-grid td.warning {
+        animation: pulse 1.5s infinite;
+    }
+
+.planGrafikTable td.k-state-selected {
+    color: #fff;
+    background-color: #428bca !important;
+    border-color: #428bca;
+}
+
+.planGrafikTable.k-grid tr:last-child td {
+    border-bottom: 1px solid #ccc;
+}
+
+.planGrafikTable .graficTableCell .active {
+    color: #fff;
+}
+
+.resultTable {
+    font-size: 12px;
+}
+
+    .resultTable.table > tbody > tr > th,
+    .resultTable.table > tbody > tr > td {
+        padding: 3px 2px;
+    }
+
+.resultTable_wrap {
+    overflow-x: auto;
+    margin-left: -15px;
+}
+
+.resultTable th {
+    white-space: nowrap;
+}
+
+.resultTable tr td:first-child {
+    white-space: nowrap;
+}
+
+.planGrafikControl .form-group {
+    margin-bottom: 0px;
+}
+
+.planGrafikControlTableWrap {
+    overflow-y: auto;
+}
+
+.planGrafikControlTable {
+    width: 100%;
+}
+
+    .planGrafikControlTable td {
+        padding: 0px 2px;
+    }
+
+        .planGrafikControlTable td a {
+            width: 100%;
+        }
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

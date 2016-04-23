@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using DominationsBot;
-using DominationsBot.DI;
-using DominationsBot.Services.ImageProcessing;
+using DominationsBot.Extensions;
+using DominationsBot.Services.GameProcess;
 using DominationsBot.Services.ImageProcessing.TextReading;
 using NUnit.Framework;
 using StructureMap;
@@ -36,43 +35,61 @@ namespace Tests.Tests
                     var expectedResult = int.Parse(fileNameWithoutExtension);
                     var testCaseData = new TestCaseData(bitmap, NumberResourcesType.Gold)
                     {
-                        TestName = fileNameWithoutExtension,
+                        TestName = "GoldOrFood_"+fileNameWithoutExtension,
                         ExpectedResult = expectedResult
                     };
                     return testCaseData;
                 });
-                return testCaseDatas;
+                var levelPath = Path.Combine(Settings.BasePath, "Resources\\NumbersRead\\Level");
+                var levelTestCaseDatas =
+                    Directory.EnumerateFiles(levelPath, "*.png", SearchOption.TopDirectoryOnly).Select(f =>
+                    {
+                        var bitmap = new Bitmap(f);
+                        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(f);
+                        var expectedResult = int.Parse(fileNameWithoutExtension);
+                        var testCaseData = new TestCaseData(bitmap, NumberResourcesType.Level)
+                        {
+                            TestName = "Level_"+fileNameWithoutExtension,
+                            ExpectedResult = expectedResult
+                        };
+                        return testCaseData;
+                    });
+                var battlePath = Path.Combine(Settings.BasePath, "Resources\\Screens\\Battle");
+                return testCaseDatas.Union(new[]
+                {
+                    new TestCaseData(
+                        new Bitmap(Path.Combine(battlePath, "1.png")).GetSubImage(
+                            WindowStaticPositions.Battle.OpponentGold), NumberResourcesType.Gold)
+                    {
+                        ExpectedResult = 12900, TestName = "OpponentGold_12900"
+                    },
+                    new TestCaseData(
+                        new Bitmap(Path.Combine(battlePath, "1.png")).GetSubImage(
+                            WindowStaticPositions.Battle.OpponentFood), NumberResourcesType.Food)
+                    {
+                        ExpectedResult = 20000, TestName = "OpponentFood_20000"
+                    },
+                    new TestCaseData(
+                        new Bitmap(Path.Combine(battlePath, "2.png")).GetSubImage(
+                            WindowStaticPositions.Battle.OpponentGold), NumberResourcesType.Gold)
+                    {
+                        ExpectedResult = 927, TestName = "OpponentFood_927"
+                    },
+                    new TestCaseData(new Bitmap(Path.Combine(battlePath, "2.png")).GetSubImage(
+                            WindowStaticPositions.Battle.OpponentFood), NumberResourcesType.Food)
+                    {
+                        ExpectedResult = 943, TestName = "OpponentFood_943"
+                    }
+                }).Union(levelTestCaseDatas);
             }
         }
-
-        [Test, Explicit] 
-
-        public void CitizensRecognition()
-        {
-            var textReader = _container.GetInstance<TextReader>();
-
-            var text412 = textReader.Read(TestScreens._4_12, NumberResourcesType.Citizens);
-
-            Assert.AreEqual("4/12", text412);
-        }
-
-
-        [Test, Explicit]
-        public void LevelRecognition()
-        {
-            var reader = _container.GetInstance<TextReader>();
-            var int96 = reader.Read(TestScreens._96, NumberResourcesType.Level);
-
-            Assert.AreEqual("96", int96);
-        }
-
         [TestCaseSource(nameof(Images))]
         [Test]
         public int ReadTest(Bitmap bitmap, NumberResourcesType resourcesType)
         {
             var textReader = _container.GetInstance<NumberReader>();
 
-            return textReader.Read(bitmap, resourcesType);
+            return textReader.Read(bitmap, resourcesType).Value;
         }
     }
 }

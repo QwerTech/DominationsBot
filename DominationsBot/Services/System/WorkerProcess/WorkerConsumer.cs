@@ -10,7 +10,7 @@ namespace DominationsBot.Services.System.WorkerProcess
     {
         private readonly WorkingQueue _workingQueue;
 
-        public Task CurrentWork;
+        public GameTask CurrentWork;
 
         public WorkerConsumer(WorkingQueue workingQueue)
         {
@@ -42,21 +42,22 @@ namespace DominationsBot.Services.System.WorkerProcess
 
         protected void TryStartWorking()
         {
-            Task result;
+            GameTask result;
             if (_workingQueue.TryDequeue(out result))
             {
                 try
                 {
 
-                    CurrentWork?.Wait();
+                    CurrentWork?.Task.Wait();
                     CurrentWork = result;
-                    Trace.TraceInformation("Делаем новое задание");
-                    CurrentWork.ContinueWith(task =>
+                    Trace.TraceInformation($"Делаем задание: {CurrentWork.Work.Name}");
+                    CurrentWork.Task.ContinueWith(task =>
                     {
+                        Trace.TraceInformation($"Задание выполнено: {CurrentWork.Work.Name}");
                         if (task.Exception != null)
                             LogManager.GetCurrentClassLogger().Error(task.Exception);
                     });
-                    CurrentWork.Start();
+                    CurrentWork.Task.Start();
                 }
                 catch (Exception e)
                 {

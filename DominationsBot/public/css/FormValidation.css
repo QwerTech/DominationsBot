@@ -1,0 +1,32 @@
+﻿.field-error-message {
+    display: none;
+    float: left;
+}
+
+ form:not(.clean-form) .has-error .field-error-message {
+    display: block;
+    color: #a94442;
+}
+.required-star {
+    margin-left: -10px;
+    float: left;
+}
+
+/*input.customTimePicker.ng-invalid.ng-touched,
+.ng-submitted input.customTimePicker.ng-invalid,*/
+.clean-form input.ng-invalid.ng-touched,
+.clean-form .has-error .field-error-message,
+/*select.ng-invalid.ng-touched[field-validate],*/
+.clean-form.ng-submitted input.ng-invalid,
+.clean-form.ng-submitted .has-error .field-error-message
+/*
+.ng-submitted .k-widget.k-numerictextbox.ng-invalid .k-numeric-wrap,
+.ng-submitted .k-widget.k-dropdown.ng-invalid*/
+{
+    display: block;
+    color: #a94442;
+}
+
+.has-error .k-numeric-wrap{
+    border-color: #a94442
+}
