@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using DominationsBot.Extensions;
 using DominationsBot.Resources;
 using DominationsBot.Services.ImageProcessing.ImageComporators;
-using DominationsBot.Services.ImageProcessing.TextReading;
 using DominationsBot.Services.System.WorkerProcess;
 using StructureMap.Attributes;
 
@@ -20,8 +19,6 @@ namespace DominationsBot.Services.GameProcess
         [SetterProperty]
         public EmulatorWindowController EmulatorWindowController { get; set; }
 
-        [SetterProperty]
-        public NumberReader NumberReader { get; set; }
 
         [SetterProperty]
         public ScreenCapture ScreenCapture { get; set; }
@@ -31,6 +28,9 @@ namespace DominationsBot.Services.GameProcess
 
         [SetterProperty]
         public ByteLevelComparer ByteLevelComparer { get; set; }
+
+        [SetterProperty]
+        public OpponentInfoReader OpponentInfoReader { get; set; }
 
         [SetterProperty]
         public Unzooming Unzooming { get; set; }
@@ -53,7 +53,6 @@ namespace DominationsBot.Services.GameProcess
 
             WaitUntilSuitable();
             Unzooming.CanWorkAndDo();
-
         }
 
         private void WaitUntilSuitable()
@@ -68,10 +67,11 @@ namespace DominationsBot.Services.GameProcess
                 }
                 WaitUntilOpponent();
 
-                opponentInfo = ReadOpponentNumbers();
+                opponentInfo = OpponentInfoReader.Read();
 
-                Trace.TraceInformation($"Еда:{opponentInfo.Food} Золото:{opponentInfo.Gold} Уровень:{opponentInfo.Level}");
-            } while (opponentInfo.Sum < 100000 || opponentInfo.Level>20);
+                Trace.TraceInformation(
+                    $"Еда:{opponentInfo.Food} Золото:{opponentInfo.Gold} Уровень:{opponentInfo.Level}");
+            } while (opponentInfo.Sum < 100000 || opponentInfo.Level > 20);
         }
 
         private void WaitUntilOpponent()
@@ -83,49 +83,22 @@ namespace DominationsBot.Services.GameProcess
                 snapShot = ScreenCapture.SnapShot(WindowStaticPositions.Battle.EndBattle);
             } while (ByteLevelComparer.Compare(snapShot, BotResources.Symbols.Battle.BmpEndBattle));
         }
+    }
 
-        private OpponentInfo ReadOpponentNumbers()
+    public class OpponentInfo
+    {
+        public int? Food { set; get; }
+        public int? Gold { set; get; }
+        public int? Sum => Food + Gold;
+        public int? Level { get; set; }
+        public override string ToString()
         {
-            var opponentInfo = new OpponentInfo();
-            do
-            {
-                Thread.Sleep(100);
-                var snapShot = ScreenCapture.SnapShot();
-                var food = NumberReader.Read(snapShot.GetSubImage(WindowStaticPositions.Battle.OpponentFood),
-                    NumberResourcesType.Food);
-                if (!food.HasValue)
-                {
-                    continue;
-                }
-                opponentInfo.Food = food.Value;
-                var level = NumberReader.Read(
-                    snapShot.GetSubImage(WindowStaticPositions.Battle.OpponentLevel), NumberResourcesType.Level);
-                if (!level.HasValue)
-                {
-                    continue;
-                }
-                opponentInfo.Level = level.Value;
-                var gold = NumberReader.Read(snapShot.GetSubImage(WindowStaticPositions.Battle.OpponentGold),
-                    NumberResourcesType.Gold);
-                if (!gold.HasValue)
-                {
-                    continue;
-                }
-                opponentInfo.Gold = gold.Value;
-                break;
-            } while (true);
-
-            return opponentInfo;
+            return $"Gold = {Gold},Food = {Food}, Level = {Level}";
         }
 
-
-
-        public class OpponentInfo
+        public bool Compare(OpponentInfo opponentInfo)
         {
-            public int Food { set; get; }
-            public int Gold { set; get; }
-            public int Sum => Food + Gold;
-            public int Level { get; set; }
+            return Food == opponentInfo.Food && Gold == opponentInfo.Gold && Level == opponentInfo.Level;
         }
     }
 }

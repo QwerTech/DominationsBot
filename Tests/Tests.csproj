@@ -111,6 +111,7 @@
     <Compile Include="Services\GameProcess\CollectFoodTests.cs" />
     <Compile Include="Services\GameProcess\CollectGoldTests.cs" />
     <Compile Include="Services\GameProcess\GameControllerTests.cs" />
+    <Compile Include="Services\GameProcess\OpponentInfoReaderTests.cs" />
     <Compile Include="Services\GameProcess\TrainTroopsTests.cs" />
     <Compile Include="Services\GameProcess\UnzoomingTests.cs" />
     <Compile Include="Services\GameProcess\WindowStaticPositionsTests.cs" />
@@ -196,12 +197,16 @@
     <Content Include="Resources\Screens\Battle\2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Screens\Battle\3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Screens\Battle\AfterBattle\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Screens\Battle\AfterBattle\2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Screens\Battle\AfterBattle\3.png" />
     <Content Include="Resources\Screens\Other\PeaceTretyConfirm.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

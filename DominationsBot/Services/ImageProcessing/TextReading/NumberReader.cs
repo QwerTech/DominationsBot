@@ -109,14 +109,15 @@ namespace DominationsBot.Services.ImageProcessing.TextReading
                         dictionary.Add(resouce.Key, similarity);
                     
                 }
-                if(dictionary.Any())
+                if(dictionary.Any(d=>d.Value>0.75))
                 rectangleNumbers.Add(numberRectangle, dictionary);
             }
             var result = String.Empty;
             var ordered = rectangleNumbers.OrderBy(r => r.Key.X).Select(k => k.Value);
             foreach (var item in ordered)
             {
-                var readenSymbol = item.OrderByDescending(v => v.Value).First().Key;
+                var bestMatch = item.OrderByDescending(v => v.Value);
+                var readenSymbol = bestMatch.First().Key;
                 result += readenSymbol;
             }
 

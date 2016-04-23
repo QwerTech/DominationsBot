@@ -180,6 +180,7 @@
     </Compile>
     <Compile Include="Services\GameProcess\AttackWork.cs" />
     <Compile Include="Services\GameProcess\GameState.cs" />
+    <Compile Include="Services\GameProcess\OpponentInfoReader.cs" />
     <Compile Include="Services\GameProcess\Unzooming.cs" />
     <Compile Include="Services\ImageProcessing\ImageComporators\Base64StringComparer.cs" />
     <Compile Include="Services\ImageProcessing\ImageComporators\BlockImageComparer.cs" />
@@ -362,7 +363,13 @@
     <Content Include="Resources\Symbols\Level\2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Symbols\Level\3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Symbols\Level\4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Symbols\Level\5.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Symbols\Level\6.png">
