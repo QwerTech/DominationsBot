@@ -1,16 +1,17 @@
 ﻿ 
+ 
+
 // This is the output code from your template
 // you only get syntax-highlighting here - not intellisense
 using System.Drawing;
 using System.IO;
 using System;
-
-namespace DominationsBot.Resources{
+namespace DominationsBot{
 
 
 	public static class BotResources
 	{
-		public static string ThisPath = Path.Combine(Settings.BasePath, @"Resources");
+		public static string ThisPath = Path.Combine(Settings.BasePath, @"BotResources");
 			
 		public static string PathBattleButton => Path.Combine( ThisPath, @"BattleButton.png");
 		private static readonly Lazy<Bitmap> BmpBattleButtonLazy = new Lazy<Bitmap>(()=> new Bitmap(PathBattleButton));
@@ -114,6 +115,11 @@ namespace DominationsBot.Resources{
 	{
 		public static string ThisPath = Path.Combine(Symbols.ThisPath, @"Battle");
 			
+		public static string PathCantDeployTroopsThere => Path.Combine( ThisPath, @"CantDeployTroopsThere.png");
+		private static readonly Lazy<Bitmap> BmpCantDeployTroopsThereLazy = new Lazy<Bitmap>(()=> new Bitmap(PathCantDeployTroopsThere));
+		public static Bitmap BmpCantDeployTroopsThere => BmpCantDeployTroopsThereLazy.Value;
+	 
+				
 		public static string PathEndBattle => Path.Combine( ThisPath, @"EndBattle.png");
 		private static readonly Lazy<Bitmap> BmpEndBattleLazy = new Lazy<Bitmap>(()=> new Bitmap(PathEndBattle));
 		public static Bitmap BmpEndBattle => BmpEndBattleLazy.Value;
@@ -249,9 +255,19 @@ namespace DominationsBot.Resources{
 		public static Bitmap Bmp2 => Bmp2Lazy.Value;
 	 
 				
+		public static string Path3 => Path.Combine( ThisPath, @"3.png");
+		private static readonly Lazy<Bitmap> Bmp3Lazy = new Lazy<Bitmap>(()=> new Bitmap(Path3));
+		public static Bitmap Bmp3 => Bmp3Lazy.Value;
+	 
+				
 		public static string Path4 => Path.Combine( ThisPath, @"4.png");
 		private static readonly Lazy<Bitmap> Bmp4Lazy = new Lazy<Bitmap>(()=> new Bitmap(Path4));
 		public static Bitmap Bmp4 => Bmp4Lazy.Value;
+	 
+				
+		public static string Path5 => Path.Combine( ThisPath, @"5.png");
+		private static readonly Lazy<Bitmap> Bmp5Lazy = new Lazy<Bitmap>(()=> new Bitmap(Path5));
+		public static Bitmap Bmp5 => Bmp5Lazy.Value;
 	 
 				
 		public static string Path6 => Path.Combine( ThisPath, @"6.png");

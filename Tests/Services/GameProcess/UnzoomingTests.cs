@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DominationsBot.DI;
 using DominationsBot.Services.ImageProcessing.TextReading;
 using StructureMap;
 using Tests;
@@ -37,7 +38,14 @@ namespace DominationsBot.Services.GameProcess.Tests
                 return testCaseDatas;
             }
         }
+        [Test ]
+        public void DoTest()
+        {
+            var container = new Container(new RootRegistry());
+            var unzooming = container.GetInstance<Unzooming>();
 
+            unzooming.Do();
+        }
         [Test, TestCaseSource(nameof(Images))]
         public bool WorkabilityTest(Bitmap screen)
         {

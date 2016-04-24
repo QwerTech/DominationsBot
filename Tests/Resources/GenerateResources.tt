@@ -1,0 +1,70 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#@ import namespace="System.Runtime.Remoting.Messaging" #> 
+
+<#
+	string targetNamespace= (string)CallContext.LogicalGetData("NamespaceHint");
+   
+#>
+// This is the output code from your template
+// you only get syntax-highlighting here - not intellisense
+using System.Drawing;
+using System.IO;
+using System;
+using DominationsBot;
+using System.Collections.Generic;
+namespace <#=targetNamespace.Substring(0, targetNamespace.LastIndexOf(".")) #>
+{
+<#OutputResourceFolder(Host.ResolvePath(""),new DirectoryInfo(Host.ResolvePath("")).Name);#>
+}
+<#+
+	
+	private string NormalizeFileNameToClassName(string fileName)
+	{
+		if(char.IsNumber(fileName[0]))
+		 fileName = "F"+fileName;
+		return fileName.Replace(".","_").Replace(".","_").Replace("-","_");
+    }
+	private void	OutputResourceFolder(string folderPath, string folderName, string upClassName = null)
+	{
+		var thisClassName = NormalizeFileNameToClassName(folderName);
+		var files = Directory.GetFiles(folderPath,"*.png",SearchOption.TopDirectoryOnly);
+		#>
+
+
+	public static class <#=thisClassName#>
+	{
+		//public static IList<Bitmap> AllBitmaps = new List<Bitmap>() {<#=string.Join(" ,", files.Select(f=>NormalizeFileNameToClassName(Path.GetFileNameWithoutExtension(f))+"Bmp"))#>}; 
+		public static string ThisPath = Path.Combine(<#=upClassName==null?"Settings.BasePath": upClassName+".ThisPath"#>, @"<#=upClassName==null?"Resources": folderName#>");
+		<#+
+		foreach(var file in files)
+		{
+			var fileInfo =new FileInfo(file);
+			var fileName =Path.GetFileNameWithoutExtension(fileInfo.Name);
+			var fileVariableName = NormalizeFileNameToClassName(fileName);
+			#>
+	
+		public static string <#=fileVariableName#>Path => Path.Combine( ThisPath, @"<#=fileInfo.Name#>");
+		private static readonly Lazy<Bitmap> <#=fileVariableName#>BmpLazy = new Lazy<Bitmap>(()=> new Bitmap(<#=fileVariableName#>Path));
+		public static Bitmap <#=fileVariableName#>Bmp => <#=fileVariableName#>BmpLazy.Value;
+	 
+			<#+	
+		}
+		var subDirs = Directory.GetDirectories(folderPath,"*",SearchOption.TopDirectoryOnly);
+		foreach(var dir in subDirs)
+		{
+			var dirInfo = new DirectoryInfo(dir);
+			OutputResourceFolder(dir, dirInfo.Name, thisClassName);
+		}#>
+	}
+		<#+
+    }
+#>

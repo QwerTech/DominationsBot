@@ -75,7 +75,10 @@ namespace DominationsBot.Services.ImageProcessing.TextReading
         Gold,
         Level,
         Citizens,
-        Barracks
+        Barracks,
+        BeforeBattleTroops,
+        InBattleTroops,
+        InSaveBattleTroops
     }
 
     public interface ICurrentResourcesType
@@ -105,7 +108,8 @@ namespace DominationsBot.Services.ImageProcessing.TextReading
             {NumberResourcesType.Barracks, "Barracks"},
             {NumberResourcesType.Gold, "FoodAndGold"},
             {NumberResourcesType.Citizens, "Citizens"},
-            {NumberResourcesType.Level, "Level"}
+            {NumberResourcesType.Level, "Level"},
+            {NumberResourcesType.BeforeBattleTroops, "FoodAndGold"},
         };
 
         private readonly ISettings _settings;
@@ -126,7 +130,7 @@ namespace DominationsBot.Services.ImageProcessing.TextReading
             if (_cache != null)
                 return _cache;
             var pngExtension = ".png";
-            var folder = Path.Combine(_settings.SymbolsPath, _resourceFolder);
+            var folder = Path.Combine(BotResources.Symbols.ThisPath, _resourceFolder);
             var files = Directory.GetFiles(folder, "*" + pngExtension);
 
             _cache =

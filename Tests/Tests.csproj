@@ -105,6 +105,11 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Extensions\BitmapExtensionsTests.cs" />
+    <Compile Include="Resources\GenerateResources.cs">
+      <DependentUpon>GenerateResources.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Services\BlueStackControllerTests.cs" />
     <Compile Include="Services\EmulatorWindowControllerTests.cs" />
     <Compile Include="Services\GameProcess\AntiSleepGameTests.cs" />
@@ -133,6 +138,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\4.12.png" />
+    <Content Include="Resources\GenerateResources.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>GenerateResources.cs</LastGenOutput>
+    </Content>
     <Content Include="Resources\ImageComparers\Battle-1.png" />
     <Content Include="Resources\ImageComparers\Battle-2.png" />
     <Content Include="Resources\ImageComparers\Food-1.png" />
@@ -262,6 +271,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Screens\Main\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -5,7 +5,6 @@ using System.Linq;
 using DominationsBot;
 using DominationsBot.DI;
 using DominationsBot.Extensions;
-using DominationsBot.Resources;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StructureMap;

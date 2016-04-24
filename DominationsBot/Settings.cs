@@ -8,7 +8,6 @@ namespace DominationsBot
 {
     public interface ISettings
     {
-        string SymbolsPath { get; }
         string LogsPath { get; }
     }
 
@@ -19,7 +18,7 @@ namespace DominationsBot
         private readonly Lazy<string> _logPath;
         
 
-        public string SymbolsPath => Path.Combine(BasePath, "Resources/Symbols");
+        
 
         public string LogsPath => _logPath.Value;
         public Settings(StorageContext gcrDbContext)

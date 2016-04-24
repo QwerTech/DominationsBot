@@ -172,8 +172,9 @@
     <Compile Include="App_Start\IIsDebug.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Extensions\PointFExtensions.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Resources\GenerateResources.cs">
+    <Compile Include="BotResources\GenerateResources.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GenerateResources.tt</DependentUpon>
@@ -269,122 +270,122 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\BattleButton.png">
+    <Content Include="BotResources\BattleButton.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Bear.PNG" />
-    <Content Include="Resources\Coin.PNG" />
-    <Content Include="Resources\Deer.PNG" />
-    <Content Include="Resources\Food.PNG" />
-    <Content Include="Resources\Fox.PNG" />
-    <Content Include="Resources\FruitTree.PNG" />
-    <Content Include="Resources\GenerateResources.tt">
+    <Content Include="BotResources\Bear.PNG" />
+    <Content Include="BotResources\Coin.PNG" />
+    <Content Include="BotResources\Deer.PNG" />
+    <Content Include="BotResources\Food.PNG" />
+    <Content Include="BotResources\Fox.PNG" />
+    <Content Include="BotResources\FruitTree.PNG" />
+    <Content Include="BotResources\GenerateResources.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>GenerateResources.cs</LastGenOutput>
     </Content>
-    <Content Include="Resources\GoldMine.PNG" />
-    <Content Include="Resources\Rabbit.PNG" />
-    <Content Include="Resources\SleepDialog.png">
+    <Content Include="BotResources\GoldMine.PNG" />
+    <Content Include="BotResources\Rabbit.PNG" />
+    <Content Include="BotResources\SleepDialog.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\StoreButton.png">
+    <Content Include="BotResources\StoreButton.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\StrenghtGladator.PNG" />
-    <Content Include="Resources\Symbols\Ages\Bronze.png">
+    <Content Include="BotResources\StrenghtGladator.PNG" />
+    <Content Include="BotResources\Symbols\Ages\Bronze.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Ages\Classical.png">
+    <Content Include="BotResources\Symbols\Ages\Classical.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Ages\Iron.png">
+    <Content Include="BotResources\Symbols\Ages\Iron.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Barracks\1.png">
+    <Content Include="BotResources\Symbols\Barracks\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Battle\EndBattle.png">
+    <Content Include="BotResources\Symbols\Battle\EndBattle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Citizens\1.png">
+    <Content Include="BotResources\Symbols\Citizens\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Citizens\2.png">
+    <Content Include="BotResources\Symbols\Citizens\2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Citizens\4.png">
+    <Content Include="BotResources\Symbols\Citizens\4.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Citizens\slesh.png">
+    <Content Include="BotResources\Symbols\Citizens\slesh.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\FoodAndGold\0.png">
+    <Content Include="BotResources\Symbols\FoodAndGold\0.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\FoodAndGold\1.png">
+    <Content Include="BotResources\Symbols\FoodAndGold\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\FoodAndGold\2.png">
+    <Content Include="BotResources\Symbols\FoodAndGold\2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\FoodAndGold\3.png">
+    <Content Include="BotResources\Symbols\FoodAndGold\3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\FoodAndGold\4.png">
+    <Content Include="BotResources\Symbols\FoodAndGold\4.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\FoodAndGold\5.png">
+    <Content Include="BotResources\Symbols\FoodAndGold\5.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\FoodAndGold\6.png">
+    <Content Include="BotResources\Symbols\FoodAndGold\6.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\FoodAndGold\7.png">
+    <Content Include="BotResources\Symbols\FoodAndGold\7.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\FoodAndGold\8.png">
+    <Content Include="BotResources\Symbols\FoodAndGold\8.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\FoodAndGold\9.png">
+    <Content Include="BotResources\Symbols\FoodAndGold\9.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Food\1.png">
+    <Content Include="BotResources\Symbols\Food\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Gold\1.png">
+    <Content Include="BotResources\Symbols\Gold\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Level\0.png">
+    <Content Include="BotResources\Symbols\Level\0.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Level\1.png">
+    <Content Include="BotResources\Symbols\Level\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Level\2.png">
+    <Content Include="BotResources\Symbols\Level\2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Level\3.png">
+    <Content Include="BotResources\Symbols\Level\3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Level\4.png">
+    <Content Include="BotResources\Symbols\Level\4.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Level\5.png">
+    <Content Include="BotResources\Symbols\Level\5.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Level\6.png">
+    <Content Include="BotResources\Symbols\Level\6.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Level\7.png">
+    <Content Include="BotResources\Symbols\Level\7.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Level\8.png">
+    <Content Include="BotResources\Symbols\Level\8.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Level\9.png">
+    <Content Include="BotResources\Symbols\Level\9.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Symbols\Zoom\1.png">
+    <Content Include="BotResources\Symbols\Zoom\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="x64\liblept172.dll">

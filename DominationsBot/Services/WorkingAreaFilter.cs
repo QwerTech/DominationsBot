@@ -5,7 +5,12 @@ using System.Linq;
 
 namespace DominationsBot.Services
 {
-    public class WorkingAreaFilter
+    public interface IWorkingAreaFilter
+    {
+        bool IsInWorkingArea(Point point);
+    }
+
+    public class WorkingAreaFilter : IWorkingAreaFilter
     {
 
         private List<Rectangle> _filters = new List<Rectangle>()
@@ -27,7 +32,25 @@ namespace DominationsBot.Services
             WindowStaticPositions.MainScreen.GoldInfo,
             WindowStaticPositions.MainScreen.GoldNumbers,
             WindowStaticPositions.MainScreen.FoodNumbers,
+            WindowStaticPositions.EmulatorFooter,
+            WindowStaticPositions.EmulatorHeader
         }; 
+        public bool IsInWorkingArea(Point point)
+        {
+            return !_filters.Any(f => f.Contains(point));
+        }
+    }
+    public class BattleWorkingAreaFilter:IWorkingAreaFilter
+    {
+        private List<Rectangle> _filters = new List<Rectangle>()
+        {
+            WindowStaticPositions.Battle.TroopsPanel,
+            WindowStaticPositions.Battle.EndBattleAndMyMoney,
+            WindowStaticPositions.Battle.NextMatchRect,
+            WindowStaticPositions.Battle.OpponentInfo,
+            WindowStaticPositions.EmulatorFooter,
+            WindowStaticPositions.EmulatorHeader
+        };
         public bool IsInWorkingArea(Point point)
         {
             return !_filters.Any(f => f.Contains(point));

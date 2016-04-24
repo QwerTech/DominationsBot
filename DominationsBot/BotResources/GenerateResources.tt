@@ -8,8 +8,10 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #> 
-<#
+<#@ import namespace="System.Runtime.Remoting.Messaging" #> 
 
+<#
+	string targetNamespace= (string)CallContext.LogicalGetData("NamespaceHint");
    
 #>
 // This is the output code from your template
@@ -17,12 +19,12 @@
 using System.Drawing;
 using System.IO;
 using System;
-
-namespace DominationsBot.Resources{
-<#OutputResourceFolder(Host.ResolvePath(""));#>
+namespace <#=targetNamespace.Substring(0, targetNamespace.LastIndexOf(".")) #>{
+<#OutputResourceFolder(Host.ResolvePath(""),new DirectoryInfo(Host.ResolvePath("")).Name);#>
 }
 <#+
-	private void	OutputResourceFolder(string folderPath, string folderName = "BotResources", string upClassName = null)
+
+	private void	OutputResourceFolder(string folderPath, string folderName, string upClassName = null)
 	{
 		var files = Directory.GetFiles(folderPath,"*.png",SearchOption.TopDirectoryOnly);
 		#>
@@ -30,7 +32,7 @@ namespace DominationsBot.Resources{
 
 	public static class <#=folderName#>
 	{
-		public static string ThisPath = Path.Combine(<#=upClassName==null?"Settings.BasePath": upClassName+".ThisPath"#>, @"<#=upClassName==null?"Resources": folderName#>");
+		public static string ThisPath = Path.Combine(<#=upClassName==null?"Settings.BasePath": upClassName+".ThisPath"#>, @"<#=folderName#>");
 		<#+
 		foreach(var file in files)
 		{

@@ -1,5 +1,4 @@
 ﻿using System;
-using DominationsBot.Resources;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
 
 namespace DominationsBot.Services.GameProcess

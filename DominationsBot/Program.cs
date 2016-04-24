@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using DominationsBot.DI;
-using DominationsBot.Resources;
 using DominationsBot.Services.System.WorkerProcess;
 using NLog;
 using NLog.Config;

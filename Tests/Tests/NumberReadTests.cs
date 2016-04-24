@@ -27,6 +27,7 @@ namespace Tests.Tests
         {
             get
             {
+
                 var path = Path.Combine(Settings.BasePath, "Resources\\NumbersRead");
                 var testCaseDatas = Directory.EnumerateFiles(path, "*.png", SearchOption.TopDirectoryOnly).Select(f =>
                 {
@@ -54,31 +55,33 @@ namespace Tests.Tests
                         };
                         return testCaseData;
                     });
-                var battlePath = Path.Combine(Settings.BasePath, "Resources\\Screens\\Battle");
+                
                 return testCaseDatas.Union(new[]
                 {
-                    new TestCaseData(
-                        new Bitmap(Path.Combine(battlePath, "1.png")).GetSubImage(
+                    new TestCaseData(Resources.Screens.Battle.F1Bmp.GetSubImage(
                             WindowStaticPositions.Battle.OpponentGold), NumberResourcesType.Gold)
                     {
                         ExpectedResult = 12900, TestName = "OpponentGold_12900"
                     },
-                    new TestCaseData(
-                        new Bitmap(Path.Combine(battlePath, "1.png")).GetSubImage(
+                    new TestCaseData(Resources.Screens.Battle.F1Bmp.GetSubImage(
                             WindowStaticPositions.Battle.OpponentFood), NumberResourcesType.Food)
                     {
                         ExpectedResult = 20000, TestName = "OpponentFood_20000"
                     },
-                    new TestCaseData(
-                        new Bitmap(Path.Combine(battlePath, "2.png")).GetSubImage(
+                    new TestCaseData(Resources.Screens.Battle.F2Bmp.GetSubImage(
                             WindowStaticPositions.Battle.OpponentGold), NumberResourcesType.Gold)
                     {
                         ExpectedResult = 927, TestName = "OpponentFood_927"
                     },
-                    new TestCaseData(new Bitmap(Path.Combine(battlePath, "2.png")).GetSubImage(
+                    new TestCaseData(Resources.Screens.Battle.F2Bmp.GetSubImage(
                             WindowStaticPositions.Battle.OpponentFood), NumberResourcesType.Food)
                     {
                         ExpectedResult = 943, TestName = "OpponentFood_943"
+                    },
+                    new TestCaseData(Resources.Screens.Battle.F2Bmp.GetSubImage(
+                            WindowStaticPositions.Battle.FirstTroopsCount), NumberResourcesType.BeforeBattleTroops)
+                    {
+                        ExpectedResult = 8, TestName = "FirstTroopsCount_8"
                     }
                 }).Union(levelTestCaseDatas);
             }

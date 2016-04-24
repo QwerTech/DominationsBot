@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.Threading;
-using DominationsBot.Resources;
 using DominationsBot.Services.ImageProcessing.ImageComporators;
 using DominationsBot.Services.System;
 

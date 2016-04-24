@@ -128,6 +128,8 @@ namespace DominationsBot.Services
         public virtual void Click(int x, int y)
         {
             var clientPoint = new User32.Point(x, y);
+            if(!GetArea().Contains(x,y))
+                throw new ApplicationException("Запрещается кликать вне окна эмулятора");
             _mouseController.ClickOnPoint2(Handle, clientPoint);
         }
 

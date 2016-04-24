@@ -25,7 +25,8 @@ namespace DominationsBot.Services.ImageProcessing.TextReading
             {NumberResourcesType.Gold, GoldFoodCitizensFiltering},
             {NumberResourcesType.Food, GoldFoodCitizensFiltering},
             {NumberResourcesType.Citizens, GoldFoodCitizensFiltering},
-            {NumberResourcesType.Level, LevelFiltering}
+            {NumberResourcesType.Level, LevelFiltering},
+            {NumberResourcesType.BeforeBattleTroops, GoldFoodCitizensFiltering}
         })
         {
         }

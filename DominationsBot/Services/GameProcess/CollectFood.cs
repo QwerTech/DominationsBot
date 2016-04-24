@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Linq;
 using DominationsBot.Extensions;
-using DominationsBot.Resources;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
 using DominationsBot.Services.System.WorkerProcess;
 using StructureMap.Attributes;

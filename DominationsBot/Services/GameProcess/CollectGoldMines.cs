@@ -4,7 +4,6 @@ using DominationsBot.Extensions;
 using DominationsBot.Services.ImageProcessing.TemplateFinders;
 using System.Linq;
 using System.Threading;
-using DominationsBot.Resources;
 
 namespace DominationsBot.Services.GameProcess
 {

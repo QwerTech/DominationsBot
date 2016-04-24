@@ -34,6 +34,7 @@ namespace DominationsBot.Services.GameProcess
             }
         }
 
+        public static SizeF UnzoomedStep =new SizeF(20.5f,15);
 
 
         public static Point CommonCloseButton = new Point(1560, 90);
@@ -57,6 +58,15 @@ namespace DominationsBot.Services.GameProcess
             public static Rectangle OpponentGold = new Rectangle(1434, 174,144,30);
             public static Rectangle OpponentLevel = new Rectangle(1581, 58, 53, 30);
             public static Rectangle OpponentFood = new Rectangle(1434, 221, 144, 30);
+
+            public static Rectangle TroopsPanel = new Rectangle(0, 750, 1648, 270);
+            public static Rectangle EndBattleAndMyMoney = new Rectangle(0, 0, 445, 245);
+            public static Rectangle NextMatchRect = new Rectangle(1400, 638, 243, 115);
+            public static Rectangle OpponentInfo = new Rectangle(1418, 27, 231, 427);
+
+            public static Rectangle WrongDeployPosition = new Rectangle(398, 656, 849, 44);
+
+            public static Rectangle FirstTroopsCount = new Rectangle(201,864,41,28);
 
         }
         public static class MainScreen
